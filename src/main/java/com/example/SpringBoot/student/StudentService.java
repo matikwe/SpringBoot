@@ -23,7 +23,7 @@ public class StudentService {
     }
 
     public void addNewStudent(Student student) {
-        Optional<Student> studentByEmail = studentRepository.finStudentByEmail(student.getEmail());
+        Optional<Student> studentByEmail = studentRepository.findStudentByEmail(student.getEmail());
         if (studentByEmail.isPresent()) {
             throw new IllegalStateException("email exists");
         }
@@ -53,7 +53,7 @@ public class StudentService {
 
         if (email != null && email.length() > 0 &&
                 !Objects.equals(student.getEmail(), email)) {
-            Optional<Student> studentOptional = studentRepository.finStudentByEmail(email);
+            Optional<Student> studentOptional = studentRepository.findStudentByEmail(email);
             if (studentOptional.isPresent()) {
                 throw new IllegalStateException("email exist");
             }
