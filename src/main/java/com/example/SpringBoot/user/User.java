@@ -2,8 +2,13 @@ package com.example.SpringBoot.user;
 
 import javax.persistence.*;
 
-@Entity
-@Table
+@Entity(name = "User123")
+@Table(
+        name = "user123",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "email_unique", columnNames = "email")
+        }
+)
 public class User {
     @Id
     @SequenceGenerator(name = "user_sequence",
