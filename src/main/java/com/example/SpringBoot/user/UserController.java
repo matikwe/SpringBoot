@@ -20,7 +20,7 @@ public class UserController {
         return userService.getUsers();
     }
 
-    @PostMapping
+    @PostMapping(path = "register")
     public void registerNewUser(@RequestBody User user) {
         userService.addNewUser(user);
     }
@@ -40,5 +40,12 @@ public class UserController {
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String surname) {
         userService.updateUser(id, login, password, email, name, surname);
+    }
+
+    @GetMapping(path = "login")
+    public void verifyLoginDetails(
+            @RequestParam String login,
+            @RequestParam String password){
+        userService.verifyLoginDetails(login, password);
     }
 }

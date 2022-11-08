@@ -89,4 +89,10 @@ public class UserService {
         }
     }
 
+    public void verifyLoginDetails(String login, String password) {
+        Optional<User> user = userRepository.checkLoginAndPassword(login, password);
+        if(!user.isPresent()){
+            throw new IllegalStateException("Login or password is incorrect.");
+        }
+    }
 }
