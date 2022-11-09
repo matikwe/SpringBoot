@@ -21,7 +21,9 @@ public class UserController {
     }
 
     @PostMapping(path = "register")
-    public void registerNewUser(@RequestBody User user) {
+    public void registerNewUser(
+            @RequestBody User user) {
+        user.setRole(Role.USER.name());
         userService.addNewUser(user);
     }
 
@@ -45,7 +47,12 @@ public class UserController {
     @GetMapping(path = "login")
     public void verifyLoginDetails(
             @RequestParam String login,
-            @RequestParam String password){
+            @RequestParam String password) {
         userService.verifyLoginDetails(login, password);
+    }
+
+    @PutMapping(path = "changeRole/{userIdToChange}")
+    public void changeRole(@PathVariable("userIdToChange") Long userIdToChange, @RequestParam Long currentUserId, @RequestParam String role) {
+        userService.changeRole(userIdToChange, currentUserId, role);
     }
 }

@@ -91,8 +91,36 @@ public class UserService {
 
     public void verifyLoginDetails(String login, String password) {
         Optional<User> user = userRepository.checkLoginAndPassword(login, password);
-        if(!user.isPresent()){
+        if (!user.isPresent()) {
             throw new IllegalStateException("Login or password is incorrect.");
         }
+    }
+
+    @Transactional
+    public void changeRole(Long userIdToChange, Long currentUserId, String role) {
+        User currentUser = userRepository.findById(currentUserId)
+                .orElseThrow(() -> new IllegalStateException(
+                        "user with id: " + currentUserId + " does not exist!"
+                ));
+
+        User userToChangeRole = userRepository.findById(userIdToChange)
+                .orElseThrow(() -> new IllegalStateException(
+                        "user with id: " + userIdToChange + " does not exist!"
+                ));
+
+        if (currentUser.getRole().equals(Role.ADMIN.toString())) {
+            if ((role.equals(Role.ADMIN.name()) || role.equals(Role.USER.name()))) {
+                if (!Objects.equals(userToChangeRole.getRole(), role)) {
+                    userToChangeRole.setRole(role);
+                } else {
+                    throw new IllegalStateException("niby ma role" + role);
+                }
+            } else {
+                throw new IllegalStateException("Role: " + role + " don't exists");
+            }
+        } else {
+            throw new IllegalStateException("user with id: " + currentUserId + " cannot modify role !");
+        }
+
     }
 }

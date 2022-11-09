@@ -2,21 +2,22 @@ package com.example.SpringBoot.user;
 
 import javax.persistence.*;
 
-@Entity(name = "User123")
+@Entity(name = "Users")
 @Table(
-        name = "user123",
+        name = "users",
         uniqueConstraints = {
-                @UniqueConstraint(name = "email_unique", columnNames = "email")
+                @UniqueConstraint(name = "email_unique", columnNames = "email"),
+                @UniqueConstraint(name = "login_unique", columnNames = "login")
         }
 )
 public class User {
     @Id
-    @SequenceGenerator(name = "user_sequence",
-            sequenceName = "user_sequence",
+    @SequenceGenerator(name = "users_sequence",
+            sequenceName = "users_sequence",
             allocationSize = 1)
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "user_sequence"
+            generator = "users_sequence"
     )
     private Long id;
     private String login;
@@ -24,25 +25,28 @@ public class User {
     private String email;
     private String name;
     private String surname;
+    private String role;
 
     public User() {
     }
 
-    public User(Long id, String login, String password, String email, String name, String surname) {
+    public User(Long id, String login, String password, String email, String name, String surname, String role) {
         this.id = id;
         this.login = login;
         this.password = password;
         this.email = email;
         this.name = name;
         this.surname = surname;
+        this.role = role;
     }
 
-    public User(String login, String password, String email, String name, String surname) {
+    public User(String login, String password, String email, String name, String surname, String role) {
         this.login = login;
         this.password = password;
         this.email = email;
         this.name = name;
         this.surname = surname;
+        this.role = role;
     }
 
     public Long getId() {
@@ -91,5 +95,13 @@ public class User {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
