@@ -2,6 +2,7 @@ package com.example.SpringBoot;
 
 import com.example.SpringBoot.director.Director;
 import com.example.SpringBoot.director.DirectorRepository;
+import com.example.SpringBoot.movie.Movie;
 import com.example.SpringBoot.user.Role;
 import com.example.SpringBoot.user.User;
 import com.example.SpringBoot.user.UserRepository;
@@ -10,6 +11,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.HashSet;
 import java.util.List;
 
 @SpringBootApplication
@@ -48,6 +50,8 @@ public class Application {
             directorRepository.saveAll(
                     List.of(director, director1)
             );
+
+
         };
     }
 }
