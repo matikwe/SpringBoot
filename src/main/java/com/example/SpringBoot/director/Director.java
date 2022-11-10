@@ -1,6 +1,9 @@
 package com.example.SpringBoot.director;
 
+import com.example.SpringBoot.movie.Movie;
+
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity(name = "Director")
 @Table(
@@ -18,6 +21,9 @@ public class Director {
     private Long id;
     private String name;
     private String surname;
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<Movie> movie;
+
 
     public Director() {
     }

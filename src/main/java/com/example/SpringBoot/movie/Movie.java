@@ -3,7 +3,8 @@ package com.example.SpringBoot.movie;
 import com.example.SpringBoot.director.Director;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "Movie")
 @Table(
@@ -20,20 +21,28 @@ public class Movie {
     )
     private Long id;
     private String title;
-    @OneToMany(targetEntity = Director.class,cascade = CascadeType.ALL)
-    @JoinColumn(name ="cp_fk",referencedColumnName = "id")
-    private Set<Director> director;
+    @ManyToMany
+    @JoinColumn(name = "director_id")
+    private List<Director> director;
 
     public Movie() {
     }
 
-    public Movie(String title, Set<Director> director) {
+    public Movie(String title) {
         this.title = title;
+        director = new ArrayList<>();
+    }
+
+    public void setDirector(List<Director> director) {
         this.director = director;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public List<Director> getDirector() {
+        return director;
     }
 
     public void setId(Long id) {
@@ -46,13 +55,5 @@ public class Movie {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public Set<Director> getDirector() {
-        return director;
-    }
-
-    public void setDirector(Set<Director> director) {
-        this.director = director;
     }
 }
