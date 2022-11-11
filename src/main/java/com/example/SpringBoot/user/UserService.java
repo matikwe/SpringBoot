@@ -1,5 +1,8 @@
 package com.example.SpringBoot.user;
 
+import com.example.SpringBoot.director.Salt.Salt;
+import com.example.SpringBoot.director.Salt.SaltRepository;
+import com.example.SpringBoot.utils.PasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +14,12 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final SaltRepository saltRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, SaltRepository saltRepository) {
         this.userRepository = userRepository;
+        this.saltRepository = saltRepository;
     }
 
 
@@ -32,6 +37,8 @@ public class UserService {
         if (userByLogin.isPresent()) {
             throw new IllegalStateException("login: " + user.getLogin() + " exists!");
         }
+
+        user.setPassword(generateSecurePassword(user.getPassword()));
         userRepository.save(user);
     }
 
@@ -65,8 +72,8 @@ public class UserService {
         }
 
         if (password != null && password.length() > 0 &&
-                !Objects.equals(user.getPassword(), password)) {
-            user.setPassword(password);
+                !Objects.equals(user.getPassword(), generateSecurePassword(password))) {
+            user.setPassword(generateSecurePassword(password));
         }
 
         if (email != null && email.length() > 0 &&
@@ -90,7 +97,7 @@ public class UserService {
     }
 
     public void verifyLoginDetails(String login, String password) {
-        Optional<User> user = userRepository.checkLoginAndPassword(login, password);
+        Optional<User> user = userRepository.checkLoginAndPassword(login, generateSecurePassword(password));
         if (!user.isPresent()) {
             throw new IllegalStateException("Login or password is incorrect.");
         }
@@ -122,5 +129,16 @@ public class UserService {
             throw new IllegalStateException("user with id: " + currentUserId + " cannot modify role !");
         }
 
+    }
+
+    private String generateSecurePassword(String password) {
+        Optional<Salt> salt = saltRepository.checkExistSalt(1L);
+        if (salt.isPresent()) {
+            return PasswordUtils.generateSecurePassword(password, salt.get().getSalt());
+        } else {
+            Salt newSalt = new Salt(PasswordUtils.getSalt(30));
+            saltRepository.save(newSalt);
+            return newSalt.getSalt();
+        }
     }
 }
