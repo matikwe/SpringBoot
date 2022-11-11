@@ -66,6 +66,12 @@ http://localhost:8080/api/v1/movie/{movieId}/addDirector?directorId=1
 #put removeDirectorFromMovie
 http://localhost:8080/api/v1/movie/{movieId}/removeDirector?directorId=1
 
+#get addCategoryToMovie
+http://localhost:8080/api/v1/movie/1/addCategory?categoryId=2
+
+#put removeCategoryFromMovie
+http://localhost:8080/api/v1/movie/1/removeCategory?categoryId=1
+
 -------CATEGORY-------
 
 #get category

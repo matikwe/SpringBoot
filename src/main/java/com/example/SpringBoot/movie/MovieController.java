@@ -52,4 +52,18 @@ public class MovieController {
             @RequestParam Long directorId) {
         movieService.removeDirectorFromMovie(movieId, directorId);
     }
+
+    @GetMapping(path = "{movieId}/addCategory")
+    public void addCategory(
+            @PathVariable("movieId") Long movieId,
+            @RequestParam Long categoryId) {
+        movieService.addCategoryToMovie(movieId, categoryId);
+    }
+
+    @PutMapping(path = "{movieId}/removeCategory")
+    public void removeCategoryFromMovie(
+            @PathVariable("movieId") Long movieId,
+            @RequestParam Long categoryId) {
+        movieService.removeCategoryFromMovie(movieId, categoryId);
+    }
 }

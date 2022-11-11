@@ -1,5 +1,7 @@
 package com.example.SpringBoot.movie;
 
+import com.example.SpringBoot.category.Category;
+import com.example.SpringBoot.category.CategoryRepository;
 import com.example.SpringBoot.director.Director;
 import com.example.SpringBoot.director.DirectorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +16,13 @@ import java.util.Optional;
 public class MovieService {
     private final MovieRepository movieRepository;
     private final DirectorRepository directorRepository;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
-    public MovieService(MovieRepository movieRepository, DirectorRepository directorRepository) {
+    public MovieService(MovieRepository movieRepository, DirectorRepository directorRepository, CategoryRepository categoryRepository) {
         this.movieRepository = movieRepository;
         this.directorRepository = directorRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     public List<Movie> getMovies() {
@@ -27,6 +31,7 @@ public class MovieService {
 
     public void addMovie(Movie movie) {
         Optional<Movie> movieExist = movieRepository.checkExistMovie(movie.getTitle());
+
         if (movieExist.isPresent()) {
             throw new IllegalStateException("Movie :" + movie.getTitle() + " exist!");
         }
@@ -35,6 +40,7 @@ public class MovieService {
 
     public void deleteMovie(Long movieId) {
         boolean exist = movieRepository.existsById(movieId);
+
         if (!exist) {
             throw new IllegalStateException("Movie with id: " + movieId + " does not exist !");
         }
@@ -43,10 +49,7 @@ public class MovieService {
 
     @Transactional
     public void updateMovie(Long movieId, String title) {
-        Movie movie = movieRepository.findById(movieId)
-                .orElseThrow(() -> new IllegalStateException(
-                        "Movie with id: " + movieId + " doesn't exist!"
-                ));
+        Movie movie = findMovieById(movieId);
 
         if (title != null && title.length() > 0 &&
                 !Objects.equals(movie.getTitle(), title)) {
@@ -56,15 +59,8 @@ public class MovieService {
 
     @Transactional
     public void addDirectorToMovie(Long movieId, Long directorId) {
-        Movie movie = movieRepository.findById(movieId)
-                .orElseThrow(() -> new IllegalStateException(
-                        "Movie with id: " + movieId + " doesn't exist!"
-                ));
-
-        Director director = directorRepository.findById(directorId)
-                .orElseThrow(() -> new IllegalStateException(
-                        "Director with id: " + directorId + " doesn't exist!"
-                ));
+        Movie movie = findMovieById(movieId);
+        Director director = findDirectorById(directorId);
 
         List<Director> directorList = movie.getDirector();
         long count = directorList.stream().filter(it -> it.getId().equals(director.getId())).count();
@@ -79,18 +75,12 @@ public class MovieService {
 
     @Transactional
     public void removeDirectorFromMovie(Long movieId, Long directorId) {
-        Movie movie = movieRepository.findById(movieId)
-                .orElseThrow(() -> new IllegalStateException(
-                        "Movie with id: " + movieId + " doesn't exist!"
-                ));
-
-        Director director = directorRepository.findById(directorId)
-                .orElseThrow(() -> new IllegalStateException(
-                        "Director with id: " + directorId + " doesn't exist!"
-                ));
+        Movie movie = findMovieById(movieId);
+        Director director = findDirectorById(directorId);
 
         List<Director> directorList = movie.getDirector();
-        long count = directorList.stream().filter(it -> it.getId().equals(director.getId())).count();
+        long count = directorList.stream()
+                .filter(it -> it.getId().equals(director.getId())).count();
 
         if (count != 0) {
             directorList.remove(director);
@@ -98,5 +88,58 @@ public class MovieService {
         } else {
             throw new IllegalStateException("Director with id " + director.getId() + " cannot be removed.");
         }
+    }
+
+    @Transactional
+    public void addCategoryToMovie(Long movieId, Long categoryId) {
+        Movie movie = findMovieById(movieId);
+        Category category = findCategoryById(categoryId);
+
+        List<Category> categoryList = movie.getCategory();
+        long count = categoryList.stream().filter(it -> it.getId().equals(category.getId())).count();
+
+        if (count == 0) {
+            categoryList.add(category);
+            movie.setCategory(categoryList);
+        } else {
+            throw new IllegalStateException("Category with id " + category.getId() + " is add to current movie !");
+        }
+    }
+
+    @Transactional
+    public void removeCategoryFromMovie(Long movieId, Long categoryId) {
+        Movie movie = findMovieById(movieId);
+        Category category = findCategoryById(categoryId);
+
+        List<Category> categoryList = movie.getCategory();
+        long count = categoryList.stream().filter(it -> it.getId().equals(category.getId())).count();
+
+        if (count != 0) {
+            categoryList.remove(category);
+            movie.setCategory(categoryList);
+        } else {
+            throw new IllegalStateException("Category with id " + category.getId() + " cannot be removed.");
+        }
+    }
+
+    private Movie findMovieById(Long movieId) {
+        return movieRepository.findById(movieId)
+                .orElseThrow(() -> new IllegalStateException(
+                        "Movie with id: " + movieId + " doesn't exist!"
+                ));
+    }
+
+    private Director findDirectorById(Long directorId) {
+        return directorRepository.findById(directorId)
+                .orElseThrow(() -> new IllegalStateException(
+                        "Director with id: " + directorId + " doesn't exist!"
+                ));
+    }
+
+    private Category findCategoryById(Long categoryId) {
+        return categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new IllegalStateException(
+                        "Category with id: " + categoryId + " doesn't exist!"
+                ));
     }
 }

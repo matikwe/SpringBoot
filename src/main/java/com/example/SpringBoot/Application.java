@@ -4,10 +4,10 @@ import com.example.SpringBoot.category.Category;
 import com.example.SpringBoot.category.CategoryRepository;
 import com.example.SpringBoot.director.Director;
 import com.example.SpringBoot.director.DirectorRepository;
-import com.example.SpringBoot.salt.Salt;
-import com.example.SpringBoot.salt.SaltRepository;
 import com.example.SpringBoot.movie.Movie;
 import com.example.SpringBoot.movie.MovieRepository;
+import com.example.SpringBoot.salt.Salt;
+import com.example.SpringBoot.salt.SaltRepository;
 import com.example.SpringBoot.user.Role;
 import com.example.SpringBoot.user.User;
 import com.example.SpringBoot.user.UserRepository;
@@ -65,6 +65,7 @@ public class Application {
             Category category = new Category("Komedia");
             Movie movie = new Movie("film1");
             movie.setDirector(directorList);
+            movie.setCategory(List.of(category));
 
             categoryRepository.save(category);
             directorRepository.saveAll(List.of(director, director1));
