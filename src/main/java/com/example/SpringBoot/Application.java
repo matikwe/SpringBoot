@@ -1,5 +1,7 @@
 package com.example.SpringBoot;
 
+import com.example.SpringBoot.actor.Actor;
+import com.example.SpringBoot.actor.ActorRepository;
 import com.example.SpringBoot.category.Category;
 import com.example.SpringBoot.category.CategoryRepository;
 import com.example.SpringBoot.director.Director;
@@ -31,7 +33,8 @@ public class Application {
 
     @Bean
     CommandLineRunner commandLineRunner(UserRepository userRepository, DirectorRepository directorRepository,
-                                        MovieRepository movieRepository, SaltRepository saltRepository, CategoryRepository categoryRepository) {
+                                        MovieRepository movieRepository, SaltRepository saltRepository, CategoryRepository categoryRepository,
+                                        ActorRepository actorRepository) {
         return args -> {
 
             String securePassword = PasswordUtils.generateSecurePassword(
@@ -63,10 +66,13 @@ public class Application {
             Director director1 = new Director("Janusz", "Pi");
             List<Director> directorList = new ArrayList<>(List.of(director));
             Category category = new Category("Komedia");
+            Actor actor = new Actor("Artur", "Żmijewski");
             Movie movie = new Movie("film1");
             movie.setDirector(directorList);
             movie.setCategory(List.of(category));
+            movie.setActor(List.of(actor));
 
+            actorRepository.save(actor);
             categoryRepository.save(category);
             directorRepository.saveAll(List.of(director, director1));
             movieRepository.save(movie);

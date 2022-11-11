@@ -1,22 +1,21 @@
-package com.example.SpringBoot.director;
+package com.example.SpringBoot.actor;
 
 import com.example.SpringBoot.movie.Movie;
 
 import javax.persistence.*;
-import java.util.Set;
 
-@Entity(name = "Director")
+@Entity(name = "Actor")
 @Table(
-        name = "director"
+        name = "actor"
 )
-public class Director {
+public class Actor {
     @Id
-    @SequenceGenerator(name = "director_sequence",
-            sequenceName = "director_sequence",
+    @SequenceGenerator(name = "actor_sequence",
+            sequenceName = "actor_sequence",
             allocationSize = 1)
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "director_sequence"
+            generator = "actor_sequence"
     )
     private Long id;
     private String name;
@@ -24,19 +23,14 @@ public class Director {
     @ManyToOne(cascade = CascadeType.ALL)
     private Movie movie;
 
-
-    public Director() {
-    }
-
-    public Director(String name, String surname) {
+    public Actor(){}
+    public Actor(String name, String surname) {
         this.name = name;
         this.surname = surname;
     }
 
-    public Director(Long id, String name, String surname) {
-        this.id = id;
-        this.name = name;
-        this.surname = surname;
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
@@ -53,13 +47,5 @@ public class Director {
 
     public void setSurname(String surname) {
         this.surname = surname;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }

@@ -54,7 +54,7 @@ public class MovieController {
     }
 
     @GetMapping(path = "{movieId}/addCategory")
-    public void addCategory(
+    public void addCategoryToMovie(
             @PathVariable("movieId") Long movieId,
             @RequestParam Long categoryId) {
         movieService.addCategoryToMovie(movieId, categoryId);
@@ -65,5 +65,19 @@ public class MovieController {
             @PathVariable("movieId") Long movieId,
             @RequestParam Long categoryId) {
         movieService.removeCategoryFromMovie(movieId, categoryId);
+    }
+
+    @GetMapping(path = "{movieId}/addActor")
+    public void addActorToMovie(
+            @PathVariable("movieId") Long movieId,
+            @RequestParam Long actorId) {
+        movieService.addActorToMovie(movieId, actorId);
+    }
+
+    @PutMapping(path = "{movieId}/removeActor")
+    public void removeActorFromMovie(
+            @PathVariable("movieId") Long movieId,
+            @RequestParam Long actorId) {
+        movieService.removeActorFromMovie(movieId, actorId);
     }
 }

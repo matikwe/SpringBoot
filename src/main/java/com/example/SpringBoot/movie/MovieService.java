@@ -1,5 +1,7 @@
 package com.example.SpringBoot.movie;
 
+import com.example.SpringBoot.actor.Actor;
+import com.example.SpringBoot.actor.ActorRepository;
 import com.example.SpringBoot.category.Category;
 import com.example.SpringBoot.category.CategoryRepository;
 import com.example.SpringBoot.director.Director;
@@ -17,12 +19,14 @@ public class MovieService {
     private final MovieRepository movieRepository;
     private final DirectorRepository directorRepository;
     private final CategoryRepository categoryRepository;
+    private final ActorRepository actorRepository;
 
     @Autowired
-    public MovieService(MovieRepository movieRepository, DirectorRepository directorRepository, CategoryRepository categoryRepository) {
+    public MovieService(MovieRepository movieRepository, DirectorRepository directorRepository, CategoryRepository categoryRepository, ActorRepository actorRepository) {
         this.movieRepository = movieRepository;
         this.directorRepository = directorRepository;
         this.categoryRepository = categoryRepository;
+        this.actorRepository = actorRepository;
     }
 
     public List<Movie> getMovies() {
@@ -122,6 +126,38 @@ public class MovieService {
         }
     }
 
+    @Transactional
+    public void addActorToMovie(Long movieId, Long actorId) {
+        Movie movie = findMovieById(movieId);
+        Actor actor = findActorById(actorId);
+
+        List<Actor> actorList = movie.getActor();
+        long count = actorList.stream().filter(it -> it.getId().equals(actor.getId())).count();
+
+        if (count == 0) {
+            actorList.add(actor);
+            movie.setActor(actorList);
+        } else {
+            throw new IllegalStateException("Actor with id " + actor.getId() + " is add to current movie !");
+        }
+    }
+
+    @Transactional
+    public void removeActorFromMovie(Long movieId, Long actorId) {
+        Movie movie = findMovieById(movieId);
+        Actor actor = findActorById(actorId);
+
+        List<Actor> actorList = movie.getActor();
+        long count = actorList.stream().filter(it -> it.getId().equals(actor.getId())).count();
+
+        if (count != 0) {
+            actorList.remove(actor);
+            movie.setActor(actorList);
+        } else {
+            throw new IllegalStateException("Actor with id " + actor.getId() + " cannot be removed.");
+        }
+    }
+
     private Movie findMovieById(Long movieId) {
         return movieRepository.findById(movieId)
                 .orElseThrow(() -> new IllegalStateException(
@@ -140,6 +176,13 @@ public class MovieService {
         return categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new IllegalStateException(
                         "Category with id: " + categoryId + " doesn't exist!"
+                ));
+    }
+
+    private Actor findActorById(Long actorId) {
+        return actorRepository.findById(actorId)
+                .orElseThrow(() -> new IllegalStateException(
+                        "Actor with id: " + actorId + " doesn't exist!"
                 ));
     }
 }

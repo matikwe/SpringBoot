@@ -1,7 +1,9 @@
 package com.example.SpringBoot.movie;
 
+import com.example.SpringBoot.actor.Actor;
 import com.example.SpringBoot.category.Category;
 import com.example.SpringBoot.director.Director;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -22,13 +24,17 @@ public class Movie {
     )
     private Long id;
     private String title;
-    @ManyToMany
+    @OneToMany
     @JoinColumn(name = "director_id")
     private List<Director> director;
 
-    @ManyToMany
+    @OneToMany
     @JoinColumn(name = "category_id")
     private List<Category> category;
+
+    @OneToMany
+    @JoinColumn(name = "actor_id")
+    private List<Actor> actor;
 
     public Movie() {
     }
@@ -37,6 +43,15 @@ public class Movie {
         this.title = title;
         director = new ArrayList<>();
         category = new ArrayList<>();
+        actor = new ArrayList<>();
+    }
+
+    public List<Actor> getActor() {
+        return actor;
+    }
+
+    public void setActor(List<Actor> actor) {
+        this.actor = actor;
     }
 
     public void setDirector(List<Director> director) {
