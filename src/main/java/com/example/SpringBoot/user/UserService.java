@@ -1,7 +1,7 @@
 package com.example.SpringBoot.user;
 
-import com.example.SpringBoot.director.Salt.Salt;
-import com.example.SpringBoot.director.Salt.SaltRepository;
+import com.example.SpringBoot.salt.Salt;
+import com.example.SpringBoot.salt.SaltRepository;
 import com.example.SpringBoot.utils.PasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

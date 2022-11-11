@@ -1,5 +1,6 @@
 package com.example.SpringBoot.movie;
 
+import com.example.SpringBoot.category.Category;
 import com.example.SpringBoot.director.Director;
 
 import javax.persistence.*;
@@ -25,16 +26,29 @@ public class Movie {
     @JoinColumn(name = "director_id")
     private List<Director> director;
 
+    @ManyToMany
+    @JoinColumn(name = "category_id")
+    private List<Category> category;
+
     public Movie() {
     }
 
     public Movie(String title) {
         this.title = title;
         director = new ArrayList<>();
+        category = new ArrayList<>();
     }
 
     public void setDirector(List<Director> director) {
         this.director = director;
+    }
+
+    public void setCategory(List<Category> category) {
+        this.category = category;
+    }
+
+    public List<Category> getCategory() {
+        return category;
     }
 
     public Long getId() {

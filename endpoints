@@ -17,9 +17,13 @@ http://localhost:8080/api/v1/user/register
 http://localhost:8080/api/v1/student/{userID}
 
 #put user
-http://localhost:8080/api/v1/user/1?login=login&password=password&email=email&name=name&surname=surname
+http://localhost:8080/api/v1/user/{userID}?login=login&password=password&email=email&name=name&surname=surname
 
+#put change role ENUM(ADMIN, USER)
+http://localhost:8080/api/v1/user/changeRole/{userID}?currentUserId=2&role=USER
 
+#get check login and password
+http://localhost:8080/api/v1/user/login?login=matik&password=123
 
 -------DIRECTOR-------
 
@@ -61,3 +65,20 @@ http://localhost:8080/api/v1/movie/{movieId}/addDirector?directorId=1
 
 #put removeDirectorFromMovie
 http://localhost:8080/api/v1/movie/{movieId}/removeDirector?directorId=1
+
+-------CATEGORY-------
+
+#get category
+http://localhost:8080/api/v1/category
+
+#post category
+http://localhost:8080/api/v1/category/addCategory
+{
+    "category":"category123"
+}
+
+#delete category
+http://localhost:8080/api/v1/category/{categoryId}
+
+#put category
+http://localhost:8080/api/v1/category/{categoryId}?category=nowaCat

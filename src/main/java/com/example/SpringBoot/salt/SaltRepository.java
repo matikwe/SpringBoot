@@ -1,4 +1,4 @@
-package com.example.SpringBoot.director.Salt;
+package com.example.SpringBoot.salt;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

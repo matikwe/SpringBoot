@@ -1,9 +1,11 @@
 package com.example.SpringBoot;
 
+import com.example.SpringBoot.category.Category;
+import com.example.SpringBoot.category.CategoryRepository;
 import com.example.SpringBoot.director.Director;
 import com.example.SpringBoot.director.DirectorRepository;
-import com.example.SpringBoot.director.Salt.Salt;
-import com.example.SpringBoot.director.Salt.SaltRepository;
+import com.example.SpringBoot.salt.Salt;
+import com.example.SpringBoot.salt.SaltRepository;
 import com.example.SpringBoot.movie.Movie;
 import com.example.SpringBoot.movie.MovieRepository;
 import com.example.SpringBoot.user.Role;
@@ -28,7 +30,8 @@ public class Application {
     }
 
     @Bean
-    CommandLineRunner commandLineRunner(UserRepository userRepository, DirectorRepository directorRepository, MovieRepository movieRepository, SaltRepository saltRepository) {
+    CommandLineRunner commandLineRunner(UserRepository userRepository, DirectorRepository directorRepository,
+                                        MovieRepository movieRepository, SaltRepository saltRepository, CategoryRepository categoryRepository) {
         return args -> {
 
             String securePassword = PasswordUtils.generateSecurePassword(
@@ -59,9 +62,11 @@ public class Application {
             Director director = new Director("Patryk", "Vega");
             Director director1 = new Director("Janusz", "Pi");
             List<Director> directorList = new ArrayList<>(List.of(director));
+            Category category = new Category("Komedia");
             Movie movie = new Movie("film1");
             movie.setDirector(directorList);
 
+            categoryRepository.save(category);
             directorRepository.saveAll(List.of(director, director1));
             movieRepository.save(movie);
 

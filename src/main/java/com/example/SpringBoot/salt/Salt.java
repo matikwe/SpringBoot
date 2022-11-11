@@ -1,4 +1,4 @@
-package com.example.SpringBoot.director.Salt;
+package com.example.SpringBoot.salt;
 
 import javax.persistence.*;
 
