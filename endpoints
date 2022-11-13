@@ -90,6 +90,12 @@ http://localhost:8080/api/v1/movie/1/addCategory?categoryId=2
 #put removeCategoryFromMovie
 http://localhost:8080/api/v1/movie/1/removeCategory?categoryId=1
 
+#get addActorToMovie
+http://localhost:8080/api/v1/movie/1/addActor?actorId=2
+
+#put removeActorFromMovie
+http://localhost:8080/api/v1/movie/1/removeActor?actorId=1
+
 -------CATEGORY-------
 
 #get category

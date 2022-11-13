@@ -1,5 +1,7 @@
 package com.example.SpringBoot.salt;
 
+import com.example.SpringBoot.user.User;
+
 import javax.persistence.*;
 
 @Entity(name = "Salt")
@@ -18,6 +20,9 @@ public class Salt {
     private Long id;
     private String salt;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private User user;
+
     public Salt() {
     }
 
@@ -27,5 +32,9 @@ public class Salt {
 
     public String getSalt() {
         return salt;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

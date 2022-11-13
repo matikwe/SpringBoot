@@ -38,7 +38,8 @@ public class UserService {
             throw new IllegalStateException("login: " + user.getLogin() + " exists!");
         }
 
-        user.setPassword(generateSecurePassword(user.getPassword()));
+        user.setSalt(generateSalt(user));
+        user.setPassword(generateSecurePassword(user.getPassword(), user.getSalt()));
         userRepository.save(user);
     }
 
@@ -66,21 +67,21 @@ public class UserService {
                 !Objects.equals(user.getLogin(), login)) {
             Optional<User> userByLogin = userRepository.findUserByLogin(login);
             if (userByLogin.isPresent()) {
-                throw new IllegalStateException("login: " + user.getLogin() + " exists!");
+                throw new IllegalStateException("login: " + login + " exists!");
             }
             user.setLogin(login);
         }
 
         if (password != null && password.length() > 0 &&
-                !Objects.equals(user.getPassword(), generateSecurePassword(password))) {
-            user.setPassword(generateSecurePassword(password));
+                !Objects.equals(user.getPassword(), generateSecurePassword(password, user.getSalt()))) {
+            user.setPassword(generateSecurePassword(password, user.getSalt()));
         }
 
         if (email != null && email.length() > 0 &&
                 !Objects.equals(user.getEmail(), email)) {
             Optional<User> userByEmail = userRepository.findUserByEmail(email);
             if (userByEmail.isPresent()) {
-                throw new IllegalStateException("email: " + user.getEmail() + " exists!");
+                throw new IllegalStateException("email: " + email + " exists!");
             }
             user.setEmail(email);
         }
@@ -97,10 +98,16 @@ public class UserService {
     }
 
     public void verifyLoginDetails(String login, String password) {
-        Optional<User> user = userRepository.checkLoginAndPassword(login, generateSecurePassword(password));
-        if (!user.isPresent()) {
-            throw new IllegalStateException("Login or password is incorrect.");
+        Optional<User> getUserByLogin = userRepository.findUserByLogin(login);
+        if (getUserByLogin.isPresent()) {
+            Optional<User> user = userRepository.checkLoginAndPassword(login, generateSecurePassword(password, getUserByLogin.get().getSalt()));
+            if (!user.isPresent()) {
+                throw new IllegalStateException("Login or password is incorrect.");
+            }
+        } else {
+            throw new IllegalStateException("Login is incorrect.");
         }
+
     }
 
     @Transactional
@@ -120,7 +127,7 @@ public class UserService {
                 if (!Objects.equals(userToChangeRole.getRole(), role)) {
                     userToChangeRole.setRole(role);
                 } else {
-                    throw new IllegalStateException("niby ma role" + role);
+                    throw new IllegalStateException("Currently has a role: " + role);
                 }
             } else {
                 throw new IllegalStateException("Role: " + role + " don't exists");
@@ -131,14 +138,14 @@ public class UserService {
 
     }
 
-    private String generateSecurePassword(String password) {
-        Optional<Salt> salt = saltRepository.checkExistSalt(1L);
-        if (salt.isPresent()) {
-            return PasswordUtils.generateSecurePassword(password, salt.get().getSalt());
-        } else {
-            Salt newSalt = new Salt(PasswordUtils.getSalt(30));
-            saltRepository.save(newSalt);
-            return newSalt.getSalt();
-        }
+    private String generateSecurePassword(String password, Long salt_id) {
+        Optional<Salt> salt = saltRepository.checkExistSalt(salt_id);
+        return salt.map(value -> PasswordUtils.generateSecurePassword(password, value.getSalt())).orElse(null);
+    }
+    private Salt generateSalt(User user){
+        Salt newSalt = new Salt(PasswordUtils.getSalt(30));
+        saltRepository.save(newSalt);
+        user.setSalt(newSalt);
+        return newSalt;
     }
 }

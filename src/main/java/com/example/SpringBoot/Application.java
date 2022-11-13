@@ -59,9 +59,7 @@ public class Application {
                     "Racz",
                     Role.ADMIN.toString()
             );
-            userRepository.saveAll(
-                    List.of(user, user1)
-            );
+
             Director director = new Director("Patryk", "Vega");
             Director director1 = new Director("Janusz", "Pi");
             List<Director> directorList = new ArrayList<>(List.of(director));
@@ -71,12 +69,19 @@ public class Application {
             movie.setDirector(directorList);
             movie.setCategory(List.of(category));
             movie.setActor(List.of(actor));
+            Optional<Salt> salt = saltRepository.checkExistSalt(1L);
+            if (salt.isPresent()) {
+                user.setSalt(salt.get());
+                user1.setSalt(salt.get());
+            }
 
+            userRepository.saveAll(
+                    List.of(user, user1)
+            );
             actorRepository.save(actor);
             categoryRepository.save(category);
             directorRepository.saveAll(List.of(director, director1));
             movieRepository.save(movie);
-
 
         };
     }

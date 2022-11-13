@@ -1,5 +1,7 @@
 package com.example.SpringBoot.user;
 
+import com.example.SpringBoot.salt.Salt;
+
 import javax.persistence.*;
 
 @Entity(name = "Users")
@@ -26,6 +28,9 @@ public class User {
     private String name;
     private String surname;
     private String role;
+    @OneToOne()
+    @JoinColumn(name = "salt_id")
+    private Salt salt;
 
     public User() {
     }
@@ -47,6 +52,14 @@ public class User {
         this.name = name;
         this.surname = surname;
         this.role = role;
+    }
+
+    public Long getSalt() {
+        return salt.getId();
+    }
+
+    public void setSalt(Salt salt) {
+        this.salt = salt;
     }
 
     public Long getId() {
