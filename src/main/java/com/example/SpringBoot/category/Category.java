@@ -3,6 +3,7 @@ package com.example.SpringBoot.category;
 import com.example.SpringBoot.movie.Movie;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity(name = "Category")
 @Table(
@@ -19,8 +20,8 @@ public class Category {
     )
     private Long id;
     private String category;
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Movie movie;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Movie> movie;
 
     public Category() {
     }

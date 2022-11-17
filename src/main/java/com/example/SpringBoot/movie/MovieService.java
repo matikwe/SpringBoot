@@ -52,11 +52,15 @@ public class MovieService {
     }
 
     @Transactional
-    public void updateMovie(Long movieId, String title) {
+    public void updateMovie(Long movieId, String title, int quantity) {
         Movie movie = findMovieById(movieId);
 
         if (title != null && title.length() > 0 &&
                 !Objects.equals(movie.getTitle(), title)) {
+            movie.setTitle(title);
+        }
+
+        if (quantity >= 0 && quantity != movie.getQuantity()) {
             movie.setTitle(title);
         }
     }

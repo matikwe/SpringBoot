@@ -65,7 +65,7 @@ public class Application {
             List<Director> directorList = new ArrayList<>(List.of(director));
             Category category = new Category("Komedia");
             Actor actor = new Actor("Artur", "Żmijewski");
-            Movie movie = new Movie("film1");
+            Movie movie = new Movie("film1", 3);
             movie.setDirector(directorList);
             movie.setCategory(List.of(category));
             movie.setActor(List.of(actor));

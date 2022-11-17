@@ -3,6 +3,7 @@ package com.example.SpringBoot.actor;
 import com.example.SpringBoot.movie.Movie;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity(name = "Actor")
 @Table(
@@ -20,8 +21,8 @@ public class Actor {
     private Long id;
     private String name;
     private String surname;
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Movie movie;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Movie> movie;
 
     public Actor(){}
     public Actor(String name, String surname) {

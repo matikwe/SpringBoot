@@ -3,7 +3,7 @@ package com.example.SpringBoot.movie;
 import com.example.SpringBoot.actor.Actor;
 import com.example.SpringBoot.category.Category;
 import com.example.SpringBoot.director.Director;
-import org.hibernate.annotations.Cascade;
+import com.example.SpringBoot.reservation.Reservation;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -24,26 +24,39 @@ public class Movie {
     )
     private Long id;
     private String title;
-    @OneToMany
+    private int quantity;
+    @ManyToMany
     @JoinColumn(name = "director_id")
     private List<Director> director;
 
-    @OneToMany
+    @ManyToMany
     @JoinColumn(name = "category_id")
     private List<Category> category;
 
-    @OneToMany
+    @ManyToMany
     @JoinColumn(name = "actor_id")
     private List<Actor> actor;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Reservation> reservation;
 
     public Movie() {
     }
 
-    public Movie(String title) {
+    public Movie(String title, int quantity) {
         this.title = title;
+        this.quantity = quantity;
         director = new ArrayList<>();
         category = new ArrayList<>();
         actor = new ArrayList<>();
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public List<Actor> getActor() {

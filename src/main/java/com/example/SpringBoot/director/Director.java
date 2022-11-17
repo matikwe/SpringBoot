@@ -3,6 +3,7 @@ package com.example.SpringBoot.director;
 import com.example.SpringBoot.movie.Movie;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity(name = "Director")
@@ -21,8 +22,8 @@ public class Director {
     private Long id;
     private String name;
     private String surname;
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Movie movie;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Movie> movie;
 
 
     public Director() {

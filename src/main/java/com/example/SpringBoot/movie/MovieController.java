@@ -35,8 +35,9 @@ public class MovieController {
     @PutMapping(path = "{movieId}")
     public void updateMovie(
             @PathVariable("movieId") Long movieId,
-            @RequestParam String title) {
-        movieService.updateMovie(movieId, title);
+            @RequestParam String title,
+            @RequestParam int quantity) {
+        movieService.updateMovie(movieId, title,quantity);
     }
 
     @GetMapping(path = "{movieId}/addDirector")

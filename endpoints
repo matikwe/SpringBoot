@@ -69,14 +69,40 @@ http://localhost:8080/api/v1/movie
 #post movie
 http://localhost:8080/api/v1/movie/addMovie
 {
-    "title": "testowaNazwaFilmu123"
+    "title": "testowaNazwaFilmu123",
+    "quantity": 2
+}
+or
+{
+    "title": "testowaNazwaFilmu123eqw",
+    "quantity": 2,
+    "director": [
+        {
+            "id": 1,
+            "name": "Patryk",
+            "surname": "Vega"
+        }
+    ],
+    "category": [
+        {
+            "id": 1,
+            "category": "Komedia"
+        }
+    ],
+    "actor": [
+        {
+            "id": 1,
+            "name": "Artur",
+            "surname": "Żmijewski"
+        }
+    ]
 }
 
 #delete movie
 http://localhost:8080/api/v1/movie/{movieId}
 
 #put movie
-http://localhost:8080/api/v1/movie/{movieId}?title=nowyTyt123
+http://localhost:8080/api/v1/movie/{movieId}?title=nowyTyt123&quantity=4
 
 #get addDirectorToMovie
 http://localhost:8080/api/v1/movie/{movieId}/addDirector?directorId=1
@@ -112,3 +138,14 @@ http://localhost:8080/api/v1/category/{categoryId}
 
 #put category
 http://localhost:8080/api/v1/category/{categoryId}?category=nowaCat
+
+-------ORDER-------
+
+#get reservation
+http://localhost:8080/api/v1/reservation
+
+#post reservation
+http://localhost:8080/api/v1/reservation/addReservation?movieId=1&userId=1
+
+#delete reservation
+http://localhost:8080/api/v1/reservation/2
