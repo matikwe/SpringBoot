@@ -42,16 +42,16 @@ public class ReservationService {
 
         LocalDateTime now = LocalDateTime.now();
 
-        if (movie.getQuantity() >= 1) {
-            movie.setQuantity(movie.getQuantity() - 1);
+        //if (movie.getQuantity() >= 1) {
+          //  movie.setQuantity(movie.getQuantity() - 1);
             Reservation reservation = new Reservation(now);
             reservation.setUser(List.of(user));
             reservation.setMovie(List.of(movie));
-            movieRepository.save(movie);
+            //movieRepository.save(movie);
             reservationRepository.save(reservation);
-        } else {
-            throw new IllegalStateException("No video on time: " + now);
-        }
+        //} else {
+          //  throw new IllegalStateException("No video on time: " + now);
+    //    }
     }
 
     @Transactional
@@ -59,9 +59,9 @@ public class ReservationService {
         Optional<Reservation> reservation = reservationRepository.findById(reservationId);
 
         if (reservation.isPresent()) {
-            Long movieId = reservation.get().getMovie().get(0).getId();
-            Optional<Movie> movie = movieRepository.findById(movieId);
-            movie.ifPresent(value -> value.setQuantity(value.getQuantity() + 1));
+            //Long movieId = reservation.get().getMovie().get(0).getId();
+            //Optional<Movie> movie = movieRepository.findById(movieId);
+            //movie.ifPresent(value -> value.setQuantity(value.getQuantity() + 1));
             reservationRepository.deleteById(reservationId);
         } else {
             throw new IllegalStateException("Reservation with id: " + reservationId + " does not exist !");
