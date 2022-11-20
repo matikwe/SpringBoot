@@ -52,16 +52,28 @@ public class MovieService {
     }
 
     @Transactional
-    public void updateMovie(Long movieId, String title, int quantity) {
-        Movie movie = findMovieById(movieId);
+    public void updateMovie(Long movieId, Movie movie) {
+        Movie movieExist = findMovieById(movieId);
 
-        if (title != null && title.length() > 0 &&
-                !Objects.equals(movie.getTitle(), title)) {
-            movie.setTitle(title);
+        if (movie.getTitle() != null && movie.getTitle().length() > 0 &&
+                !Objects.equals(movie.getTitle(), movieExist.getTitle())) {
+            movieExist.setTitle(movie.getTitle());
         }
 
-        if (quantity >= 0 && quantity != movie.getQuantity()) {
-            movie.setTitle(title);
+        if (movie.getQuantity() >= 0 && movie.getQuantity() != movieExist.getQuantity()) {
+            movieExist.setQuantity(movie.getQuantity());
+        }
+
+        if (movie.getCategory() != null) {
+            movieExist.setCategory(movie.getCategory());
+        }
+
+        if (movie.getActor() != null) {
+            movieExist.setActor(movie.getActor());
+        }
+
+        if (movie.getDirector() != null) {
+            movieExist.setDirector(movie.getDirector());
         }
     }
 
