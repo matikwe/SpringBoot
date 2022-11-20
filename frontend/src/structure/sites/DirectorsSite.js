@@ -15,7 +15,7 @@ const DirectorsSite = () => {
                     backgroundPosition: 'center',
                     backgroundSize: 'contain'
                 }}>
-                    <Link to='/films?actid=1' className='actors-link'>
+                    <Link to='/films?dirid=1' className='actors-link'>
                         <h1>Quentin Tarantino</h1>
                     </Link>
                 </div>
@@ -25,7 +25,7 @@ const DirectorsSite = () => {
                     backgroundPosition: 'center',
                     backgroundSize: 'contain'
                 }}>
-                    <Link to='/films?actid=1' className='actors-link'>
+                    <Link to='/films?dirid=1' className='actors-link'>
                         <h1>Quentin Tarantino</h1>
                     </Link>
                 </div>
@@ -35,7 +35,7 @@ const DirectorsSite = () => {
                     backgroundPosition: 'center',
                     backgroundSize: 'contain'
                 }}>
-                    <Link to='/films?actid=1' className='actors-link'>
+                    <Link to='/films?dirid=1' className='actors-link'>
                         <h1>Quentin Tarantino</h1>
                     </Link>
                 </div>
@@ -47,7 +47,7 @@ const DirectorsSite = () => {
                     backgroundPosition: 'center',
                     backgroundSize: 'contain'
                 }}>
-                    <Link to='/films?actid=1' className='actors-link'>
+                    <Link to='/films?dirid=1' className='actors-link'>
                         <h1>Quentin Tarantino</h1>
                     </Link>
                 </div>
@@ -57,7 +57,7 @@ const DirectorsSite = () => {
                     backgroundPosition: 'center',
                     backgroundSize: 'contain'
                 }}>
-                    <Link to='/films?actid=1' className='actors-link'>
+                    <Link to='/films?dirid=1' className='actors-link'>
                         <h1>Quentin Tarantino</h1>
                     </Link>
                 </div>
@@ -67,7 +67,7 @@ const DirectorsSite = () => {
                     backgroundPosition: 'center',
                     backgroundSize: 'contain'
                 }}>
-                    <Link to='/films?actid=1' className='actors-link'>
+                    <Link to='/films?dirid=1' className='actors-link'>
                         <h1>Quentin Tarantino</h1>
                     </Link>
                 </div>
