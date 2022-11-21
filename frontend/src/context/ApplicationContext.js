@@ -1,8 +1,11 @@
 import React from 'react';
 
 const defaultValue = {
-  movies: [],
+  films: [],
+  categories: [],
+  actors: [],
+  directors: [],
   isLoading: false,
 };
 
-export const MoviesContext = React.createContext(defaultValue);
+export const ApplicationContext = React.createContext(defaultValue);
