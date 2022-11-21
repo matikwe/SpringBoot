@@ -1,11 +1,14 @@
 package com.example.SpringBoot.movie;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping(path = "api/v1/movie")
 public class MovieController {
     private final MovieService movieService;
