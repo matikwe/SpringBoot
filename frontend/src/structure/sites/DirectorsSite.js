@@ -10,7 +10,7 @@ const DirectorsSite = () => {
     const applicationContext = useContext(ApplicationContext)
 
     const directors = applicationContext.directors.map((director, index) => (
-        <div className="col-4" style={{
+        <div key={index} className="col-4" style={{
             backgroundImage: `url(${Direcor1})`,
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',

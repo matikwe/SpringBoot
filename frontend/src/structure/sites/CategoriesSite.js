@@ -10,7 +10,7 @@ const CategoriesSite = () => {
     const applicationContext = useContext(ApplicationContext)
 
     const categories = applicationContext.categories.map((category, index) => (
-        <div className="col-4">
+        <div key={index} className="col-4">
             <Link to={`${FILMS_PATH}?catid=${category.id}`} className='categories-link'>
                 <img src={Category1} alt=""/>
                 <h1>{category.category}</h1>

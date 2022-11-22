@@ -5,6 +5,7 @@ const defaultValue = {
   categories: [],
   actors: [],
   directors: [],
+  user: {},
   isLoading: false,
 };
 

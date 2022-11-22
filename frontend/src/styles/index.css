@@ -2,6 +2,7 @@ html {
   margin: 0;
   padding: 0;
 }
+
 body {
   margin: 0;
   padding: 0;
@@ -58,6 +59,60 @@ h1  {
   padding: 10px 40px;
   font-size: 20px;
   color: black;
+}
+
+.login-modal {
+  color: white;
+  margin-top: 100px;
+}
+
+.login-modal .modal-content{
+  background-color: black;
+  border-radius: 25px;
+  width: 500px;
+  padding: 50px;
+}
+
+.login-modal .modal-content ::placeholder {
+  text-align: center;
+  font-size: 20px;
+}
+
+.login-modal .modal-container {
+  padding: 20px 50px;
+  text-align: center;
+}
+
+.login-modal .modal-container h1 {
+  font-size: 50px;
+}
+
+.login-modal .modal-container input{
+  padding: 10px;
+  background-color: black;
+  border: 0;
+  outline: 0;
+  color: white;
+  border-bottom: white 1px solid;
+  text-align:center;
+  font-size: 20px;
+}
+
+.login-form-submit {
+  margin-top: 50px;
+  padding: 15px;
+  width: 250px;
+  border-radius: 50px;
+  font-size: 20px;
+}
+
+.register-redirect {
+  color: white;
+  background-color: black;
+  border: 0;
+  outline: 0;
+  font-size: 20px;
+  margin-top: 40px;
 }
 
 /* FILMS */

@@ -19,3 +19,8 @@ export const getDirectors = () => {
     return fetch(baseUrl + '/director')
         .then(response => response.json());
 };
+
+export const getLogin = (login, password) => {
+    return fetch(baseUrl + `/user/login?login=${login}&password=${password}`)
+        .then(response => response.json());
+}

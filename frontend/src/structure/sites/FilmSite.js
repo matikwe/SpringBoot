@@ -7,7 +7,7 @@ const FilmSite = () => {
 
     const applicationContext = useContext(ApplicationContext)
     const films = applicationContext.films.map((film, index) => (
-        <div className="col-3" style={{backgroundImage: `url(${Film1})`}}>
+        <div key={index} className="col-3" style={{backgroundImage: `url(${Film1})`}}>
             <h3>{film.title}</h3>
         </div>
     ))

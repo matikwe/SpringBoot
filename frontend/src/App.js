@@ -19,6 +19,7 @@ const App = () => {
     const [categories, setCategories] = useState([]);
     const [actors, setActors] = useState([]);
     const [directors, setDirectors] = useState([]);
+    const [user, setUser] = useState({});
     const [isLoading, setLoading] = useState(true);
 
     useEffect(
@@ -49,16 +50,17 @@ const App = () => {
         categories,
         actors,
         directors,
+        user,
         isLoading,
     };
 
-
+    console.log(user)
 
     return (
         <ApplicationContext.Provider value={applicationInfo}>
           <Router>
               <div>
-                  <Header/>
+                  <Header setUser={setUser}/>
 
                       <Switch>
                           <Route path={MAIN_PATH} element={<FilmSite/>}/>

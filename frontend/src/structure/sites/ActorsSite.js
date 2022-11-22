@@ -10,7 +10,7 @@ const ActorsSite = () => {
     const applicationContext = useContext(ApplicationContext)
 
     const actors = applicationContext.actors.map((actor, index) => (
-        <div className="col-4" style={{
+        <div key={index} className="col-4" style={{
             backgroundImage: `url(${Actor1})`,
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
