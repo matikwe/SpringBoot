@@ -3,6 +3,7 @@ package com.example.SpringBoot.reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -24,8 +25,9 @@ public class ReservationController {
     @PostMapping("addReservation")
     public void addReservation(
             @RequestParam("movieId") Long movieId,
-            @RequestParam("userId") Long userId){
-        reservationService.addReservation(movieId, userId);
+            @RequestParam("userId") Long userId,
+            @RequestParam("bookingDate") String bookingDate){
+        reservationService.addReservation(movieId, userId, bookingDate);
     }
 
     @DeleteMapping(path = "{reservationId}")
