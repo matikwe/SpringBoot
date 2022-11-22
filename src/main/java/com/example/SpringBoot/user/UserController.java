@@ -46,9 +46,9 @@ public class UserController {
     }
 
     @PostMapping(path = "login")
-    public void verifyLoginDetails(
+    public User verifyLoginDetails(
             @RequestBody User user) {
-        userService.verifyLoginDetails(user.getLogin(), user.getPassword());
+        return userService.verifyLoginDetails(user.getLogin(), user.getPassword());
     }
 
     @PutMapping(path = "changeRole/{userIdToChange}")

@@ -97,17 +97,16 @@ public class UserService {
         }
     }
 
-    public void verifyLoginDetails(String login, String password) {
+    public User verifyLoginDetails(String login, String password) {
         Optional<User> getUserByLogin = userRepository.findUserByLogin(login);
         if (getUserByLogin.isPresent()) {
-            Optional<User> user = userRepository.checkLoginAndPassword(login, generateSecurePassword(password, getUserByLogin.get().getSalt()));
-            if (!user.isPresent()) {
-                throw new IllegalStateException("Login or password is incorrect.");
-            }
+            return userRepository.checkLoginAndPassword(login, generateSecurePassword(password, getUserByLogin.get().getSalt()))
+                    .orElseThrow(() -> new IllegalStateException(
+                            "Login or password is incorrect."
+                    ));
         } else {
             throw new IllegalStateException("Login is incorrect.");
         }
-
     }
 
     @Transactional
@@ -142,7 +141,8 @@ public class UserService {
         Optional<Salt> salt = saltRepository.checkExistSalt(salt_id);
         return salt.map(value -> PasswordUtils.generateSecurePassword(password, value.getSalt())).orElse(null);
     }
-    private Salt generateSalt(User user){
+
+    private Salt generateSalt(User user) {
         Salt newSalt = new Salt(PasswordUtils.getSalt(30));
         saltRepository.save(newSalt);
         user.setSalt(newSalt);

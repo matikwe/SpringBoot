@@ -4,6 +4,7 @@ import com.example.SpringBoot.movie.Movie;
 import com.example.SpringBoot.user.User;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class Reservation {
             generator = "reservation_sequence"
     )
     private Long id;
-    private LocalDateTime localDateTime;
+    private String bookingDate;
     @ManyToMany
     @JoinColumn(name = "movie_id")
     private List<Movie> movie;
@@ -29,11 +30,14 @@ public class Reservation {
     @JoinColumn(name = "users_id")
     private List<User> user;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private Reservation reservation;
+
     public Reservation() {
     }
 
-    public Reservation(LocalDateTime localDateTime) {
-        this.localDateTime = localDateTime;
+    public Reservation(String bookingDate) {
+        this.bookingDate = bookingDate;
     }
 
     public void setId(Long id) {
@@ -48,12 +52,12 @@ public class Reservation {
         this.user = user;
     }
 
-    public LocalDateTime getLocalDateTime() {
-        return localDateTime;
+    public String getBookingDate() {
+        return bookingDate;
     }
 
-    public void setLocalDateTime(LocalDateTime localDateTime) {
-        this.localDateTime = localDateTime;
+    public void setBookingDate(String bookingDate) {
+        this.bookingDate = bookingDate;
     }
 
     public List<Movie> getMovie() {
