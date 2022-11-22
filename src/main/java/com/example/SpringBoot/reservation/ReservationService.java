@@ -4,11 +4,11 @@ import com.example.SpringBoot.movie.Movie;
 import com.example.SpringBoot.movie.MovieRepository;
 import com.example.SpringBoot.user.User;
 import com.example.SpringBoot.user.UserRepository;
+import com.example.SpringBoot.utils.DateValidatorUsingDateFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +29,7 @@ public class ReservationService {
         return reservationRepository.findAll();
     }
 
-    public void addReservation(Long movieId, Long userId) {
+    public void addReservation(Long movieId, Long userId, String bookingDate) {
         Movie movie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new IllegalStateException(
                         "Movie with id: " + movieId + " doesn't exist!"
@@ -40,18 +40,15 @@ public class ReservationService {
                         "User with id: " + userId + " doesn't exist!"
                 ));
 
-        LocalDateTime now = LocalDateTime.now();
-
-        //if (movie.getQuantity() >= 1) {
-          //  movie.setQuantity(movie.getQuantity() - 1);
-            Reservation reservation = new Reservation(now);
+        DateValidatorUsingDateFormat validator = new DateValidatorUsingDateFormat("dd/MM/yyyy");
+        if (validator.isValid(bookingDate)) {
+            Reservation reservation = new Reservation(bookingDate);
             reservation.setUser(List.of(user));
             reservation.setMovie(List.of(movie));
-            //movieRepository.save(movie);
             reservationRepository.save(reservation);
-        //} else {
-          //  throw new IllegalStateException("No video on time: " + now);
-    //    }
+        } else {
+            throw new IllegalStateException("Please enter a valid date format (dd/MM/yyyy) !");
+        }
     }
 
     @Transactional
@@ -59,9 +56,6 @@ public class ReservationService {
         Optional<Reservation> reservation = reservationRepository.findById(reservationId);
 
         if (reservation.isPresent()) {
-            //Long movieId = reservation.get().getMovie().get(0).getId();
-            //Optional<Movie> movie = movieRepository.findById(movieId);
-            //movie.ifPresent(value -> value.setQuantity(value.getQuantity() + 1));
             reservationRepository.deleteById(reservationId);
         } else {
             throw new IllegalStateException("Reservation with id: " + reservationId + " does not exist !");
