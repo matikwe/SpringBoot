@@ -27,7 +27,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void addNewUser(User user) {
+    public User addNewUser(User user) {
         Optional<User> userByEmail = userRepository.findUserByEmail(user.getEmail());
         if (userByEmail.isPresent()) {
             throw new IllegalStateException("email: " + user.getEmail() + " exists!");
@@ -41,6 +41,7 @@ public class UserService {
         user.setSalt(generateSalt(user));
         user.setPassword(generateSecurePassword(user.getPassword(), user.getSalt()));
         userRepository.save(user);
+        return user;
     }
 
     public void deleteUser(Long userId) {

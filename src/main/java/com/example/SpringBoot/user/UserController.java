@@ -22,10 +22,10 @@ public class UserController {
     }
 
     @PostMapping(path = "register")
-    public void registerNewUser(
+    public User registerNewUser(
             @RequestBody User user) {
         user.setRole(Role.USER.name());
-        userService.addNewUser(user);
+        return userService.addNewUser(user);
     }
 
     @DeleteMapping(path = "{userId}")
