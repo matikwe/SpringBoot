@@ -56,7 +56,7 @@ h1  {
 }
 
 .login-button h3 {
-  padding: 10px 40px;
+  padding: 10px 40px 2px 40px;
   font-size: 20px;
   color: black;
 }
@@ -113,6 +113,36 @@ h1  {
   outline: 0;
   font-size: 20px;
   margin-top: 40px;
+}
+
+.logged-dropdown {
+  margin-right: 100px;
+  padding-right: 30px;
+}
+
+.logged-dropdown button{
+  background-color: #0E0E0E;
+  border: 0;
+  font-size: 20px;
+  color: #E5CC48;
+}
+
+.logged-dropdown button :hover{
+  background-color: #0E0E0E;
+}
+
+.logged-dropdown .btn:hover{
+  background-color: #0E0E0E;
+  color: #E5CC48;
+}
+
+.logged-dropdown .btn:active:focus {
+  background-color: #0E0E0E;
+  color: #E5CC48;
+}
+
+.logout-button {
+
 }
 
 /* FILMS */
