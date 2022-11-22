@@ -1,12 +1,17 @@
 import React from 'react';
 import BrandStar from '.././assets/utils/Star 1.svg'
 import SearchIcon from '.././assets/utils/search.svg'
-import {Container, Form, Navbar} from "react-bootstrap";
+import {Container, Dropdown, Form, Navbar} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import {ACTORS_PATH, CATEGORIES_PATH, DIRECTORS_PATH, MAIN_PATH} from "../utils/paths";
 import LoginRegisterModal from "../components/LoginRegisterModal";
 
+
 const Header = ({setUser}) => {
+
+    const user = JSON.parse(window.localStorage.getItem('USER'))
+
+
     return (
         <Navbar variant='dark' expand="lg" className='header'>
             <Container className='header-container'>
@@ -19,7 +24,20 @@ const Header = ({setUser}) => {
                 <Link to={CATEGORIES_PATH} className='link-light text-decoration-none'>Kategorie</Link>
                 <Link to={ACTORS_PATH} className='link-light text-decoration-none'>Aktorzy</Link>
                 <Link to={DIRECTORS_PATH} className='link-light text-decoration-none'>Reżyserzy</Link>
-                <LoginRegisterModal setUser={setUser}/>
+                {!user ? <LoginRegisterModal setUser={setUser}/> : (
+                    <Dropdown>
+                        <Dropdown.Toggle variant="success" id="dropdown-basic">
+                            {user.login}
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu>
+                            <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+                            <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+                            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                )}
+
             </Container>
         </Navbar>
     );

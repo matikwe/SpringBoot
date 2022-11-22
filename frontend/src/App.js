@@ -54,13 +54,12 @@ const App = () => {
         isLoading,
     };
 
-    console.log(user)
 
     return (
         <ApplicationContext.Provider value={applicationInfo}>
           <Router>
               <div>
-                  <Header setUser={setUser}/>
+                  <Header user={user} setUser={setUser}/>
 
                       <Switch>
                           <Route path={MAIN_PATH} element={<FilmSite/>}/>

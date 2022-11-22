@@ -20,7 +20,11 @@ const LoginRegisterModal = ({setUser}) => {
     const handleLoginSubmit = (e) => {
         e.preventDefault()
         getLogin(login, password).then(user => {
+            window.localStorage.setItem('USER', JSON.stringify(user))
             setUser(user)
+            handleLoginClose()
+            setLogin('')
+            setPassword('')
         })
     }
 
