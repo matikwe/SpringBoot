@@ -1,7 +1,6 @@
 package com.example.SpringBoot.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,11 +45,10 @@ public class UserController {
         userService.updateUser(id, login, password, email, name, surname);
     }
 
-    @GetMapping(path = "login")
+    @PostMapping(path = "login")
     public void verifyLoginDetails(
-            @RequestParam String login,
-            @RequestParam String password) {
-        userService.verifyLoginDetails(login, password);
+            @RequestBody User user) {
+        userService.verifyLoginDetails(user.getLogin(), user.getPassword());
     }
 
     @PutMapping(path = "changeRole/{userIdToChange}")
