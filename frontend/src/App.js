@@ -37,20 +37,40 @@ const App = () => {
         () => {
             getFilms()
                 .then((films) => {
-                    setFilms(films);
+                    if (films[0].id) {
+                        setFilms(films);
+                    } else {
+                        setLoading(false)
+                        alert('Error ' + films.status + ': ' + films.message)
+                    }
                 });
             getCategories()
                 .then((categories) => {
-                    setCategories(categories);
+                    if (categories[0].id) {
+                        setCategories(categories);
+                    } else {
+                        setLoading(false)
+                        alert('Error ' + categories.status + ': ' + categories.message)
+                    }
                 });
             getActors()
                 .then((actors) => {
-                    setActors(actors);
+                    if (actors[0].id) {
+                        setActors(actors);
+                    } else {
+                        setLoading(false)
+                        alert('Error ' + actors.status + ': ' + actors.message)
+                    }
                 });
             getDirectors()
                 .then((directors) => {
-                    setDirectors(directors);
-                    setLoading(false)
+                    if (directors[0].id) {
+                        setDirectors(directors);
+                        setLoading(false)
+                    } else {
+                        setLoading(false)
+                        alert('Error ' + directors.status + ': ' + directors.message)
+                    }
                 });
         },
         [],

@@ -15,7 +15,7 @@ Strona listy filmów:
 Strona listy kategorii:
 - dynamiczne zdj
 - dodać filtrowanie kategorii po searchbox
-- dodać error message przy nieprawidłowym logowaniu
+- dodać error message przy nieprawidłowym fetchu
 
 Strona listy aktorów:
 - dynamiczne zdj
