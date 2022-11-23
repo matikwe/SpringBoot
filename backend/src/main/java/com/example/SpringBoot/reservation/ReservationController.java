@@ -35,4 +35,9 @@ public class ReservationController {
             @PathVariable("reservationId") Long reservationId){
         reservationService.deleteReservation(reservationId);
     }
+
+    @GetMapping("getReservationsForUserId")
+    private List<Reservation> getReservationsForUserId(@RequestParam("userId") Long userId){
+        return reservationService.getReservationsForUserId(userId);
+    }
 }

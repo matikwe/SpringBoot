@@ -1,11 +1,14 @@
 package com.example.SpringBoot.movie;
 
+import com.example.SpringBoot.utils.ImageModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @CrossOrigin
@@ -25,8 +28,15 @@ public class MovieController {
 
     @PostMapping(path = "addMovie")
     public void addMovie(
-            @RequestBody Movie movie) {
-        movieService.addMovie(movie);
+            @RequestPart("movie") Movie movie,
+            @RequestPart("imageFile") MultipartFile[] file) {
+        try {
+            Set<ImageModel> images = uploadImage(file);
+            movie.setMovieImage(images);
+            movieService.addMovie(movie);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @DeleteMapping(path = "{movieId}")
@@ -82,5 +92,19 @@ public class MovieController {
             @PathVariable("movieId") Long movieId,
             @RequestParam Long actorId) {
         movieService.removeActorFromMovie(movieId, actorId);
+    }
+
+    public Set<ImageModel> uploadImage(MultipartFile[] multipartFiles) throws IOException {
+        Set<ImageModel> imageModels = new HashSet<>();
+
+        for (MultipartFile file : multipartFiles) {
+            ImageModel imageModel = new ImageModel(
+                    file.getOriginalFilename(),
+                    file.getContentType(),
+                    file.getBytes()
+            );
+            imageModels.add(imageModel);
+        }
+        return imageModels;
     }
 }

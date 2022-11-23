@@ -4,10 +4,12 @@ import com.example.SpringBoot.actor.Actor;
 import com.example.SpringBoot.category.Category;
 import com.example.SpringBoot.director.Director;
 import com.example.SpringBoot.reservation.Reservation;
+import com.example.SpringBoot.utils.ImageModel;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity(name = "Movie")
 @Table(
@@ -37,6 +39,16 @@ public class Movie {
     @JoinColumn(name = "actor_id")
     private List<Actor> actor;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "movie_images",
+            joinColumns = {
+                    @JoinColumn(name = "id")
+            }, inverseJoinColumns = {
+            @JoinColumn(name = "image_id")
+    }
+    )
+    private Set<ImageModel> movieImage;
+
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Reservation> reservation;
 
@@ -49,6 +61,14 @@ public class Movie {
         director = new ArrayList<>();
         category = new ArrayList<>();
         actor = new ArrayList<>();
+    }
+
+    public Set<ImageModel> getMovieImage() {
+        return movieImage;
+    }
+
+    public void setMovieImage(Set<ImageModel> movieImage) {
+        this.movieImage = movieImage;
     }
 
     public int getQuantity() {
