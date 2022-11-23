@@ -19,12 +19,28 @@ export const getDirectors = () => {
     return fetch(baseUrl + '/director').then(response => response.json());
 };
 
-export const getLogin = (login, password) => {
+export const postLogin = (login, password) => {
     return fetch(baseUrl + '/user/login', {
         method: 'POST',
         body: JSON.stringify({
             login: login,
             password: password,
+        }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => response.json())
+}
+
+export const postRegister = (login, password, email, name, surname) => {
+    return fetch(baseUrl + '/user/register', {
+        method: 'POST',
+        body: JSON.stringify({
+            login: login,
+            password: password,
+            email: email,
+            name: name,
+            surname: surname
         }),
         headers: {
             'Content-Type': 'application/json'
