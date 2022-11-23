@@ -1,9 +1,11 @@
 package com.example.SpringBoot.actor;
 
 import com.example.SpringBoot.movie.Movie;
+import com.example.SpringBoot.utils.ImageModel;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity(name = "Actor")
 @Table(
@@ -21,13 +23,34 @@ public class Actor {
     private Long id;
     private String name;
     private String surname;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "actor_images",
+            joinColumns = {
+                    @JoinColumn(name = "id")
+            }, inverseJoinColumns = {
+            @JoinColumn(name = "image_id")
+    }
+    )
+    private Set<ImageModel> actorImage;
+
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Movie> movie;
 
-    public Actor(){}
+    public Actor() {
+    }
+
     public Actor(String name, String surname) {
         this.name = name;
         this.surname = surname;
+    }
+
+    public Set<ImageModel> getActorImage() {
+        return actorImage;
+    }
+
+    public void setActorImage(Set<ImageModel> actorImage) {
+        this.actorImage = actorImage;
     }
 
     public Long getId() {

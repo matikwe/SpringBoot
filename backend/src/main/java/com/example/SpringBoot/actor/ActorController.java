@@ -1,9 +1,14 @@
 package com.example.SpringBoot.actor;
 
+import com.example.SpringBoot.utils.ImageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @CrossOrigin
@@ -24,8 +29,15 @@ public class ActorController {
 
     @PostMapping(path = "addActor")
     public void addActor(
-            @RequestBody Actor actor) {
-        actorService.addActor(actor);
+            @RequestPart("actor") Actor actor,
+            @RequestPart("imageFile") MultipartFile[] file) {
+        try {
+            Set<ImageModel> images = uploadImage(file);
+            actor.setActorImage(images);
+            actorService.addActor(actor);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @DeleteMapping(path = "{actorId}")
@@ -40,5 +52,19 @@ public class ActorController {
             @RequestParam String name,
             @RequestParam String surname) {
         actorService.updateActor(actorId, name, surname);
+    }
+
+    public Set<ImageModel> uploadImage(MultipartFile[] multipartFiles) throws IOException {
+        Set<ImageModel> imageModels = new HashSet<>();
+
+        for (MultipartFile file : multipartFiles) {
+            ImageModel imageModel = new ImageModel(
+                    file.getOriginalFilename(),
+                    file.getContentType(),
+                    file.getBytes()
+            );
+            imageModels.add(imageModel);
+        }
+        return imageModels;
     }
 }

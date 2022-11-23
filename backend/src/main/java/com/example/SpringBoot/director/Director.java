@@ -1,6 +1,7 @@
 package com.example.SpringBoot.director;
 
 import com.example.SpringBoot.movie.Movie;
+import com.example.SpringBoot.utils.ImageModel;
 
 import javax.persistence.*;
 import java.util.List;
@@ -22,6 +23,15 @@ public class Director {
     private Long id;
     private String name;
     private String surname;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "director_images",
+            joinColumns = {
+                    @JoinColumn(name = "id")
+            }, inverseJoinColumns = {
+            @JoinColumn(name = "image_id")
+    }
+    )
+    private Set<ImageModel> directorImage;
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Movie> movie;
 
@@ -32,6 +42,14 @@ public class Director {
     public Director(String name, String surname) {
         this.name = name;
         this.surname = surname;
+    }
+
+    public Set<ImageModel> getDirectorImage() {
+        return directorImage;
+    }
+
+    public void setDirectorImage(Set<ImageModel> directorImage) {
+        this.directorImage = directorImage;
     }
 
     public Director(Long id, String name, String surname) {

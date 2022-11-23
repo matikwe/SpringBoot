@@ -1,6 +1,7 @@
 package com.example.SpringBoot.reservation;
 
 import com.example.SpringBoot.movie.Movie;
+import com.example.SpringBoot.order.Order;
 import com.example.SpringBoot.user.User;
 
 import javax.persistence.*;
@@ -26,12 +27,13 @@ public class Reservation {
     @ManyToMany
     @JoinColumn(name = "movie_id")
     private List<Movie> movie;
+    private boolean isReserved;
     @ManyToMany
     @JoinColumn(name = "users_id")
     private List<User> user;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private Reservation reservation;
+    private Order order;
 
     public Reservation() {
     }
@@ -42,6 +44,14 @@ public class Reservation {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public boolean isReserved() {
+        return isReserved;
+    }
+
+    public void setReserved(boolean reserved) {
+        isReserved = reserved;
     }
 
     public void setMovie(List<Movie> movie) {

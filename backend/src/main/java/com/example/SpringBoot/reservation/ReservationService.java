@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ReservationService {
@@ -40,12 +41,24 @@ public class ReservationService {
                         "User with id: " + userId + " doesn't exist!"
                 ));
 
+        List<Reservation> reservation = reservationRepository.findAll();
+
+        List<Reservation> listWithDuplicatedReservation = reservation.stream()
+                .filter(it -> it.getBookingDate().equals(bookingDate) &&
+                        it.getMovie().get(0).getId().equals(movieId) &&
+                        it.getUser().get(0).getId().equals(userId))
+                .collect(Collectors.toList());
+
         DateValidatorUsingDateFormat validator = new DateValidatorUsingDateFormat("dd/MM/yyyy");
         if (validator.isValid(bookingDate)) {
-            Reservation reservation = new Reservation(bookingDate);
-            reservation.setUser(List.of(user));
-            reservation.setMovie(List.of(movie));
-            reservationRepository.save(reservation);
+            if (listWithDuplicatedReservation.size() > 0) {
+                throw new IllegalStateException("The user has already booked this video on this date !");
+            } else {
+                Reservation currentReservation = new Reservation(bookingDate);
+                currentReservation.setUser(List.of(user));
+                currentReservation.setMovie(List.of(movie));
+                reservationRepository.save(currentReservation);
+            }
         } else {
             throw new IllegalStateException("Please enter a valid date format (dd/MM/yyyy) !");
         }
@@ -60,5 +73,12 @@ public class ReservationService {
         } else {
             throw new IllegalStateException("Reservation with id: " + reservationId + " does not exist !");
         }
+    }
+
+    public List<Reservation> getReservationsForUserId(Long userId) {
+        List<Reservation> reservation = reservationRepository.findAll();
+        return reservation.stream()
+                .filter(it -> it.getUser().get(0).getId().equals(userId) && !it.isReserved())
+                .collect(Collectors.toList());
     }
 }
