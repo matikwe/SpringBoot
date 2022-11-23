@@ -165,29 +165,32 @@ h1  {
   padding-right: 30px;
 }
 
-.logged-dropdown button{
+.logged-dropdown .dropdown-menu {
+  background-color: #E5CC48;
+  text-align: center;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.logged-dropdown .toggle-button button{
   background-color: #0E0E0E;
   border: 0;
   font-size: 20px;
   color: #E5CC48;
 }
 
-.logged-dropdown button :hover{
+.logged-dropdown .toggle-button button :hover{
   background-color: #0E0E0E;
 }
 
-.logged-dropdown .btn:hover{
-  background-color: #0E0E0E;
-  color: #E5CC48;
-}
-
-.logged-dropdown .btn:active:focus {
+.logged-dropdown .toggle-button .btn:hover{
   background-color: #0E0E0E;
   color: #E5CC48;
 }
 
-.logout-button {
-
+.logged-dropdown .toggle-button .btn:active:focus {
+  background-color: #0E0E0E;
+  color: #E5CC48;
 }
 
 /* FILMS */

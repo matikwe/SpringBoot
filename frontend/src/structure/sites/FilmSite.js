@@ -1,32 +1,17 @@
-import React, {useContext} from 'react';
-import Film1 from '../../assets/FilmsSite/film1.png'
-import {ApplicationContext} from "../../context/ApplicationContext";
-import LoadingSpinner from "../../utils/spinner";
+import React from 'react';
+import {useParams} from "react-router-dom";
 
-const FilmSite = () => {
+const FilmSite = ({films}) => {
 
-    const applicationContext = useContext(ApplicationContext)
-    const films = applicationContext.films.map((film, index) => (
-        <div key={index} className="col-3" style={{backgroundImage: `url(${Film1})`}}>
-            <h3>{film.title}</h3>
-        </div>
-    ))
+    const filmID = useParams().id
+    const film = films.find(film => {
+        return film.id === Number(filmID)
+    })
+
 
     return (
-        <div className='films-container'>
-            <h1>
-                Filmy
-            </h1>
-            <div className="row">
-                {applicationContext.isLoading && (
-                    <LoadingSpinner />
-                )}
-                {!applicationContext.isLoading && (
-                    <>
-                        {films}
-                    </>
-                )}
-            </div>
+        <div>
+            <h1>Tytuł filmu {film.title} o id {film.id}</h1>
         </div>
     );
 };

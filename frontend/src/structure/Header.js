@@ -3,7 +3,7 @@ import BrandStar from '.././assets/utils/Star 1.svg'
 import SearchIcon from '.././assets/utils/search.svg'
 import {Container, Dropdown, Form, Navbar} from "react-bootstrap";
 import {Link} from "react-router-dom";
-import {ACTORS_PATH, CATEGORIES_PATH, DIRECTORS_PATH, MAIN_PATH} from "../utils/paths";
+import {ACTORS_PATH, CATEGORIES_PATH, DIRECTORS_PATH, MAIN_PATH, PROFILE_PATH, RESERVATIONS_PATH} from "../utils/paths";
 import LoginRegisterModal from "../components/LoginRegisterModal";
 import AccountImg from "../assets/utils/account.svg"
 
@@ -27,14 +27,18 @@ const Header = ({setUser}) => {
                 <Link to={DIRECTORS_PATH} className='link-light text-decoration-none'>Reżyserzy</Link>
                 {!user ? <LoginRegisterModal setUser={setUser}/> : (
                     <Dropdown className='logged-dropdown'>
-                        <Dropdown.Toggle>
-                            <img src={AccountImg} alt=""/>{user.login}
-                        </Dropdown.Toggle>
+                        <div className="toggle-button">
+                            <Dropdown.Toggle>
+                                <img src={AccountImg} alt=""/>{user.login}
+                            </Dropdown.Toggle>
+                        </div>
 
                         <Dropdown.Menu>
-                            <Link to={DIRECTORS_PATH} className='w-100 dropdown-item'>Action</Link>
-                            <Link to={DIRECTORS_PATH} className='w-100 dropdown-item'>Action</Link>
-                            <button className='w-100 dropdown-item logout-button' onClick={() => {
+                            <Link to={PROFILE_PATH} className='w-100 dropdown-item'>Moje konto</Link>
+                            <hr/>
+                            <Link to={RESERVATIONS_PATH} className='w-100 dropdown-item'>Rezerwacje (0)</Link>
+                            <hr/>
+                            <button className='w-100 dropdown-item' onClick={() => {
                                 window.localStorage.removeItem('USER')
                                 setUser({})
                             }}>Wyloguj</button>

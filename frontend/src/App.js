@@ -3,8 +3,16 @@ import {
     Routes as Switch,
     Route
 } from "react-router-dom";
-import {ACTORS_PATH, CATEGORIES_PATH, DIRECTORS_PATH, FILMS_PATH, MAIN_PATH} from "./utils/paths";
-import FilmSite from "./structure/sites/FilmSite";
+import {
+    ACTORS_PATH,
+    CATEGORIES_PATH,
+    DIRECTORS_PATH,
+    FILM_PATH,
+    FILMS_PATH,
+    MAIN_PATH,
+    PROFILE_PATH, RESERVATIONS_PATH
+} from "./utils/paths";
+import FilmsListSite from "./structure/sites/FilmsListSite";
 import Header from "./structure/Header";
 import CategoriesSite from "./structure/sites/CategoriesSite";
 import ActorsSite from "./structure/sites/ActorsSite";
@@ -12,6 +20,9 @@ import DirectorsSite from "./structure/sites/DirectorsSite";
 import {ApplicationContext} from "./context/ApplicationContext";
 import {useEffect, useState} from "react";
 import {getActors, getCategories, getDirectors, getFilms} from "./api/api";
+import FilmSite from "./structure/sites/FilmSite";
+import ProfileSite from "./structure/sites/ProfileSite";
+import ReservationsSite from "./structure/sites/ReservationsSite";
 
 const App = () => {
 
@@ -62,11 +73,14 @@ const App = () => {
                   <Header user={user} setUser={setUser}/>
 
                       <Switch>
-                          <Route path={MAIN_PATH} element={<FilmSite/>}/>
-                          <Route path={FILMS_PATH} element={<FilmSite/>}/>
+                          <Route path={MAIN_PATH} element={<FilmsListSite/>}/>
+                          <Route path={FILMS_PATH} element={<FilmsListSite/>}/>
+                          <Route path={FILM_PATH} element={<FilmSite films={films}/>}/>
                           <Route path={CATEGORIES_PATH} element={<CategoriesSite/>}/>
                           <Route path={ACTORS_PATH} element={<ActorsSite/>}/>
                           <Route path={DIRECTORS_PATH} element={<DirectorsSite/>}/>
+                          <Route path={PROFILE_PATH} element={<ProfileSite/>}/>
+                          <Route path={RESERVATIONS_PATH} element={<ReservationsSite/>}/>
                       </Switch>
 
               </div>
