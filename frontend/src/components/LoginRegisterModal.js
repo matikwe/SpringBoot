@@ -10,42 +10,56 @@ const LoginRegisterModal = ({setUser}) => {
     const [name, setName] = useState('')
     const [surname, setSurname] = useState('')
     const [email, setEmail] = useState('')
-    const [login, setLogin] = useState('')
-    const [password, setPassword] = useState('')
+    const [loginLogin, setLoginLogin] = useState('')
+    const [loginPassword, setLoginPassword] = useState('')
+    const [registerLogin, setRegisterLogin] = useState('')
+    const [registerPassword, setRegisterPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
 
 
-    const handleLoginClose = () => setLoginShow(false);
+    const handleLoginClose = () => {
+        setLoginShow(false);
+        setLoginLogin('')
+        setLoginPassword('')
+    }
     const handleLoginShow = () => setLoginShow(true);
 
-    const handleRegisterClose = () => setRegisterShow(false);
+    const handleRegisterClose = () => {
+        setRegisterShow(false);
+        setName('')
+        setSurname('')
+        setEmail('')
+        setRegisterLogin('')
+        setRegisterPassword('')
+        setConfirmPassword('')
+    }
     const handleRegisterShow = () => setRegisterShow(true);
 
 
     const handleLoginSubmit = (e) => {
         e.preventDefault()
-        postLogin(login, password).then(user => {
-            window.localStorage.setItem('USER', JSON.stringify(user))
-            setUser(user)
-            handleLoginClose()
-            setLogin('')
-            setPassword('')
+        postLogin(loginLogin, loginPassword).then(user => {
+            if (user.id ) {
+                window.localStorage.setItem('USER', JSON.stringify(user))
+                setUser(user)
+                handleLoginClose()
+            } else {
+                alert('Error ' + user.status + ': ' + user.message)
+            }
         })
     }
 
     const handleRegisterSubmit = (e) => {
         e.preventDefault()
-        if(password === confirmPassword) {
-            postRegister(login, password, email, name, surname).then(user => {
-                window.localStorage.setItem('USER', JSON.stringify(user))
-                setUser(user)
-                handleRegisterClose()
-                setName('')
-                setSurname('')
-                setEmail('')
-                setLogin('')
-                setPassword('')
-                setConfirmPassword('')
+        if(registerPassword === confirmPassword) {
+            postRegister(registerLogin, registerPassword, email, name, surname).then(user => {
+                if (user.id ) {
+                    window.localStorage.setItem('USER', JSON.stringify(user))
+                    setUser(user)
+                    handleRegisterClose()
+                } else {
+                    alert('Error ' + user.status + ': ' + user.message)
+                }
             })
         } else {
             alert('Hasła muszą być takie same!')
@@ -74,10 +88,10 @@ const LoginRegisterModal = ({setUser}) => {
                     <h1>Logowanie</h1>
                     <form onSubmit={handleLoginSubmit}>
                         <div className="row pt-4 px-4">
-                            <input placeholder='Login' type="text" value={login} onChange={(e) => setLogin(e.target.value)}/>
+                            <input placeholder='Login' type="text" value={loginLogin} onChange={(e) => setLoginLogin(e.target.value)}/>
                         </div>
                         <div className="row pt-4 px-4">
-                            <input placeholder='Hasło' type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                            <input placeholder='Hasło' type="password" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)}/>
                         </div>
                         <button type='submit' className='login-form-submit'>Potwierdź</button>
                     </form>
@@ -100,10 +114,10 @@ const LoginRegisterModal = ({setUser}) => {
                             <input placeholder='E-mail' type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
                         </div>
                         <div className="row pt-4 px-4">
-                            <input placeholder='Login' type="text" value={login} onChange={(e) => setLogin(e.target.value)}/>
+                            <input placeholder='Login' type="text" value={registerLogin} onChange={(e) => setRegisterLogin(e.target.value)}/>
                         </div>
                         <div className="row pt-4 px-4">
-                            <input placeholder='Hasło' type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                            <input placeholder='Hasło' type="password" value={registerPassword} onChange={(e) => setRegisterPassword(e.target.value)}/>
                         </div>
                         <div className="row pt-4 px-4">
                             <input placeholder='Potwierdź hasło' type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/>
