@@ -1,10 +1,10 @@
 Logowanie:
 - dodać walidację formularzy
-- ~~ dodać error message przy nieprawidłowym logowaniu ~~
+- ~~dodać error message przy nieprawidłowym logowaniu~~
 
 Rejestracja:
 - dodać walidację formularzy
-- ~~ dodać error message przy nieprawidłej rejestracji ~~
+- ~~dodać error message przy nieprawidłej rejestracji~~
 
 Strona listy filmów:
 - dynamiczne zdj
