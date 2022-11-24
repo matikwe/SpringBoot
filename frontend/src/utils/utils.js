@@ -1,0 +1,1 @@
+export const base64flag = 'data:image/png;base64,'

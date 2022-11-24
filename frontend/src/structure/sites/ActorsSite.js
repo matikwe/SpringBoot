@@ -1,25 +1,20 @@
 import React, {useContext} from 'react';
 import {Link} from "react-router-dom";
-import Actor1 from "../../assets/ActorsSite/actor1.png";
 import {ApplicationContext} from "../../context/ApplicationContext";
 import {FILMS_PATH} from "../../utils/paths";
 import LoadingSpinner from "../../utils/spinner";
+import {base64flag} from "../../utils/utils";
 
 const ActorsSite = () => {
 
     const applicationContext = useContext(ApplicationContext)
 
+
     const actors = applicationContext.actors.map((actor, index) => (
-        <div key={index} className="col-4" style={{
-            backgroundImage: `url(${Actor1})`,
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-            backgroundSize: 'contain'
-        }}>
-            <Link to={`${FILMS_PATH}?actid=${actor.id}`} className='actors-link'>
-                <h1>{actor.name} {actor.surname}</h1>
-            </Link>
-        </div>
+        <Link to={`${FILMS_PATH}?actid=${actor.id}`} className='actors-link col-4'>
+            <img src={base64flag + actor.actorImage[0].picByte} alt="" className='w-100 h-100'/>
+            <h1 className='actor-title'>{actor.name} {actor.surname}</h1>
+        </Link>
     ))
 
     return (

@@ -1,6 +1,7 @@
 import React from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import ArrowLeft from '../../assets/utils/arrow-left.svg'
+import {base64flag} from "../../utils/utils";
 
 const FilmSite = () => {
 
@@ -10,7 +11,7 @@ const FilmSite = () => {
     const film = films.find(film => {
         return film.id === Number(filmID)
     })
-    const base64flag = 'data:image/png;base64,'
+
 
     const actors = film.actor.map((actor, index) => {
         if (film.actor[film.actor.length - 1].id === actor.id) {

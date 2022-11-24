@@ -7,23 +7,23 @@ Rejestracja:
 - ~~dodać error message przy nieprawidłej rejestracji~~
 
 Strona listy filmów:
-- dynamiczne zdj
+- ~~dynamiczne zdj~~
 - dodać filtrowanie filmów po searchbox
 - dodać filtrowanie filmów po kategorii, aktorze, reżyserze
 - ~~dodać error message przy nieprawidłowym fetchu~~
 
 Strona listy kategorii:
-- dynamiczne zdj
+- ~~dynamiczne zdj~~
 - dodać filtrowanie kategorii po searchbox
 - ~~dodać error message przy nieprawidłowym fetchu~~
 
 Strona listy aktorów:
-- dynamiczne zdj
+- ~~dynamiczne zdj~~
 - dodać filtrowanie aktorów po searchbox
 - ~~dodać error message przy nieprawidłowym fetchu~~
 
 Strona listy reżyserów:
-- dynamiczne zdj
+- ~~dynamiczne zdj~~
 - dodać filtrowanie reżyserów po searchbox
 - ~~dodać error message przy nieprawidłowym fetchu~~
 
