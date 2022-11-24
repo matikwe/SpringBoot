@@ -28,9 +28,9 @@ Strona listy reżyserów:
 - ~~dodać error message przy nieprawidłowym fetchu~~
 
 Strona szczegółów filmu:
-- dodać zdj
-- dodać opis 
-- dodać aktorów i reżyserów
+- ~~dodać zdj~~
+- ~~dodać opis~~ 
+- ~~dodać aktorów i reżyserów~~
 - dodać przycisk rezerwuj
 
 Strona szczegółów profilu użytkownika:

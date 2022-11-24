@@ -33,12 +33,14 @@ const App = () => {
     const [user, setUser] = useState({});
     const [isLoading, setLoading] = useState(true);
 
+
     useEffect(
         () => {
             getFilms()
                 .then((films) => {
                     if (films[0].id) {
                         setFilms(films);
+                        window.localStorage.setItem('FILMS_STATE', JSON.stringify(films))
                     } else {
                         setLoading(false)
                         alert('Error ' + films.status + ': ' + films.message)
@@ -95,7 +97,7 @@ const App = () => {
                       <Switch>
                           <Route path={MAIN_PATH} element={<FilmsListSite/>}/>
                           <Route path={FILMS_PATH} element={<FilmsListSite/>}/>
-                          <Route path={FILM_PATH} element={<FilmSite films={films}/>}/>
+                          <Route path={FILM_PATH} element={<FilmSite/>}/>
                           <Route path={CATEGORIES_PATH} element={<CategoriesSite/>}/>
                           <Route path={ACTORS_PATH} element={<ActorsSite/>}/>
                           <Route path={DIRECTORS_PATH} element={<DirectorsSite/>}/>
