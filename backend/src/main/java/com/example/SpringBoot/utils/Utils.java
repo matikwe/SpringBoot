@@ -1,6 +1,7 @@
 package com.example.SpringBoot.utils;
 
 import com.example.SpringBoot.actor.Actor;
+import com.example.SpringBoot.category.Category;
 import com.example.SpringBoot.director.Director;
 import com.example.SpringBoot.movie.Movie;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -57,5 +58,16 @@ public class Utils {
             throw new RuntimeException(e);
         }
         return actorJson;
+    }
+
+    public static Category getCategoryJson(String category){
+        Category categoryJson = new Category();
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            categoryJson = objectMapper.readValue(category, Category.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        return categoryJson;
     }
 }

@@ -1,7 +1,11 @@
 package com.example.SpringBoot.category;
 
+import com.example.SpringBoot.actor.Actor;
+import com.example.SpringBoot.utils.ImageModel;
+import com.example.SpringBoot.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -23,8 +27,16 @@ public class CategoryController {
 
     @PostMapping(path = "addCategory")
     public void addCategory(
-            @RequestBody Category category) {
-        categoryService.addCategory(category);
+            @RequestPart String category,
+            @RequestPart("imageFile") MultipartFile[] imageFile) {
+        try {
+            List<ImageModel> images = Utils.uploadImage(imageFile);
+            Category categoryJson = Utils.getCategoryJson(category);
+            categoryJson.setCategoryImage(images);
+            categoryService.addCategory(categoryJson);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @DeleteMapping(path = "{categoryId}")
