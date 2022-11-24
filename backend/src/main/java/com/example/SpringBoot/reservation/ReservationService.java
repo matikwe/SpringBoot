@@ -31,23 +31,10 @@ public class ReservationService {
     }
 
     public void addReservation(Long movieId, Long userId, String bookingDate) {
-        Movie movie = movieRepository.findById(movieId)
-                .orElseThrow(() -> new IllegalStateException(
-                        "Movie with id: " + movieId + " doesn't exist!"
-                ));
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalStateException(
-                        "User with id: " + userId + " doesn't exist!"
-                ));
-
+        Movie movie = findMovieById(movieId);
+        User user = findUserById(userId);
         List<Reservation> reservation = reservationRepository.findAll();
-
-        List<Reservation> listWithDuplicatedReservation = reservation.stream()
-                .filter(it -> it.getBookingDate().equals(bookingDate) &&
-                        it.getMovie().get(0).getId().equals(movieId) &&
-                        it.getUser().get(0).getId().equals(userId))
-                .collect(Collectors.toList());
+        List<Reservation> listWithDuplicatedReservation = getListWithDuplicatedReservation(reservation, movieId, userId, bookingDate);
 
         DateValidatorUsingDateFormat validator = new DateValidatorUsingDateFormat("dd/MM/yyyy");
         if (validator.isValid(bookingDate)) {
@@ -80,5 +67,27 @@ public class ReservationService {
         return reservation.stream()
                 .filter(it -> it.getUser().get(0).getId().equals(userId) && !it.isReserved())
                 .collect(Collectors.toList());
+    }
+
+    private List<Reservation> getListWithDuplicatedReservation(List<Reservation> reservation, Long movieId, Long userId, String bookingDate) {
+        return reservation.stream()
+                .filter(it -> it.getBookingDate().equals(bookingDate) &&
+                        it.getMovie().get(0).getId().equals(movieId) &&
+                        it.getUser().get(0).getId().equals(userId))
+                .collect(Collectors.toList());
+    }
+
+    private Movie findMovieById(Long movieId) {
+        return movieRepository.findById(movieId)
+                .orElseThrow(() -> new IllegalStateException(
+                        "Movie with id: " + movieId + " doesn't exist!"
+                ));
+    }
+
+    private User findUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalStateException(
+                        "User with id: " + userId + " doesn't exist!"
+                ));
     }
 }

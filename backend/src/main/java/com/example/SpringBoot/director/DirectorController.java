@@ -1,14 +1,15 @@
 package com.example.SpringBoot.director;
 
 import com.example.SpringBoot.utils.ImageModel;
+import com.example.SpringBoot.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @CrossOrigin
@@ -28,13 +29,14 @@ public class DirectorController {
 
     @PostMapping(path = "addDirector")
     public void addDirector(
-            @RequestPart("director") Director director,
-            @RequestPart("imageFile") MultipartFile[] file) {
+            @RequestPart("director") String director,
+            @RequestPart("imageFile") MultipartFile[] imageFile) {
 
         try {
-            Set<ImageModel> images = uploadImage(file);
-            director.setDirectorImage(images);
-            directorService.addDirector(director);
+            List<ImageModel> images = Utils.uploadImage(imageFile);
+            Director directorJson = Utils.getDirectorJson(director);
+            directorJson.setDirectorImage(images);
+            directorService.addDirector(directorJson);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -54,17 +56,11 @@ public class DirectorController {
         directorService.updateDirector(directorId, name, surname);
     }
 
-    public Set<ImageModel> uploadImage(MultipartFile[] multipartFiles) throws IOException {
-        Set<ImageModel> imageModels = new HashSet<>();
-
-        for (MultipartFile file : multipartFiles) {
-            ImageModel imageModel = new ImageModel(
-                    file.getOriginalFilename(),
-                    file.getContentType(),
-                    file.getBytes()
-            );
-            imageModels.add(imageModel);
-        }
-        return imageModels;
+    @GetMapping(path = "getImage/{directorId}")
+    public ResponseEntity<?> getImage(@PathVariable("directorId") Long directorId) {
+        byte[] image = directorService.getImage(directorId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.valueOf("image/png"))
+                .body(image);
     }
 }

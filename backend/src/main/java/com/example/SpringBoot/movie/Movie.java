@@ -26,6 +26,8 @@ public class Movie {
     )
     private Long id;
     private String title;
+
+    private String description;
     private int quantity;
     @ManyToMany
     @JoinColumn(name = "director_id")
@@ -47,7 +49,7 @@ public class Movie {
             @JoinColumn(name = "image_id")
     }
     )
-    private Set<ImageModel> movieImage;
+    private List<ImageModel> movieImage;
 
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Reservation> reservation;
@@ -55,20 +57,29 @@ public class Movie {
     public Movie() {
     }
 
-    public Movie(String title, int quantity) {
+    public Movie(String title, int quantity, String description) {
         this.title = title;
         this.quantity = quantity;
+        this.description = description;
         director = new ArrayList<>();
         category = new ArrayList<>();
         actor = new ArrayList<>();
     }
 
-    public Set<ImageModel> getMovieImage() {
+    public List<ImageModel> getMovieImage() {
         return movieImage;
     }
 
-    public void setMovieImage(Set<ImageModel> movieImage) {
+    public void setMovieImage(List<ImageModel> movieImage) {
         this.movieImage = movieImage;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getQuantity() {

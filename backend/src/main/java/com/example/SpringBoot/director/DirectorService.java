@@ -39,10 +39,7 @@ public class DirectorService {
 
     @Transactional
     public void updateDirector(Long directorId, String name, String surname) {
-        Director director = directorRepository.findById(directorId)
-                .orElseThrow(() -> new IllegalStateException(
-                        "Director with id: " + directorId + " doesn't exist!"
-                ));
+        Director director = getDirector(directorId);
         if (name != null && name.length() > 0 &&
                 !Objects.equals(director.getName(), name)) {
             director.setName(name);
@@ -52,5 +49,17 @@ public class DirectorService {
                 !Objects.equals(director.getSurname(), surname)) {
             director.setSurname(surname);
         }
+    }
+
+    public byte[] getImage(Long directorId) {
+        Director director = getDirector(directorId);
+        return director.getDirectorImage().get(0).getPicByte();
+    }
+
+    private Director getDirector(Long directorId) {
+        return directorRepository.findById(directorId)
+                .orElseThrow(() -> new IllegalStateException(
+                        "Director with id: " + directorId + " doesn't exist!"
+                ));
     }
 }
