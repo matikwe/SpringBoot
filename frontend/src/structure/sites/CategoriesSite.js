@@ -1,15 +1,28 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import Category1 from "../../assets/CategoriesSite/category1.png";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {ApplicationContext} from "../../context/ApplicationContext";
 import {FILMS_PATH} from "../../utils/paths";
 import LoadingSpinner from "../../utils/spinner";
 
-const CategoriesSite = () => {
+const CategoriesSite = ({searchbox, setSearchbox}) => {
+
+    const location = useLocation();
+
+    useEffect(() => {
+        setSearchbox('')
+    }, [location])
 
     const applicationContext = useContext(ApplicationContext)
 
-    const categories = applicationContext.categories.map((category, index) => (
+    const categories = applicationContext.categories.filter((category) => {
+        if(searchbox === '') {
+            return category
+        }
+        else if (category.category.toLowerCase().includes(searchbox.toLowerCase())) {
+            return category
+        }
+    }).map((category, index) => (
         <div key={index} className="col-4">
             <Link to={`${FILMS_PATH}?catid=${category.id}`} className='categories-link'>
                 <img src={Category1} alt=""/>
