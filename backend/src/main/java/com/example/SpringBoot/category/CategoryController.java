@@ -29,14 +29,14 @@ public class CategoryController {
 
     @DeleteMapping(path = "{categoryId}")
     public void deleteCategory(
-            @PathVariable("categoryId") Long categoryId){
+            @PathVariable("categoryId") Long categoryId) {
         categoryService.deleteCategory(categoryId);
     }
 
     @PutMapping(path = "{categoryId}")
     public void updateCategory(
             @PathVariable("categoryId") Long categoryId,
-            @RequestParam String category){
+            @RequestParam String category) {
         categoryService.updateCategory(categoryId, category);
     }
 }

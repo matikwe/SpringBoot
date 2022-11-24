@@ -39,10 +39,7 @@ public class ActorService {
 
     @Transactional
     public void updateActor(Long actorId, String name, String surname) {
-        Actor actor = actorRepository.findById(actorId)
-                .orElseThrow(() -> new IllegalStateException(
-                        "Actor with id: " + actorId + " doesn't exist!"
-                ));
+        Actor actor = getActor(actorId);
 
         if (name != null && name.length() > 0 &&
                 !Objects.equals(actor.getName(), name)) {
@@ -53,5 +50,17 @@ public class ActorService {
                 !Objects.equals(actor.getSurname(), surname)) {
             actor.setSurname(surname);
         }
+    }
+
+    public byte[] getImage(Long actorId) {
+        Actor actor = getActor(actorId);
+        return actor.getActorImage().get(0).getPicByte();
+    }
+
+    private Actor getActor(Long actorId) {
+        return actorRepository.findById(actorId)
+                .orElseThrow(() -> new IllegalStateException(
+                        "Actor with id: " + actorId + " doesn't exist!"
+                ));
     }
 }

@@ -5,7 +5,6 @@ import com.example.SpringBoot.utils.ImageModel;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity(name = "Director")
 @Table(
@@ -31,7 +30,7 @@ public class Director {
             @JoinColumn(name = "image_id")
     }
     )
-    private Set<ImageModel> directorImage;
+    private List<ImageModel> directorImage;
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Movie> movie;
 
@@ -44,18 +43,12 @@ public class Director {
         this.surname = surname;
     }
 
-    public Set<ImageModel> getDirectorImage() {
+    public List<ImageModel> getDirectorImage() {
         return directorImage;
     }
 
-    public void setDirectorImage(Set<ImageModel> directorImage) {
+    public void setDirectorImage(List<ImageModel> directorImage) {
         this.directorImage = directorImage;
-    }
-
-    public Director(Long id, String name, String surname) {
-        this.id = id;
-        this.name = name;
-        this.surname = surname;
     }
 
     public String getName() {

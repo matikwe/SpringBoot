@@ -1,14 +1,15 @@
 package com.example.SpringBoot.movie;
 
 import com.example.SpringBoot.utils.ImageModel;
+import com.example.SpringBoot.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @CrossOrigin
@@ -28,12 +29,13 @@ public class MovieController {
 
     @PostMapping(path = "addMovie")
     public void addMovie(
-            @RequestPart("movie") Movie movie,
-            @RequestPart("imageFile") MultipartFile[] file) {
+            @RequestPart("movie") String movie,
+            @RequestPart("imageFile") MultipartFile[] imageFile) {
         try {
-            Set<ImageModel> images = uploadImage(file);
-            movie.setMovieImage(images);
-            movieService.addMovie(movie);
+            List<ImageModel> images = Utils.uploadImage(imageFile);
+            Movie movieJson = Utils.getMovieJson(movie);
+            movieJson.setMovieImage(images);
+            movieService.addMovie(movieJson);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -94,17 +96,11 @@ public class MovieController {
         movieService.removeActorFromMovie(movieId, actorId);
     }
 
-    public Set<ImageModel> uploadImage(MultipartFile[] multipartFiles) throws IOException {
-        Set<ImageModel> imageModels = new HashSet<>();
-
-        for (MultipartFile file : multipartFiles) {
-            ImageModel imageModel = new ImageModel(
-                    file.getOriginalFilename(),
-                    file.getContentType(),
-                    file.getBytes()
-            );
-            imageModels.add(imageModel);
-        }
-        return imageModels;
+    @GetMapping(path = "getImage/{movieId}")
+    public ResponseEntity<?> getImage(@PathVariable("movieId") Long movieId) {
+        byte[] image = movieService.getImage(movieId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.valueOf("image/png"))
+                .body(image);
     }
 }

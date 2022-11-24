@@ -3,7 +3,7 @@ package com.example.SpringBoot.utils;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "movie_image_model")
+@Table(name = "image_model")
 public class ImageModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

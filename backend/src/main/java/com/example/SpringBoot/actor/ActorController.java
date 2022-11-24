@@ -1,7 +1,11 @@
 package com.example.SpringBoot.actor;
 
 import com.example.SpringBoot.utils.ImageModel;
+import com.example.SpringBoot.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,12 +33,13 @@ public class ActorController {
 
     @PostMapping(path = "addActor")
     public void addActor(
-            @RequestPart("actor") Actor actor,
-            @RequestPart("imageFile") MultipartFile[] file) {
+            @RequestPart("actor") String actor,
+            @RequestPart("imageFile") MultipartFile[] imageFile) {
         try {
-            Set<ImageModel> images = uploadImage(file);
-            actor.setActorImage(images);
-            actorService.addActor(actor);
+            List<ImageModel> images = Utils.uploadImage(imageFile);
+            Actor actorJson = Utils.getActorJson(actor);
+            actorJson.setActorImage(images);
+            actorService.addActor(actorJson);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -54,17 +59,11 @@ public class ActorController {
         actorService.updateActor(actorId, name, surname);
     }
 
-    public Set<ImageModel> uploadImage(MultipartFile[] multipartFiles) throws IOException {
-        Set<ImageModel> imageModels = new HashSet<>();
-
-        for (MultipartFile file : multipartFiles) {
-            ImageModel imageModel = new ImageModel(
-                    file.getOriginalFilename(),
-                    file.getContentType(),
-                    file.getBytes()
-            );
-            imageModels.add(imageModel);
-        }
-        return imageModels;
+    @GetMapping(path = "getImage/{actorId}")
+    public ResponseEntity<?> getImage(@PathVariable("actorId") Long actorId) {
+        byte[] image = actorService.getImage(actorId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.valueOf("image/png"))
+                .body(image);
     }
 }

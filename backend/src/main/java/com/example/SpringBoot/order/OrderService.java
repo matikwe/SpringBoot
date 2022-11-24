@@ -31,45 +31,14 @@ public class OrderService {
     @Transactional
     public void addOrder(Long reservationId) {
         removeExpiredBooking();
-
-        Reservation reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new IllegalStateException(
-                        "Your booking has expired !"
-                ));
-
+        Reservation reservation = getReservation(reservationId);
         List<Reservation> reservationList = reservationRepository.findAll();
-/*
-        List<Reservation> listWithDuplicatedReservation = reservationList.stream()
-                .filter(it -> it.getBookingDate().equals(reservation.getBookingDate()) &&
-                        it.getMovie().get(0).getId().equals(reservation.getMovie().get(0).getId()) &&
-                        it.getUser().get(0).getId().equals(reservation.getUser().get(0).getId()))
-                .collect(Collectors.toList());
-
-        if (listWithDuplicatedReservation.size() > 0) {
-            throw new IllegalStateException("The user has already booked this video on this date !");
-        }
-
-
- */
-
-        List<Reservation> listWithCandidatesToOrder = reservationList.stream()
-                .filter(it -> it.getBookingDate().equals(reservation.getBookingDate()) &&
-                        it.getMovie().get(0).getId().equals(reservation.getMovie().get(0).getId())
-                        && !it.isReserved())
-                .collect(Collectors.toList());
-
-        List<Reservation> listWithBookingMovies = reservationList.stream()
-                .filter(it -> it.isReserved() && it.getBookingDate().equals(reservation.getBookingDate())
-                        && it.getMovie().get(0).getId().equals(reservation.getMovie().get(0).getId()))
-                .collect(Collectors.toList());
+        List<Reservation> listWithCandidatesToOrder = getListWithCandidatesToOrder(reservationList, reservation);
+        List<Reservation> listWithBookingMovies = getListWithBookingMovies(reservationList, reservation);
 
         if (listWithCandidatesToOrder.get(0).getUser().get(0).getId().equals(reservation.getUser().get(0).getId())) {
             if (reservation.getMovie().get(0).getQuantity() > listWithBookingMovies.size()) {
-                Order order = new Order(reservation.getBookingDate());
-                reservation.setReserved(true);
-                reservationRepository.save(reservation);
-                order.setReservation(reservation);
-                orderRepository.save(order);
+                orderMovie(reservation);
             } else {
                 throw new IllegalStateException("On day " + reservation.getBookingDate() + " there was no film. Try another day.");
             }
@@ -78,18 +47,46 @@ public class OrderService {
         }
     }
 
-    private void removeExpiredBooking() {
-        LocalDate now = LocalDate.now();
-        List<Reservation> reservationList = reservationRepository.findAll();
+    private void orderMovie(Reservation reservation) {
+        Order order = new Order(reservation.getBookingDate());
+        reservation.setReserved(true);
+        reservationRepository.save(reservation);
+        order.setReservation(reservation);
+        orderRepository.save(order);
+    }
 
+    private void removeExpiredBooking() {
+        List<Reservation> reservationList = reservationRepository.findAll();
         List<Reservation> list = reservationList.stream()
-                .filter(it -> !it.isReserved() && calcDaysBetween(now, convertStringToDate(it.getBookingDate())) < 0)
+                .filter(it -> !it.isReserved() && calcDaysBetween(convertStringToDate(it.getBookingDate())) < 0)
                 .collect(Collectors.toList());
         reservationRepository.deleteAll(list);
     }
 
-    private long calcDaysBetween(LocalDate now, LocalDate bookingDate) {
-        return ChronoUnit.DAYS.between(now, bookingDate);
+    private List<Reservation> getListWithCandidatesToOrder(List<Reservation> reservationList, Reservation reservation) {
+        return reservationList.stream()
+                .filter(it -> it.getBookingDate().equals(reservation.getBookingDate()) &&
+                        it.getMovie().get(0).getId().equals(reservation.getMovie().get(0).getId())
+                        && !it.isReserved())
+                .collect(Collectors.toList());
+    }
+
+    private List<Reservation> getListWithBookingMovies(List<Reservation> reservationList, Reservation reservation) {
+        return reservationList.stream()
+                .filter(it -> it.isReserved() && it.getBookingDate().equals(reservation.getBookingDate())
+                        && it.getMovie().get(0).getId().equals(reservation.getMovie().get(0).getId()))
+                .collect(Collectors.toList());
+    }
+
+    private Reservation getReservation(Long reservationId) {
+        return reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new IllegalStateException(
+                        "Your booking has expired !"
+                ));
+    }
+
+    private long calcDaysBetween(LocalDate bookingDate) {
+        return ChronoUnit.DAYS.between(LocalDate.now(), bookingDate);
     }
 
     private LocalDate convertStringToDate(String date) {

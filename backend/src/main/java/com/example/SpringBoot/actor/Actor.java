@@ -32,7 +32,7 @@ public class Actor {
             @JoinColumn(name = "image_id")
     }
     )
-    private Set<ImageModel> actorImage;
+    private List<ImageModel> actorImage;
 
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Movie> movie;
@@ -45,11 +45,11 @@ public class Actor {
         this.surname = surname;
     }
 
-    public Set<ImageModel> getActorImage() {
+    public List<ImageModel> getActorImage() {
         return actorImage;
     }
 
-    public void setActorImage(Set<ImageModel> actorImage) {
+    public void setActorImage(List<ImageModel> actorImage) {
         this.actorImage = actorImage;
     }
 

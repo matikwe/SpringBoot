@@ -64,6 +64,11 @@ public class MovieService {
             movieExist.setQuantity(movie.getQuantity());
         }
 
+        if (movie.getDescription() != null && movie.getDescription().length() > 0 &&
+                !Objects.equals(movie.getDescription(), movieExist.getDescription())) {
+            movieExist.setDescription(movie.getDescription());
+        }
+
         if (movie.getCategory() != null) {
             movieExist.setCategory(movie.getCategory());
         }
@@ -172,6 +177,11 @@ public class MovieService {
         } else {
             throw new IllegalStateException("Actor with id " + actor.getId() + " cannot be removed.");
         }
+    }
+
+    public byte[] getImage(Long movieId) {
+        Movie movieExist = findMovieById(movieId);
+        return movieExist.getMovieImage().get(0).getPicByte();
     }
 
     private Movie findMovieById(Long movieId) {
