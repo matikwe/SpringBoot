@@ -64,6 +64,9 @@ public class Application {
             imageForActor.add(new ImageModel("movie4.png", "image/png", getImage("tmp/a4-min.png")));
             imageForActor.add(new ImageModel("movie5.png", "image/png", getImage("tmp/a5-min.png")));
 
+            List<ImageModel> imageForCategory = new ArrayList<>();
+            imageForCategory.add(new ImageModel("c.png", "image/png", getImage("tmp/c.png")));
+
             User user = new User("matik", securePassword, "matik@wp.pl", "Mati", "Racz", Role.USER.toString());
             User user1 = new User("matik1", securePassword, "matik1@wp.pl", "Mati", "Racz", Role.ADMIN.toString());
             User user2 = new User("kacper", securePassword, "kacper@wp.pl", "Kac", "Gaw", Role.ADMIN.toString());
@@ -121,6 +124,9 @@ public class Application {
 
                 Director director = directorList.get(i);
                 director.setDirectorImage(List.of(imageForDirector.get(i)));
+
+                Category category = categoryList.get(i);
+                category.setCategoryImage(imageForCategory);
             }
 
             userRepository.saveAll(List.of(user, user1, user2, user3));
