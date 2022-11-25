@@ -2,7 +2,11 @@ package com.example.SpringBoot.user;
 
 import com.example.SpringBoot.salt.Salt;
 import com.example.SpringBoot.salt.SaltRepository;
+import com.example.SpringBoot.utils.OldPassword;
 import com.example.SpringBoot.utils.PasswordUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,58 +48,68 @@ public class UserService {
         return user;
     }
 
-    public void deleteUser(Long userId) {
-        boolean exists = userRepository.existsById(userId);
-        if (!exists) {
-            throw new IllegalStateException("user with id: " + userId + " does not exist !");
-        }
-        userRepository.deleteById(userId);
-    }
-
-    @Transactional
-    public void updateUser(Long userId,
-                           String login,
-                           String password,
-                           String email,
-                           String name,
-                           String surname) {
-        User user = userRepository.findById(userId)
+    public User deleteUser(Long userId, OldPassword oldPassword) {
+        User userRepo = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalStateException(
                         "user with id: " + userId + " does not exist!"
                 ));
 
-        if (login != null && login.length() > 0 &&
-                !Objects.equals(user.getLogin(), login)) {
-            Optional<User> userByLogin = userRepository.findUserByLogin(login);
+        if (userRepo.getPassword().equals(generateSecurePassword(oldPassword.getOldPassword(), userRepo.getSalt()))) {
+            userRepository.deleteById(userId);
+        } else {
+            throw new IllegalStateException("The entered passwords are different.");
+        }
+
+        return null;
+    }
+
+    @Transactional
+    public User updateUser(Long userId,
+                           User user,
+                           String oldPassword) {
+        User userRepo = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalStateException(
+                        "user with id: " + userId + " does not exist!"
+                ));
+
+        if (user.getLogin() != null && user.getLogin().length() > 0 &&
+                !Objects.equals(userRepo.getLogin(), user.getLogin())) {
+            Optional<User> userByLogin = userRepository.findUserByLogin(user.getLogin());
             if (userByLogin.isPresent()) {
-                throw new IllegalStateException("login: " + login + " exists!");
+                throw new IllegalStateException("login: " + user.getLogin() + " exists!");
             }
-            user.setLogin(login);
+            userRepo.setLogin(user.getLogin());
         }
 
-        if (password != null && password.length() > 0 &&
-                !Objects.equals(user.getPassword(), generateSecurePassword(password, user.getSalt()))) {
-            user.setPassword(generateSecurePassword(password, user.getSalt()));
+        if (generateSecurePassword(oldPassword, userRepo.getSalt()).equals(userRepo.getPassword())) {
+            if (user.getPassword() != null && user.getPassword().length() > 0 &&
+                    !Objects.equals(userRepo.getPassword(), generateSecurePassword(user.getPassword(), userRepo.getSalt()))) {
+                userRepo.setPassword(generateSecurePassword(user.getPassword(), userRepo.getSalt()));
+            }
+        } else {
+            throw new IllegalStateException("The entered passwords are different.");
         }
 
-        if (email != null && email.length() > 0 &&
-                !Objects.equals(user.getEmail(), email)) {
-            Optional<User> userByEmail = userRepository.findUserByEmail(email);
+        if (user.getEmail() != null && user.getEmail().length() > 0 &&
+                !Objects.equals(userRepo.getEmail(), user.getEmail())) {
+            Optional<User> userByEmail = userRepository.findUserByEmail(user.getEmail());
             if (userByEmail.isPresent()) {
-                throw new IllegalStateException("email: " + email + " exists!");
+                throw new IllegalStateException("email: " + user.getEmail() + " exists!");
             }
-            user.setEmail(email);
+            userRepo.setEmail(user.getEmail());
         }
 
-        if (name != null && name.length() > 0 &&
-                !Objects.equals(user.getName(), name)) {
-            user.setName(name);
+        if (user.getName() != null && user.getName().length() > 0 &&
+                !Objects.equals(userRepo.getName(), user.getName())) {
+            userRepo.setName(user.getName());
         }
 
-        if (surname != null && surname.length() > 0 &&
-                !Objects.equals(user.getSurname(), surname)) {
-            user.setSurname(surname);
+        if (user.getSurname() != null && user.getSurname().length() > 0 &&
+                !Objects.equals(userRepo.getSurname(), user.getSurname())) {
+            userRepo.setSurname(user.getSurname());
         }
+
+        return userRepo;
     }
 
     public User verifyLoginDetails(String login, String password) {
@@ -140,6 +154,7 @@ public class UserService {
 
     private String generateSecurePassword(String password, Long salt_id) {
         Optional<Salt> salt = saltRepository.checkExistSalt(salt_id);
+        System.out.println("salt: " + salt.get().getSalt());
         return salt.map(value -> PasswordUtils.generateSecurePassword(password, value.getSalt())).orElse(null);
     }
 
