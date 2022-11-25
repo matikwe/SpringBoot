@@ -26,7 +26,7 @@ const ActorsSite = ({searchbox, setSearchbox}) => {
             return actor
         }
     }).map((actor, index) => (
-        <Link to={`${FILMS_PATH}?actid=${actor.id}`} className='actors-link col-4'>
+        <Link to={`${FILMS_PATH}?actid=${actor.id}`} className='actors-link col-4' key={index}>
             <img src={base64flag + actor.actorImage[0].picByte} alt="" className='w-100 h-100'/>
             <h1 className='actor-title'>{actor.name} {actor.surname}</h1>
         </Link>

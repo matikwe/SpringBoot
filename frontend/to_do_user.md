@@ -9,7 +9,7 @@ Rejestracja:
 Strona listy filmów:
 - ~~dynamiczne zdj~~
 - ~~dodać filtrowanie filmów po searchbox~~
-- dodać filtrowanie filmów po kategorii, aktorze, reżyserze
+- ~~dodać filtrowanie filmów po kategorii, aktorze, reżyserze~~
 - ~~dodać error message przy nieprawidłowym fetchu~~
 
 Strona listy kategorii:
