@@ -44,21 +44,42 @@ const FilmsListSite = ({searchbox, setSearchbox}) => {
             </Link>
     ))
 
-    const categoryFilms = categoryFilteredFilms.map((film, index) => (
+    const categoryFilms = categoryFilteredFilms.filter((film) => {
+        if(searchbox === '') {
+            return film
+        }
+        else if (film.title.toLowerCase().includes(searchbox.toLowerCase())) {
+            return film
+        }
+    }).map((film, index) => (
         <Link to={`/films/${film.id}`} className="col-3" key={index}>
             <img src={base64flag + film.movieImage[0].picByte} className='w-100' alt=''/>
             <h3 className='film-title'>{film.title}</h3>
         </Link>
     ))
 
-    const actorFilms = actorFilteredFilms.map((film, index) => (
+    const actorFilms = actorFilteredFilms.filter((film) => {
+        if(searchbox === '') {
+            return film
+        }
+        else if (film.title.toLowerCase().includes(searchbox.toLowerCase())) {
+            return film
+        }
+    }).map((film, index) => (
         <Link to={`/films/${film.id}`} className="col-3" key={index}>
             <img src={base64flag + film.movieImage[0].picByte} className='w-100' alt=''/>
             <h3 className='film-title'>{film.title}</h3>
         </Link>
     ))
 
-    const directorFilms = directorFilteredFilms.map((film, index) => (
+    const directorFilms = directorFilteredFilms.filter((film) => {
+        if(searchbox === '') {
+            return film
+        }
+        else if (film.title.toLowerCase().includes(searchbox.toLowerCase())) {
+            return film
+        }
+    }).map((film, index) => (
         <Link to={`/films/${film.id}`} className="col-3" key={index}>
             <img src={base64flag + film.movieImage[0].picByte} className='w-100' alt=''/>
             <h3 className='film-title'>{film.title}</h3>
