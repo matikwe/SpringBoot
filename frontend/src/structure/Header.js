@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import BrandStar from '.././assets/utils/Star 1.svg'
 import SearchIcon from '.././assets/utils/search.svg'
 import {Container, Dropdown, Form, Navbar} from "react-bootstrap";
-import {Link, useLocation} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {ACTORS_PATH, CATEGORIES_PATH, DIRECTORS_PATH, MAIN_PATH, PROFILE_PATH, RESERVATIONS_PATH} from "../utils/paths";
 import LoginRegisterModal from "../components/LoginRegisterModal";
 import AccountImg from "../assets/utils/account.svg"
@@ -11,6 +11,7 @@ import AccountImg from "../assets/utils/account.svg"
 const Header = ({setUser, searchbox, onSearchBoxChange}) => {
 
     const user = JSON.parse(window.localStorage.getItem('USER'))
+    const navigate = useNavigate();
 
     return (
         <Navbar variant='dark' expand="lg" className='header'>
@@ -39,6 +40,7 @@ const Header = ({setUser, searchbox, onSearchBoxChange}) => {
                             <hr/>
                             <button className='w-100 dropdown-item' onClick={() => {
                                 window.localStorage.removeItem('USER')
+                                navigate(MAIN_PATH)
                                 setUser({})
                             }}>Wyloguj</button>
                         </Dropdown.Menu>

@@ -111,7 +111,7 @@ const LoginRegisterModal = ({setUser}) => {
                             <input placeholder='Nazwisko' type="text" value={surname} onChange={(e) => setSurname(e.target.value)}/>
                         </div>
                         <div className="row pt-4 px-4">
-                            <input placeholder='E-mail' type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                            <input placeholder='E-mail' type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
                         </div>
                         <div className="row pt-4 px-4">
                             <input placeholder='Login' type="text" value={registerLogin} onChange={(e) => setRegisterLogin(e.target.value)}/>
