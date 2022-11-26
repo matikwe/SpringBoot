@@ -1,5 +1,8 @@
 package com.example.SpringBoot.user;
 
+import com.example.SpringBoot.utils.OldPassword;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,20 +32,18 @@ public class UserController {
     }
 
     @DeleteMapping(path = "{userId}")
-    public void deleteUser(
-            @PathVariable("userId") Long id) {
-        userService.deleteUser(id);
+    public User deleteUser(
+            @PathVariable("userId") Long id,
+            @RequestBody OldPassword oldPassword) {
+        return userService.deleteUser(id, oldPassword);
     }
 
     @PutMapping(path = "{userId}")
-    public void updateUser(
+    public User updateUser(
             @PathVariable("userId") Long id,
-            @RequestParam(required = false) String login,
-            @RequestParam(required = false) String password,
-            @RequestParam(required = false) String email,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String surname) {
-        userService.updateUser(id, login, password, email, name, surname);
+            @RequestBody User user,
+            @RequestParam String oldPassword) {
+        return userService.updateUser(id, user, oldPassword);
     }
 
     @PostMapping(path = "login")
