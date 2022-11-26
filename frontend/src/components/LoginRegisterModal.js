@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Container, Modal} from "react-bootstrap";
 import {postLogin, postRegister} from "../api/api";
+import {USER} from "../utils/utils";
 
 
 const LoginRegisterModal = ({setUser}) => {
@@ -40,7 +41,7 @@ const LoginRegisterModal = ({setUser}) => {
         e.preventDefault()
         postLogin(loginLogin, loginPassword).then(user => {
             if (user.id ) {
-                window.localStorage.setItem('USER', JSON.stringify(user))
+                window.localStorage.setItem(USER, JSON.stringify(user))
                 setUser(user)
                 handleLoginClose()
             } else {
@@ -54,7 +55,7 @@ const LoginRegisterModal = ({setUser}) => {
         if(registerPassword === confirmPassword) {
             postRegister(registerLogin, registerPassword, email, name, surname).then(user => {
                 if (user.id ) {
-                    window.localStorage.setItem('USER', JSON.stringify(user))
+                    window.localStorage.setItem(USER, JSON.stringify(user))
                     setUser(user)
                     handleRegisterClose()
                 } else {

@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation, useNavigate} from "react-router-dom";
 import {MAIN_PATH} from "../../utils/paths";
+import {USER} from "../../utils/utils";
 
 
 const ProfileSite = () => {
 
-    const user = JSON.parse(window.localStorage.getItem('USER'))
+    const user = JSON.parse(window.localStorage.getItem(USER))
 
     const location = useLocation();
 

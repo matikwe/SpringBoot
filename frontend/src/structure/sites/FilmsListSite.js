@@ -2,7 +2,8 @@ import React, {useContext, useEffect} from 'react';
 import {ApplicationContext} from "../../context/ApplicationContext";
 import LoadingSpinner from "../../utils/spinner";
 import {Link, useLocation} from "react-router-dom";
-import {forEach} from "react-bootstrap/ElementChildren";
+import {ADMIN, USER} from "../../utils/utils";
+import AdminFilmsPanel from "../../components/AdminFilmsPanel";
 
 const FilmsListSite = ({searchbox, setSearchbox}) => {
 
@@ -17,6 +18,9 @@ const FilmsListSite = ({searchbox, setSearchbox}) => {
     const categoryURLParam = new URLSearchParams(location.search).get('catid')
     const actorURLParam = new URLSearchParams(location.search).get('actid')
     const directorURLParam = new URLSearchParams(location.search).get('dirid')
+    const user = JSON.parse(window.localStorage.getItem(USER))
+
+
 
     const categoryFilteredFilms = applicationContext.films.map((film, index) => {
         return film
@@ -29,6 +33,8 @@ const FilmsListSite = ({searchbox, setSearchbox}) => {
     const directorFilteredFilms = applicationContext.films.map((film, index) => {
         return film
     }).filter((director) => director.id === Number(directorURLParam))
+
+
 
     const films = applicationContext.films.filter((film) => {
         if(searchbox === '') {
@@ -88,8 +94,6 @@ const FilmsListSite = ({searchbox, setSearchbox}) => {
 
 
 
-
-
     return (
         <div className='films-container'>
             <h1>
@@ -99,10 +103,16 @@ const FilmsListSite = ({searchbox, setSearchbox}) => {
                 {applicationContext.isLoading && (
                     <LoadingSpinner />
                 )}
-                {!applicationContext.isLoading && !categoryURLParam && !actorURLParam && !directorURLParam && films}
-                {!applicationContext.isLoading && !categoryURLParam && !directorURLParam && actorFilteredFilms && actorFilms}
-                {!applicationContext.isLoading && !categoryURLParam && !actorURLParam && directorFilteredFilms && directorFilms}
-                {!applicationContext.isLoading && !actorURLParam && !directorURLParam && categoryFilteredFilms && categoryFilms}
+
+                {
+                    user && user.role === ADMIN && <AdminFilmsPanel films={films}/>
+                }
+
+                {(user === null || user.role === USER) && !applicationContext.isLoading && !categoryURLParam && !actorURLParam && !directorURLParam && films}
+                {(user === null || user.role === USER) && !applicationContext.isLoading && !categoryURLParam && !directorURLParam && actorFilteredFilms && actorFilms}
+                {(user === null || user.role === USER) && !applicationContext.isLoading && !categoryURLParam && !actorURLParam && directorFilteredFilms && directorFilms}
+                {(user === null || user.role === USER) && !applicationContext.isLoading && !actorURLParam && !directorURLParam && categoryFilteredFilms && categoryFilms}
+
             </div>
         </div>
     );

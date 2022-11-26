@@ -6,11 +6,12 @@ import {Link, useLocation, useNavigate} from "react-router-dom";
 import {ACTORS_PATH, CATEGORIES_PATH, DIRECTORS_PATH, MAIN_PATH, PROFILE_PATH, RESERVATIONS_PATH} from "../utils/paths";
 import LoginRegisterModal from "../components/LoginRegisterModal";
 import AccountImg from "../assets/utils/account.svg"
+import {USER} from "../utils/utils";
 
 
 const Header = ({setUser, searchbox, onSearchBoxChange}) => {
 
-    const user = JSON.parse(window.localStorage.getItem('USER'))
+    const user = JSON.parse(window.localStorage.getItem(USER))
     const navigate = useNavigate();
 
     return (
@@ -39,7 +40,7 @@ const Header = ({setUser, searchbox, onSearchBoxChange}) => {
                             <Link to={RESERVATIONS_PATH} className='w-100 dropdown-item'>Rezerwacje (0)</Link>
                             <hr/>
                             <button className='w-100 dropdown-item' onClick={() => {
-                                window.localStorage.removeItem('USER')
+                                window.localStorage.removeItem(USER)
                                 navigate(MAIN_PATH)
                                 setUser({})
                             }}>Wyloguj</button>

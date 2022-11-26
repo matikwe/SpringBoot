@@ -4,6 +4,9 @@ import {Link, useLocation} from "react-router-dom";
 import {ApplicationContext} from "../../context/ApplicationContext";
 import {FILMS_PATH} from "../../utils/paths";
 import LoadingSpinner from "../../utils/spinner";
+import {ADMIN, USER} from "../../utils/utils";
+import AdminDirectorsPanel from "../../components/AdminDirectorsPanel";
+import AdminCategoriesPanel from "../../components/AdminCategoriesPanel";
 
 const CategoriesSite = ({searchbox, setSearchbox}) => {
 
@@ -14,6 +17,8 @@ const CategoriesSite = ({searchbox, setSearchbox}) => {
     }, [location])
 
     const applicationContext = useContext(ApplicationContext)
+
+    const user = JSON.parse(window.localStorage.getItem(USER))
 
     const categories = applicationContext.categories.filter((category) => {
         if(searchbox === '') {
@@ -42,7 +47,10 @@ const CategoriesSite = ({searchbox, setSearchbox}) => {
                 )}
                 {!applicationContext.isLoading && (
                     <>
-                        {categories}
+                        {
+                            user && user.role === ADMIN && <AdminCategoriesPanel categories={categories}/>
+                        }
+                        {(!user || user.role === USER) && categories}
                     </>
                 )}
             </div>

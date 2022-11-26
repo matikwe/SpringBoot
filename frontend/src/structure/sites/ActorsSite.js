@@ -3,7 +3,9 @@ import {Link, useLocation} from "react-router-dom";
 import {ApplicationContext} from "../../context/ApplicationContext";
 import {FILMS_PATH} from "../../utils/paths";
 import LoadingSpinner from "../../utils/spinner";
-import {base64flag} from "../../utils/utils";
+import {ADMIN, base64flag, USER} from "../../utils/utils";
+import AdminDirectorsPanel from "../../components/AdminDirectorsPanel";
+import AdminActorsPanel from "../../components/AdminActorsPanel";
 
 const ActorsSite = ({searchbox, setSearchbox}) => {
 
@@ -14,6 +16,8 @@ const ActorsSite = ({searchbox, setSearchbox}) => {
     }, [location])
 
     const applicationContext = useContext(ApplicationContext)
+
+    const user = JSON.parse(window.localStorage.getItem(USER))
 
     const actors = applicationContext.actors.filter((actor) => {
         if(searchbox === '') {
@@ -43,7 +47,10 @@ const ActorsSite = ({searchbox, setSearchbox}) => {
                 )}
                 {!applicationContext.isLoading && (
                     <>
-                        {actors}
+                        {
+                            user && user.role === ADMIN && <AdminActorsPanel actors={actors}/>
+                        }
+                        {(!user || user.role === USER) && actors}
                     </>
                 )}
             </div>
