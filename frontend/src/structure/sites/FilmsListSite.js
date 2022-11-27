@@ -96,16 +96,24 @@ const FilmsListSite = ({searchbox, setSearchbox}) => {
 
     return (
         <div className='films-container'>
-            <h1>
-                Filmy
-            </h1>
+            {(user === null || user.role === USER) && <h1>Filmy</h1>}
+            {user && user.role === ADMIN && (
+                <div className="row mb-0">
+                    <div className="col-10">
+                        <h1>Filmy</h1>
+                    </div>
+                    <div className="col-2  justify-content-end align-content-end">
+                        <button className='btn btn-success w-100 mt-2 py-2 px-3'>Dodaj</button>
+                    </div>
+                </div>
+            )}
             <div className="row">
                 {applicationContext.isLoading && (
                     <LoadingSpinner />
                 )}
 
                 {
-                    user && user.role === ADMIN && <AdminFilmsPanel films={films}/>
+                    user && user.role === ADMIN && <AdminFilmsPanel films={applicationContext.films}/>
                 }
 
                 {(user === null || user.role === USER) && !applicationContext.isLoading && !categoryURLParam && !actorURLParam && !directorURLParam && films}

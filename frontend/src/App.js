@@ -38,7 +38,7 @@ const App = () => {
         () => {
             getFilms()
                 .then((films) => {
-                    if (films[0].id) {
+                    if (films) {
                         setFilms(films);
                         window.localStorage.setItem('FILMS_STATE', JSON.stringify(films))
                     } else {
@@ -48,7 +48,7 @@ const App = () => {
                 });
             getCategories()
                 .then((categories) => {
-                    if (categories[0].id) {
+                    if (films) {
                         setCategories(categories);
                     } else {
                         setLoading(false)
@@ -57,7 +57,7 @@ const App = () => {
                 });
             getActors()
                 .then((actors) => {
-                    if (actors[0].id) {
+                    if (films) {
                         setActors(actors);
                     } else {
                         setLoading(false)

@@ -4,7 +4,7 @@ import {Link, useLocation} from "react-router-dom";
 import {ApplicationContext} from "../../context/ApplicationContext";
 import {FILMS_PATH} from "../../utils/paths";
 import LoadingSpinner from "../../utils/spinner";
-import {ADMIN, USER} from "../../utils/utils";
+import {ADMIN, base64flag, USER} from "../../utils/utils";
 import AdminDirectorsPanel from "../../components/AdminDirectorsPanel";
 import AdminCategoriesPanel from "../../components/AdminCategoriesPanel";
 
@@ -30,7 +30,7 @@ const CategoriesSite = ({searchbox, setSearchbox}) => {
     }).map((category, index) => (
         <div key={index} className="col-4">
             <Link to={`${FILMS_PATH}?catid=${category.id}`} className='categories-link'>
-                <img src={Category1} alt=""/>
+                <img src={base64flag + category.categoryImage[0].picByte} alt="" className="w-100"/>
                 <h1>{category.category}</h1>
             </Link>
         </div>
@@ -38,9 +38,17 @@ const CategoriesSite = ({searchbox, setSearchbox}) => {
 
     return (
         <div className='categories-container'>
-            <h1>
-                Kategorie
-            </h1>
+            {(user === null || user.role === USER) && <h1>Kategorie</h1>}
+            {user && user.role === ADMIN && (
+                <div className="row mb-0">
+                    <div className="col-10">
+                        <h1>Kategorie</h1>
+                    </div>
+                    <div className="col-2  justify-content-end align-content-end">
+                        <button className='btn btn-success w-100 mt-2 py-2 px-3'>Dodaj</button>
+                    </div>
+                </div>
+            )}
             <div className="row">
                 {applicationContext.isLoading && (
                     <LoadingSpinner />

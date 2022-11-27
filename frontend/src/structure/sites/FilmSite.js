@@ -1,12 +1,14 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import ArrowLeft from '../../assets/utils/arrow-left.svg'
 import {base64flag} from "../../utils/utils";
+import {ApplicationContext} from "../../context/ApplicationContext";
 
 const FilmSite = () => {
 
     const navigate = useNavigate();
-    const films = JSON.parse(window.localStorage.getItem('FILMS_STATE'))
+    const applicationContext = useContext(ApplicationContext)
+    const films = JSON.parse(window.localStorage.getItem('FILMS_STATE')) || applicationContext.films
     const filmID = useParams().id
     const film = films.find(film => {
         return film.id === Number(filmID)
