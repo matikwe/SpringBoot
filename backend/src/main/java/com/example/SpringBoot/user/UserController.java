@@ -2,6 +2,7 @@ package com.example.SpringBoot.user;
 
 import com.example.SpringBoot.utils.OldPassword;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class UserController {
     }
 
     @DeleteMapping(path = "{userId}")
-    public User deleteUser(
+    public ResponseEntity deleteUser(
             @PathVariable("userId") Long id,
             @RequestBody OldPassword oldPassword) {
         return userService.deleteUser(id, oldPassword);

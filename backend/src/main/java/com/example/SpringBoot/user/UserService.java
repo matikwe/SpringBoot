@@ -5,6 +5,8 @@ import com.example.SpringBoot.salt.SaltRepository;
 import com.example.SpringBoot.utils.OldPassword;
 import com.example.SpringBoot.utils.PasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -45,7 +47,7 @@ public class UserService {
         return user;
     }
 
-    public User deleteUser(Long userId, OldPassword oldPassword) {
+    public ResponseEntity deleteUser(Long userId, OldPassword oldPassword) {
         User userRepo = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalStateException(
                         "user with id: " + userId + " does not exist!"
@@ -56,8 +58,7 @@ public class UserService {
         } else {
             throw new IllegalStateException("The entered passwords are different.");
         }
-
-        return null;
+        return new ResponseEntity("Account deleted successfully.", HttpStatus.OK);
     }
 
     @Transactional
