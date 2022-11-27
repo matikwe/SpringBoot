@@ -4,7 +4,7 @@ import {
     Route, useLocation
 } from "react-router-dom";
 import {
-    ACTORS_PATH,
+    ACTORS_PATH, ADMIN_USERS_PATH,
     CATEGORIES_PATH,
     DIRECTORS_PATH,
     FILM_PATH,
@@ -23,6 +23,7 @@ import {getActors, getCategories, getDirectors, getFilms} from "./api/api";
 import FilmSite from "./structure/sites/FilmSite";
 import ProfileSite from "./structure/sites/ProfileSite";
 import ReservationsSite from "./structure/sites/ReservationsSite";
+import AdminUsersPanel from "./components/AdminUsersPanel";
 
 const App = () => {
 
@@ -109,6 +110,7 @@ const App = () => {
                           <Route path={DIRECTORS_PATH} element={<DirectorsSite searchbox={searchbox} setSearchbox={setSearchbox}/>}/>
                           <Route path={PROFILE_PATH} element={<ProfileSite/>}/>
                           <Route path={RESERVATIONS_PATH} element={<ReservationsSite/>}/>
+                          <Route path={ADMIN_USERS_PATH} element={<AdminUsersPanel/>}/>
                       </Switch>
 
               </div>

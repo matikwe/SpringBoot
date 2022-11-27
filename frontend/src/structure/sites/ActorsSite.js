@@ -41,11 +41,11 @@ const ActorsSite = ({searchbox, setSearchbox}) => {
             {(user === null || user.role === USER) && <h1>Aktorzy</h1>}
             {user && user.role === ADMIN && (
                 <div className="row mb-0">
-                    <div className="col-10">
+                    <div className="col-2">
                         <h1>Aktorzy</h1>
                     </div>
-                    <div className="col-2  justify-content-end align-content-end">
-                        <button className='btn btn-success w-100 mt-2 py-2 px-3'>Dodaj</button>
+                    <div className="col-10  justify-content-end align-content-end">
+                        <button className='btn btn-success mx-5 mt-2 py-2 px-4'>Dodaj</button>
                     </div>
                 </div>
             )}
@@ -56,7 +56,7 @@ const ActorsSite = ({searchbox, setSearchbox}) => {
                 {!applicationContext.isLoading && (
                     <>
                         {
-                            user && user.role === ADMIN && <AdminActorsPanel actors={actors}/>
+                            user && user.role === ADMIN && <AdminActorsPanel actors={applicationContext.actors}/>
                         }
                         {(!user || user.role === USER) && actors}
                     </>

@@ -1,18 +1,15 @@
 const baseUrl = 'http://127.0.0.1:8080/api/v1';
 
 export const getFilms = () => {
-    return fetch(baseUrl + '/movie')
-        .then(response => response.json());
+    return fetch(baseUrl + '/movie').then(response => response.json());
 };
 
 export const getCategories = () => {
-    return fetch(baseUrl + '/category')
-        .then(response => response.json());
+    return fetch(baseUrl + '/category').then(response => response.json());
 };
 
 export const getActors = () => {
-    return fetch(baseUrl + '/actor')
-        .then(response => response.json());
+    return fetch(baseUrl + '/actor').then(response => response.json());
 };
 
 export const getDirectors = () => {
@@ -46,4 +43,8 @@ export const postRegister = (login, password, email, name, surname) => {
             'Content-Type': 'application/json'
         }
     }).then(response => response.json())
+}
+
+export const getUsers = () => {
+    return fetch(baseUrl + '/user').then(response => response.json());
 }

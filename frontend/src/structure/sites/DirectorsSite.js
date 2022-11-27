@@ -41,11 +41,11 @@ const DirectorsSite = ({searchbox, setSearchbox}) => {
             {(user === null || user.role === USER) && <h1>Reżyserzy</h1>}
             {user && user.role === ADMIN && (
                 <div className="row mb-0">
-                    <div className="col-10">
+                    <div className="col-2">
                         <h1>Reżyserzy</h1>
                     </div>
-                    <div className="col-2  justify-content-end align-content-end">
-                        <button className='btn btn-success w-100 mt-2 py-2 px-3'>Dodaj</button>
+                    <div className="col-10  justify-content-end align-content-end">
+                        <button className='btn btn-success mx-5 mt-2 py-2 px-4'>Dodaj</button>
                     </div>
                 </div>
             )}
@@ -56,7 +56,7 @@ const DirectorsSite = ({searchbox, setSearchbox}) => {
                 {!applicationContext.isLoading && (
                     <>
                         {
-                            user && user.role === ADMIN && <AdminDirectorsPanel directors={directors}/>
+                            user && user.role === ADMIN && <AdminDirectorsPanel directors={applicationContext.directors}/>
                         }
                         {(!user || user.role === USER) && directors}
                     </>
