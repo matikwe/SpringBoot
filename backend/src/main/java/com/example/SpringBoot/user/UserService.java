@@ -4,10 +4,9 @@ import com.example.SpringBoot.salt.Salt;
 import com.example.SpringBoot.salt.SaltRepository;
 import com.example.SpringBoot.utils.OldPassword;
 import com.example.SpringBoot.utils.PasswordUtils;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -48,7 +47,7 @@ public class UserService {
         return user;
     }
 
-    public User deleteUser(Long userId, OldPassword oldPassword) {
+    public ResponseEntity deleteUser(Long userId, OldPassword oldPassword) {
         User userRepo = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalStateException(
                         "user with id: " + userId + " does not exist!"
@@ -59,8 +58,7 @@ public class UserService {
         } else {
             throw new IllegalStateException("The entered passwords are different.");
         }
-
-        return null;
+        return new ResponseEntity("Account deleted successfully.", HttpStatus.OK);
     }
 
     @Transactional
@@ -125,7 +123,7 @@ public class UserService {
     }
 
     @Transactional
-    public void changeRole(Long userIdToChange, Long currentUserId, String role) {
+    public User changeRole(Long userIdToChange, Long currentUserId, String role) {
         User currentUser = userRepository.findById(currentUserId)
                 .orElseThrow(() -> new IllegalStateException(
                         "user with id: " + currentUserId + " does not exist!"
@@ -149,7 +147,7 @@ public class UserService {
         } else {
             throw new IllegalStateException("user with id: " + currentUserId + " cannot modify role !");
         }
-
+        return userToChangeRole;
     }
 
     private String generateSecurePassword(String password, Long salt_id) {
