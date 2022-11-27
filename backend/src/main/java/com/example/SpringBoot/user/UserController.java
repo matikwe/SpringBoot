@@ -1,8 +1,6 @@
 package com.example.SpringBoot.user;
 
 import com.example.SpringBoot.utils.OldPassword;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,7 +51,7 @@ public class UserController {
     }
 
     @PutMapping(path = "changeRole/{userIdToChange}")
-    public void changeRole(@PathVariable("userIdToChange") Long userIdToChange, @RequestParam Long currentUserId, @RequestParam String role) {
-        userService.changeRole(userIdToChange, currentUserId, role);
+    public User changeRole(@PathVariable("userIdToChange") Long userIdToChange, @RequestParam Long currentUserId, @RequestParam String role) {
+        return userService.changeRole(userIdToChange, currentUserId, role);
     }
 }
