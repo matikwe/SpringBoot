@@ -1,14 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation, useNavigate} from "react-router-dom";
-import {MAIN_PATH} from "../../utils/paths";
 import {USER} from "../../utils/utils";
+import {changePassword, deleteAccount} from "../../api/api";
+import {MAIN_PATH} from "../../utils/paths";
 
 
-const ProfileSite = () => {
+const ProfileSite = ({setUser}) => {
 
     const user = JSON.parse(window.localStorage.getItem(USER))
 
     const location = useLocation();
+    const navigate = useNavigate();
 
     const [passwordChangeOldPassword, setPasswordChangeOldPassword] = useState('')
     const [passwordChangeNewPassword, setPasswordChangeNewPassword] = useState('')
@@ -28,7 +30,15 @@ const ProfileSite = () => {
     const handlePasswordChangeSubmit = (e) => {
         e.preventDefault()
         if (passwordChangeNewPassword === passwordChangeConfirmNewPassword) {
-            console.log('Zmien haslo')
+            changePassword(passwordChangeOldPassword, passwordChangeNewPassword, user).then(user => {
+                if (user.status === 500) {
+                    alert('Proszę wprowadzić obecne hasło!')
+                } else {
+                    setUser(user)
+                    window.localStorage.setItem('USER', JSON.stringify(user))
+                    alert('Hasło zostało zmienione!')
+                }
+            })
             setPasswordChangeOldPassword('')
             setPasswordChangeNewPassword('')
             setPasswordChangeConfirmNewPassword('')
@@ -40,7 +50,16 @@ const ProfileSite = () => {
     const handleDeleteAccountSubmit = (e) => {
         e.preventDefault()
         if (accountDeletePassword === accountDeleteConfirmPassword){
-            console.log('Usuniecie konta')
+            deleteAccount(accountDeletePassword, user).then(user => {
+                console.log(user)
+                if (user.status === 500) {
+                    alert('Proszę wprowadzić obecne hasło!')
+                } else {
+                    window.localStorage.removeItem(USER)
+                    navigate(MAIN_PATH)
+                    setUser({})
+                }
+            })
             setAccountDeletePassword('')
             setAccountDeleteConfirmPassword('')
         } else {

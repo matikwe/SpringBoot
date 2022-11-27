@@ -1,9 +1,9 @@
 Logowanie:
-- dodać walidację formularzy
+- ~~dodać walidację formularzy~~
 - ~~dodać error message przy nieprawidłowym logowaniu~~
 
 Rejestracja:
-- dodać walidację formularzy
+- ~~dodać walidację formularzy~~
 - ~~dodać error message przy nieprawidłej rejestracji~~
 
 Strona listy filmów:
@@ -34,8 +34,8 @@ Strona szczegółów filmu:
 - dodać przycisk rezerwuj
 
 Strona szczegółów profilu użytkownika:
-- dodać panel prawy ze szczegółami użytkownika
-- dodać panele lewe z formularzami zmiany hasła oraz usuwania konta
+- ~~dodać panel prawy ze szczegółami użytkownika~~
+- ~~dodać panele lewe z formularzami zmiany hasła oraz usuwania konta~~
 
 Strona rezerwacji użytkownika:
 - stworzyć design tabeli z rezerwacjami

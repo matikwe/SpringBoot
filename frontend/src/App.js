@@ -108,7 +108,7 @@ const App = () => {
                           <Route path={CATEGORIES_PATH} element={<CategoriesSite searchbox={searchbox} setSearchbox={setSearchbox}/>}/>
                           <Route path={ACTORS_PATH} element={<ActorsSite searchbox={searchbox} setSearchbox={setSearchbox}/>}/>
                           <Route path={DIRECTORS_PATH} element={<DirectorsSite searchbox={searchbox} setSearchbox={setSearchbox}/>}/>
-                          <Route path={PROFILE_PATH} element={<ProfileSite/>}/>
+                          <Route path={PROFILE_PATH} element={<ProfileSite setUser={setUser}/>}/>
                           <Route path={RESERVATIONS_PATH} element={<ReservationsSite/>}/>
                           <Route path={ADMIN_USERS_PATH} element={<AdminUsersPanel/>}/>
                       </Switch>

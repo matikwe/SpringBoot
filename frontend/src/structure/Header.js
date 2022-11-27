@@ -46,8 +46,13 @@ const Header = ({setUser, searchbox, onSearchBoxChange}) => {
                         <Dropdown.Menu>
                             <Link to={PROFILE_PATH} className='w-100 dropdown-item'>Moje konto</Link>
                             <hr/>
-                            <Link to={RESERVATIONS_PATH} className='w-100 dropdown-item'>Rezerwacje (0)</Link>
-                            <hr/>
+                            {user.role === USER && (
+                                <>
+                                    <Link to={RESERVATIONS_PATH} className='w-100 dropdown-item'>Rezerwacje (0)</Link>
+                                    <hr/>
+                                </>
+
+                            )}
                             <button className='w-100 dropdown-item' onClick={() => {
                                 window.localStorage.removeItem(USER)
                                 navigate(MAIN_PATH)

@@ -45,6 +45,34 @@ export const postRegister = (login, password, email, name, surname) => {
     }).then(response => response.json())
 }
 
+export const changePassword = (oldPassword, newPassword, user) => {
+    return fetch(baseUrl + `/user/${user.id}?oldPassword=` + oldPassword, {
+        method: 'PUT',
+        body: JSON.stringify({
+            login: user.login,
+            password: newPassword,
+            email: user.email,
+            name: user.name,
+            surname: user.surname
+        }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => response.json())
+}
+
+export const deleteAccount = (oldPassword, user) => {
+    return fetch(baseUrl + `/user/${user.id}`, {
+        method: 'DELETE',
+        body: JSON.stringify({
+            oldPassword: oldPassword,
+        }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => response.json() || null)
+}
+
 export const getUsers = () => {
     return fetch(baseUrl + '/user').then(response => response.json());
 }
