@@ -34,7 +34,7 @@ public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
-
+/*
     @Bean
     CommandLineRunner commandLineRunner(UserRepository userRepository, DirectorRepository directorRepository,
                                         MovieRepository movieRepository, SaltRepository saltRepository, CategoryRepository categoryRepository,
@@ -152,4 +152,5 @@ public class Application {
         File fi = new File(name);
         return Files.readAllBytes(fi.toPath());
     }
+*/
 }

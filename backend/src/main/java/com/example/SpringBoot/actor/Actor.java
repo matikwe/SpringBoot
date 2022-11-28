@@ -5,7 +5,6 @@ import com.example.SpringBoot.utils.ImageModel;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity(name = "Actor")
 @Table(

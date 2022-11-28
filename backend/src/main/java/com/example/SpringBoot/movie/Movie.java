@@ -9,7 +9,6 @@ import com.example.SpringBoot.utils.ImageModel;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity(name = "Movie")
 @Table(

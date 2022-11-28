@@ -5,8 +5,6 @@ import com.example.SpringBoot.order.Order;
 import com.example.SpringBoot.user.User;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity(name = "Reservation")
