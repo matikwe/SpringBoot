@@ -17,9 +17,10 @@ import AccountImg from "../assets/utils/account.svg"
 import {ADMIN, USER} from "../utils/utils";
 
 
-const Header = ({setUser, searchbox, onSearchBoxChange}) => {
+const Header = ({setUser, searchbox, onSearchBoxChange, showLogin, setLoginShow}) => {
 
     const user = JSON.parse(window.localStorage.getItem(USER))
+    const reservations = JSON.parse(window.localStorage.getItem('RESERVATIONS_STATE'))
     const navigate = useNavigate();
 
     return (
@@ -35,7 +36,7 @@ const Header = ({setUser, searchbox, onSearchBoxChange}) => {
                 <Link to={ACTORS_PATH} className='link-light text-decoration-none'>Aktorzy</Link>
                 <Link to={DIRECTORS_PATH} className='link-light text-decoration-none'>Reżyserzy</Link>
                 {user && user.role === ADMIN && <Link to={ADMIN_USERS_PATH} className='link-light text-decoration-none'>Użytkownicy</Link>}
-                {!user ? <LoginRegisterModal setUser={setUser}/> : (
+                {!user ? <LoginRegisterModal setUser={setUser} showLogin={showLogin} setLoginShow={setLoginShow}/> : (
                     <Dropdown className='logged-dropdown'>
                         <div className="toggle-button">
                             <Dropdown.Toggle>
@@ -48,7 +49,7 @@ const Header = ({setUser, searchbox, onSearchBoxChange}) => {
                             <hr/>
                             {user.role === USER && (
                                 <>
-                                    <Link to={RESERVATIONS_PATH} className='w-100 dropdown-item'>Rezerwacje (0)</Link>
+                                    <Link to={RESERVATIONS_PATH} className='w-100 dropdown-item'>Rezerwacje ({reservations ? reservations.length : '0'})</Link>
                                     <hr/>
                                 </>
 

@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Table} from "react-bootstrap";
 import {getUsers} from "../api/api";
-import {base64flag} from "../utils/utils";
 
 const AdminUsersPanel = () => {
 

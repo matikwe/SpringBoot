@@ -1,19 +1,33 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import ArrowLeft from '../../assets/utils/arrow-left.svg'
-import {base64flag} from "../../utils/utils";
+import {ADMIN, base64flag, changeFormatToDDMMYYYY, USER} from "../../utils/utils";
 import {ApplicationContext} from "../../context/ApplicationContext";
+import {MAIN_PATH} from "../../utils/paths";
+import DatePicker from 'react-date-picker';
+import {getUserReservations, postReservation} from "../../api/api";
 
-const FilmSite = () => {
+
+
+const FilmSite = ({setLoginShow}) => {
 
     const navigate = useNavigate();
     const applicationContext = useContext(ApplicationContext)
     const films = JSON.parse(window.localStorage.getItem('FILMS_STATE')) || applicationContext.films
+    const user = JSON.parse(window.localStorage.getItem('USER'))
     const filmID = useParams().id
     const film = films.find(film => {
         return film.id === Number(filmID)
     })
 
+    const [date, setDate] = useState(new Date())
+
+    useEffect(() => {
+        if (user && user.role === ADMIN) {
+            navigate(MAIN_PATH)
+            alert('Administrator nie może dokonywać rezerwacji!')
+        }
+    })
 
     const actors = film.actor.map((actor, index) => {
         if (film.actor[film.actor.length - 1].id === actor.id) {
@@ -31,6 +45,28 @@ const FilmSite = () => {
         }
     })
 
+    const handleReserve = () => {
+        if (!date) {
+            alert('Należy podać datę rezerwacji')
+        } else {
+            if (user && user.role === USER) {
+                const formatedDate = changeFormatToDDMMYYYY(date)
+                postReservation(film, user, formatedDate).then(response => {
+                    if (!response.status === 500) {
+                        getUserReservations(user).then(reservations => {
+                            console.log(reservations)
+                            window.localStorage.setItem('RESERVATIONS_STATE', JSON.stringify(reservations))
+                        })
+                    } else {
+                        alert('Nie możesz zarezerwować jednego filmu dwa razy!')
+                    }
+                })
+            } else if (!user) {
+                setLoginShow(true)
+            }
+        }
+    }
+
     return (
         <div className='film-container'>
             <div className="row title-row">
@@ -44,7 +80,8 @@ const FilmSite = () => {
             <div className="row">
                 <div className="col-6 film-description-image">
                     <img src={base64flag + film.movieImage[0].picByte} alt=""/>
-                    <div className="reserve-button">
+                    <DatePicker onChange={setDate} value={date} minDate={new Date()} format='dd/MM/y' className='reservation-date-picker'/>
+                    <div className="reserve-button" onClick={handleReserve}>
                         <h1>Rezerwuj</h1>
                     </div>
                 </div>

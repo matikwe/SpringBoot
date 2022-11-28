@@ -51,10 +51,10 @@ const ProfileSite = ({setUser}) => {
         e.preventDefault()
         if (accountDeletePassword === accountDeleteConfirmPassword){
             deleteAccount(accountDeletePassword, user).then(user => {
-                console.log(user)
                 if (user.status === 500) {
                     alert('Proszę wprowadzić obecne hasło!')
                 } else {
+                    console.log(user)
                     window.localStorage.removeItem(USER)
                     navigate(MAIN_PATH)
                     setUser({})

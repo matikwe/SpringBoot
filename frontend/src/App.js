@@ -1,7 +1,7 @@
 import {
     BrowserRouter as Router,
     Routes as Switch,
-    Route, useLocation
+    Route
 } from "react-router-dom";
 import {
     ACTORS_PATH, ADMIN_USERS_PATH,
@@ -34,14 +34,19 @@ const App = () => {
     const [user, setUser] = useState({});
     const [isLoading, setLoading] = useState(true);
     const [searchbox, setSearchbox] = useState('')
+    const [showLogin, setLoginShow] = useState(false);
 
     useEffect(
         () => {
             getFilms()
                 .then((films) => {
-                    if (films) {
+                    if (films.length > 0) {
                         setFilms(films);
-                        window.localStorage.setItem('FILMS_STATE', JSON.stringify(films))
+                        try {
+                            window.localStorage.setItem('FILMS_STATE', JSON.stringify(films))
+                        } catch (e) {
+                            console.log(e)
+                        }
                     } else {
                         setLoading(false)
                         alert('Error ' + films.status + ': ' + films.message)
@@ -49,7 +54,7 @@ const App = () => {
                 });
             getCategories()
                 .then((categories) => {
-                    if (films) {
+                    if (categories.length > 0) {
                         setCategories(categories);
                     } else {
                         setLoading(false)
@@ -58,7 +63,7 @@ const App = () => {
                 });
             getActors()
                 .then((actors) => {
-                    if (films) {
+                    if (actors.length > 0) {
                         setActors(actors);
                     } else {
                         setLoading(false)
@@ -67,7 +72,7 @@ const App = () => {
                 });
             getDirectors()
                 .then((directors) => {
-                    if (directors[0].id) {
+                    if (directors.length > 0) {
                         setDirectors(directors);
                         setLoading(false)
                     } else {
@@ -99,12 +104,12 @@ const App = () => {
         <ApplicationContext.Provider value={applicationInfo}>
           <Router>
               <div>
-                  <Header user={user} setUser={setUser} searchbox={searchbox} onSearchBoxChange={onSearchboxChange}/>
+                  <Header user={user} setUser={setUser} searchbox={searchbox} onSearchBoxChange={onSearchboxChange} showLogin={showLogin} setLoginShow={setLoginShow}/>
 
                       <Switch>
                           <Route path={MAIN_PATH} element={<FilmsListSite searchbox={searchbox} setSearchbox={setSearchbox}/>}/>
                           <Route path={FILMS_PATH} element={<FilmsListSite searchbox={searchbox} setSearchbox={setSearchbox}/>}/>
-                          <Route path={FILM_PATH} element={<FilmSite/>}/>
+                          <Route path={FILM_PATH} element={<FilmSite setLoginShow={setLoginShow}/>}/>
                           <Route path={CATEGORIES_PATH} element={<CategoriesSite searchbox={searchbox} setSearchbox={setSearchbox}/>}/>
                           <Route path={ACTORS_PATH} element={<ActorsSite searchbox={searchbox} setSearchbox={setSearchbox}/>}/>
                           <Route path={DIRECTORS_PATH} element={<DirectorsSite searchbox={searchbox} setSearchbox={setSearchbox}/>}/>

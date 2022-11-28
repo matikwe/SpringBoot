@@ -70,9 +70,22 @@ export const deleteAccount = (oldPassword, user) => {
         headers: {
             'Content-Type': 'application/json'
         }
-    }).then(response => response.json() || null)
+    }).then(response => response.json())
 }
 
 export const getUsers = () => {
     return fetch(baseUrl + '/user').then(response => response.json());
+}
+
+export const postReservation = (film, user, date) => {
+    return fetch(baseUrl + `/reservation/addReservation?movieId=${film.id}&userId=${user.id}&bookingDate=${date}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => response.json())
+}
+
+export const getUserReservations = (user) => {
+    return fetch(baseUrl + `/reservation/getReservationsForUserId?userId=${user.id}`).then(response => response.json())
 }

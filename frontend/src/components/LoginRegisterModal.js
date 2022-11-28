@@ -4,9 +4,9 @@ import {postLogin, postRegister} from "../api/api";
 import {USER} from "../utils/utils";
 
 
-const LoginRegisterModal = ({setUser}) => {
+const LoginRegisterModal = ({setUser, showLogin, setLoginShow}) => {
 
-    const [showLogin, setLoginShow] = useState(false);
+
     const [showRegister, setRegisterShow] = useState(false);
     const [name, setName] = useState('')
     const [surname, setSurname] = useState('')
