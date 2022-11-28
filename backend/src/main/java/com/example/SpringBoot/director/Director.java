@@ -34,7 +34,6 @@ public class Director {
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Movie> movie;
 
-
     public Director() {
     }
 

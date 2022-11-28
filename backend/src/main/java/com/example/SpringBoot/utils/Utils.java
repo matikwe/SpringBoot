@@ -60,7 +60,7 @@ public class Utils {
         return actorJson;
     }
 
-    public static Category getCategoryJson(String category){
+    public static Category getCategoryJson(String category) {
         Category categoryJson = new Category();
         try {
             ObjectMapper objectMapper = new ObjectMapper();

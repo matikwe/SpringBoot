@@ -1,7 +1,6 @@
 package com.example.SpringBoot.user;
 
 import com.example.SpringBoot.salt.Salt;
-import com.example.SpringBoot.utils.OldPassword;
 
 import javax.persistence.*;
 

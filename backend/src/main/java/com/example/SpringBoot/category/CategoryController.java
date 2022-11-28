@@ -1,6 +1,5 @@
 package com.example.SpringBoot.category;
 
-import com.example.SpringBoot.actor.Actor;
 import com.example.SpringBoot.utils.ImageModel;
 import com.example.SpringBoot.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;

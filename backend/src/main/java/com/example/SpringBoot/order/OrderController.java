@@ -11,19 +11,20 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
+
     @Autowired
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
     }
 
     @GetMapping
-    public List<Order> getOrders(){
+    public List<Order> getOrders() {
         return orderService.getOrders();
     }
 
     @PostMapping("addOrder")
     public void addReservation(
-            @RequestParam("reservationId") Long reservationId){
+            @RequestParam("reservationId") Long reservationId) {
         orderService.addOrder(reservationId);
     }
 }
