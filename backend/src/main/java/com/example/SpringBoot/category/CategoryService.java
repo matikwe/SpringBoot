@@ -23,12 +23,13 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public void addCategory(Category category) {
+    public Category addCategory(Category category) {
         Optional<Category> categoryExist = categoryRepository.checkExistCategory(category.getCategory());
         if (categoryExist.isPresent()) {
             throw new IllegalStateException("Category :" + category.getCategory() + " exist!");
         }
         categoryRepository.save(category);
+        return category;
     }
 
     public ResponseEntity deleteCategory(Long categoryId) {
@@ -41,7 +42,7 @@ public class CategoryService {
     }
 
     @Transactional
-    public void updateCategory(Long categoryId, String category) {
+    public Category updateCategory(Long categoryId, String category) {
         Category categoryObject = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new IllegalStateException(
                         "Category with id: " + categoryId + " doesn't exist!"
@@ -51,5 +52,6 @@ public class CategoryService {
                 !Objects.equals(categoryObject.getCategory(), category)) {
             categoryObject.setCategory(category);
         }
+        return categoryObject;
     }
 }

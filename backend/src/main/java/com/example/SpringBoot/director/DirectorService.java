@@ -23,12 +23,13 @@ public class DirectorService {
         return directorRepository.findAll();
     }
 
-    public void addDirector(Director director) {
+    public Director addDirector(Director director) {
         Optional<Director> directorExist = directorRepository.checkExistsDirector(director.getName(), director.getSurname());
         if (directorExist.isPresent()) {
             throw new IllegalStateException("Director :" + director.getName() + " " + director.getSurname() + " exist!");
         }
         directorRepository.save(director);
+        return director;
     }
 
     public ResponseEntity deleteDirector(Long directorId) {
@@ -41,7 +42,7 @@ public class DirectorService {
     }
 
     @Transactional
-    public void updateDirector(Long directorId, String name, String surname) {
+    public Director updateDirector(Long directorId, String name, String surname) {
         Director director = getDirector(directorId);
         if (name != null && name.length() > 0 &&
                 !Objects.equals(director.getName(), name)) {
@@ -52,6 +53,7 @@ public class DirectorService {
                 !Objects.equals(director.getSurname(), surname)) {
             director.setSurname(surname);
         }
+        return director;
     }
 
     public byte[] getImage(Long directorId) {

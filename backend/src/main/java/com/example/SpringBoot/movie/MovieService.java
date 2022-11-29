@@ -35,13 +35,14 @@ public class MovieService {
         return movieRepository.findAll();
     }
 
-    public void addMovie(Movie movie) {
+    public Movie addMovie(Movie movie) {
         Optional<Movie> movieExist = movieRepository.checkExistMovie(movie.getTitle());
 
         if (movieExist.isPresent()) {
             throw new IllegalStateException("Movie :" + movie.getTitle() + " exist!");
         }
         movieRepository.save(movie);
+        return movie;
     }
 
     public ResponseEntity deleteMovie(Long movieId) {
@@ -55,7 +56,7 @@ public class MovieService {
     }
 
     @Transactional
-    public void updateMovie(Long movieId, Movie movie) {
+    public Movie updateMovie(Long movieId, Movie movie) {
         Movie movieExist = findMovieById(movieId);
 
         if (movie.getTitle() != null && movie.getTitle().length() > 0 &&
@@ -83,6 +84,7 @@ public class MovieService {
         if (movie.getDirector() != null) {
             movieExist.setDirector(movie.getDirector());
         }
+        return movieExist;
     }
 
     @Transactional

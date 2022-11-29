@@ -26,17 +26,18 @@ public class CategoryController {
     }
 
     @PostMapping(path = "addCategory")
-    public void addCategory(
+    public Category addCategory(
             @RequestPart String category,
             @RequestPart("imageFile") MultipartFile[] imageFile) {
+        Category categoryJson = Utils.getCategoryJson(category);
         try {
             List<ImageModel> images = Utils.uploadImage(imageFile);
-            Category categoryJson = Utils.getCategoryJson(category);
             categoryJson.setCategoryImage(images);
-            categoryService.addCategory(categoryJson);
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        return categoryService.addCategory(categoryJson);
     }
 
     @DeleteMapping(path = "{categoryId}")
@@ -46,9 +47,9 @@ public class CategoryController {
     }
 
     @PutMapping(path = "{categoryId}")
-    public void updateCategory(
+    public Category updateCategory(
             @PathVariable("categoryId") Long categoryId,
             @RequestParam String category) {
-        categoryService.updateCategory(categoryId, category);
+        return categoryService.updateCategory(categoryId, category);
     }
 }

@@ -29,17 +29,17 @@ public class ActorController {
     }
 
     @PostMapping(path = "addActor")
-    public void addActor(
+    public Actor addActor(
             @RequestPart("actor") String actor,
             @RequestPart("imageFile") MultipartFile[] imageFile) {
+        Actor actorJson = Utils.getActorJson(actor);
         try {
             List<ImageModel> images = Utils.uploadImage(imageFile);
-            Actor actorJson = Utils.getActorJson(actor);
             actorJson.setActorImage(images);
-            actorService.addActor(actorJson);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        return actorService.addActor(actorJson);
     }
 
     @DeleteMapping(path = "{actorId}")
@@ -49,11 +49,11 @@ public class ActorController {
     }
 
     @PutMapping(path = "{actorId}")
-    public void updateActor(
+    public Actor updateActor(
             @PathVariable("actorId") Long actorId,
             @RequestParam String name,
             @RequestParam String surname) {
-        actorService.updateActor(actorId, name, surname);
+        return actorService.updateActor(actorId, name, surname);
     }
 
     @GetMapping(path = "getImage/{actorId}")

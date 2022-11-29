@@ -23,12 +23,13 @@ public class ActorService {
         return actorRepository.findAll();
     }
 
-    public void addActor(Actor actor) {
+    public Actor addActor(Actor actor) {
         Optional<Actor> actorExist = actorRepository.checkExistActor(actor.getName(), actor.getSurname());
         if (actorExist.isPresent()) {
             throw new IllegalStateException("Actor :" + actor.getName() + " " + actor.getSurname() + " exist!");
         }
         actorRepository.save(actor);
+        return actor;
     }
 
     public ResponseEntity deleteActor(Long actorId) {
@@ -41,7 +42,7 @@ public class ActorService {
     }
 
     @Transactional
-    public void updateActor(Long actorId, String name, String surname) {
+    public Actor updateActor(Long actorId, String name, String surname) {
         Actor actor = getActor(actorId);
 
         if (name != null && name.length() > 0 &&
@@ -53,6 +54,7 @@ public class ActorService {
                 !Objects.equals(actor.getSurname(), surname)) {
             actor.setSurname(surname);
         }
+        return actor;
     }
 
     public byte[] getImage(Long actorId) {

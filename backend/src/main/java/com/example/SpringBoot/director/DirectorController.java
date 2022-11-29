@@ -28,18 +28,17 @@ public class DirectorController {
     }
 
     @PostMapping(path = "addDirector")
-    public void addDirector(
+    public Director addDirector(
             @RequestPart("director") String director,
             @RequestPart("imageFile") MultipartFile[] imageFile) {
-
+        Director directorJson = Utils.getDirectorJson(director);
         try {
             List<ImageModel> images = Utils.uploadImage(imageFile);
-            Director directorJson = Utils.getDirectorJson(director);
             directorJson.setDirectorImage(images);
-            directorService.addDirector(directorJson);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        return directorService.addDirector(directorJson);
     }
 
     @DeleteMapping(path = "{directorId}")
@@ -49,11 +48,11 @@ public class DirectorController {
     }
 
     @PutMapping(path = "{directorId}")
-    public void updateDirector(
+    public Director updateDirector(
             @PathVariable("directorId") Long directorId,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String surname) {
-        directorService.updateDirector(directorId, name, surname);
+        return directorService.updateDirector(directorId, name, surname);
     }
 
     @GetMapping(path = "getImage/{directorId}")

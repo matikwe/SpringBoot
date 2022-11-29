@@ -28,17 +28,17 @@ public class MovieController {
     }
 
     @PostMapping(path = "addMovie")
-    public void addMovie(
+    public Movie addMovie(
             @RequestPart("movie") String movie,
             @RequestPart("imageFile") MultipartFile[] imageFile) {
+        Movie movieJson = Utils.getMovieJson(movie);
         try {
             List<ImageModel> images = Utils.uploadImage(imageFile);
-            Movie movieJson = Utils.getMovieJson(movie);
             movieJson.setMovieImage(images);
-            movieService.addMovie(movieJson);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        return movieService.addMovie(movieJson);
     }
 
     @DeleteMapping(path = "{movieId}")
@@ -48,10 +48,10 @@ public class MovieController {
     }
 
     @PutMapping(path = "{movieId}")
-    public void updateMovie(
+    public Movie updateMovie(
             @PathVariable("movieId") Long movieId,
             @RequestBody Movie movie) {
-        movieService.updateMovie(movieId, movie);
+        return movieService.updateMovie(movieId, movie);
     }
 
     @GetMapping(path = "{movieId}/addDirector")
