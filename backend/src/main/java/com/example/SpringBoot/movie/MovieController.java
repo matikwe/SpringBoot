@@ -42,9 +42,9 @@ public class MovieController {
     }
 
     @DeleteMapping(path = "{movieId}")
-    public void deleteMovie(
+    public ResponseEntity deleteMovie(
             @PathVariable("movieId") Long movieId) {
-        movieService.deleteMovie(movieId);
+        return movieService.deleteMovie(movieId);
     }
 
     @PutMapping(path = "{movieId}")

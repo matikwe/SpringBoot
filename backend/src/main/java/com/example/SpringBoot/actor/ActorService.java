@@ -1,6 +1,8 @@
 package com.example.SpringBoot.actor;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,12 +31,13 @@ public class ActorService {
         actorRepository.save(actor);
     }
 
-    public void deleteActor(Long actorId) {
+    public ResponseEntity deleteActor(Long actorId) {
         boolean exist = actorRepository.existsById(actorId);
         if (!exist) {
             throw new IllegalStateException("Actor with id: " + actorId + " does not exist !");
         }
         actorRepository.deleteById(actorId);
+        return new ResponseEntity("Actor deleted successfully.", HttpStatus.OK);
     }
 
     @Transactional

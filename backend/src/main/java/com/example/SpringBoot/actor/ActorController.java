@@ -43,9 +43,9 @@ public class ActorController {
     }
 
     @DeleteMapping(path = "{actorId}")
-    public void deleteActor(
+    public ResponseEntity deleteActor(
             @PathVariable("actorId") Long actorId) {
-        actorService.deleteActor(actorId);
+        return actorService.deleteActor(actorId);
     }
 
     @PutMapping(path = "{actorId}")

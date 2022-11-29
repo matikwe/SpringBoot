@@ -43,9 +43,9 @@ public class DirectorController {
     }
 
     @DeleteMapping(path = "{directorId}")
-    public void deleteDirector(
+    public ResponseEntity deleteDirector(
             @PathVariable("directorId") Long directorId) {
-        directorService.deleteDirector(directorId);
+        return directorService.deleteDirector(directorId);
     }
 
     @PutMapping(path = "{directorId}")
