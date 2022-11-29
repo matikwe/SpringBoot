@@ -34,7 +34,7 @@ public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
-/*
+
     @Bean
     CommandLineRunner commandLineRunner(UserRepository userRepository, DirectorRepository directorRepository,
                                         MovieRepository movieRepository, SaltRepository saltRepository, CategoryRepository categoryRepository,
@@ -65,7 +65,11 @@ public class Application {
             imageForActor.add(new ImageModel("movie5.png", "image/png", getImage("tmp/a5-min.png")));
 
             List<ImageModel> imageForCategory = new ArrayList<>();
-            imageForCategory.add(new ImageModel("c.png", "image/png", getImage("tmp/c.png")));
+            imageForCategory.add(new ImageModel("c1.png", "image/png", getImage("tmp/c1.png")));
+            imageForCategory.add(new ImageModel("c2.png", "image/png", getImage("tmp/c2.png")));
+            imageForCategory.add(new ImageModel("c3.png", "image/png", getImage("tmp/c3.png")));
+            imageForCategory.add(new ImageModel("c4.png", "image/png", getImage("tmp/c4.png")));
+            imageForCategory.add(new ImageModel("c5.png", "image/png", getImage("tmp/c5.png")));
 
             User user = new User("matik", securePassword, "matik@wp.pl", "Mati", "Racz", Role.USER.toString());
             User user1 = new User("matik1", securePassword, "matik1@wp.pl", "Mati", "Racz", Role.ADMIN.toString());
@@ -126,7 +130,7 @@ public class Application {
                 director.setDirectorImage(List.of(imageForDirector.get(i)));
 
                 Category category = categoryList.get(i);
-                category.setCategoryImage(imageForCategory);
+                category.setCategoryImage(List.of(imageForCategory.get(i)));
             }
 
             userRepository.saveAll(List.of(user, user1, user2, user3));
@@ -152,5 +156,5 @@ public class Application {
         File fi = new File(name);
         return Files.readAllBytes(fi.toPath());
     }
-*/
+
 }
