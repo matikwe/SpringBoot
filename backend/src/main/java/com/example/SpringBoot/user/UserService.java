@@ -150,6 +150,20 @@ public class UserService {
         return userToChangeRole;
     }
 
+    public ResponseEntity deleteUserFromAdminPanel(Long currentUser, Long userIdToDelete) {
+        User user = userRepository.findById(currentUser)
+                .orElseThrow(() -> new IllegalStateException(
+                        "user with id: " + currentUser + " does not exist!"
+                ));
+
+        if (user.getRole().equals(Role.ADMIN.name())) {
+            userRepository.deleteById(userIdToDelete);
+        } else {
+            throw new IllegalStateException("You must have ADMIN permission to delete a user.");
+        }
+        return new ResponseEntity("Account deleted successfully.", HttpStatus.OK);
+    }
+
     private String generateSecurePassword(String password, Long salt_id) {
         Optional<Salt> salt = saltRepository.checkExistSalt(salt_id);
         System.out.println("salt: " + salt.get().getSalt());
@@ -162,4 +176,6 @@ public class UserService {
         user.setSalt(newSalt);
         return newSalt;
     }
+
+
 }
