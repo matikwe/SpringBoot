@@ -55,4 +55,11 @@ public class UserController {
     public User changeRole(@PathVariable("userIdToChange") Long userIdToChange, @RequestParam Long currentUserId, @RequestParam String role) {
         return userService.changeRole(userIdToChange, currentUserId, role);
     }
+
+    @DeleteMapping(path = "deleteUserFromAdminPanel/{userIdToDelete}")
+    public ResponseEntity deleteUserFromAdminPanel(
+            @RequestParam Long currentUser,
+            @PathVariable("userIdToDelete") Long userIdToDelete){
+        return userService.deleteUserFromAdminPanel(currentUser, userIdToDelete);
+    }
 }
