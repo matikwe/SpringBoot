@@ -8,7 +8,7 @@ import {ADMIN, base64flag, USER} from "../../utils/utils";
 import AdminDirectorsPanel from "../../components/AdminDirectorsPanel";
 import AdminCategoriesPanel from "../../components/AdminCategoriesPanel";
 
-const CategoriesSite = ({searchbox, setSearchbox}) => {
+const CategoriesSite = ({searchbox, setSearchbox, setCategories}) => {
 
     const location = useLocation();
 
@@ -27,8 +27,8 @@ const CategoriesSite = ({searchbox, setSearchbox}) => {
         else if (category.category.toLowerCase().includes(searchbox.toLowerCase())) {
             return category
         }
-    }).map((category, index) => (
-        <div key={index} className="col-4">
+    }).map((category) => (
+        <div key={category.id} className="col-4">
             <Link to={`${FILMS_PATH}?catid=${category.id}`} className='categories-link'>
                 <img src={base64flag + category.categoryImage[0].picByte} alt="" className="w-100"/>
                 <h1>{category.category}</h1>
@@ -56,7 +56,7 @@ const CategoriesSite = ({searchbox, setSearchbox}) => {
                 {!applicationContext.isLoading && (
                     <>
                         {
-                            user && user.role === ADMIN && <AdminCategoriesPanel categories={applicationContext.categories}/>
+                            user && user.role === ADMIN && <AdminCategoriesPanel categories={applicationContext.categories || []} setCategories={setCategories}/>
                         }
                         {(!user || user.role === USER) && categories}
                     </>

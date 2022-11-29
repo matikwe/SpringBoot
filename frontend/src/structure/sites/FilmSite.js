@@ -3,7 +3,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import ArrowLeft from '../../assets/utils/arrow-left.svg'
 import {ADMIN, base64flag, changeFormatToDDMMYYYY, USER} from "../../utils/utils";
 import {ApplicationContext} from "../../context/ApplicationContext";
-import {MAIN_PATH} from "../../utils/paths";
+import {MAIN_PATH, RESERVATIONS_PATH} from "../../utils/paths";
 import DatePicker from 'react-date-picker';
 import {getUserReservations, postReservation} from "../../api/api";
 
@@ -52,13 +52,13 @@ const FilmSite = ({setLoginShow}) => {
             if (user && user.role === USER) {
                 const formatedDate = changeFormatToDDMMYYYY(date)
                 postReservation(film, user, formatedDate).then(response => {
-                    if (!response.status === 500) {
+                    if (response.id) {
                         getUserReservations(user).then(reservations => {
-                            console.log(reservations)
                             window.localStorage.setItem('RESERVATIONS_STATE', JSON.stringify(reservations))
+                            navigate(RESERVATIONS_PATH)
                         })
                     } else {
-                        alert('Nie możesz zarezerwować jednego filmu dwa razy!')
+                        alert(response.message)
                     }
                 })
             } else if (!user) {

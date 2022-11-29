@@ -1,27 +1,51 @@
 import React, {useEffect, useState} from 'react';
 import {Table} from "react-bootstrap";
 import {getUsers} from "../api/api";
+import {USER} from "../utils/utils";
+import {deleteUser} from "../api/apiAdmin";
 
 const AdminUsersPanel = () => {
 
     const [users, setUsers] = useState([])
+    const userLogged = JSON.parse(window.localStorage.getItem(USER))
 
     useEffect(() => {
         getUsers().then((users) => setUsers(users))
-    })
+    }, [])
 
-    const usersList = users.map((user, index) => (
-        <tr>
+    const handleDeleteUser = (id) => {
+        if (userLogged.id !== id) {
+            deleteUser(id).then(response => {
+                if (response.status === 500) {
+                    alert('Nie można usunąć użytkownika!')
+                } else {
+                    getUsers().then((users) => {
+                        if (users.length > 0) {
+                            setUsers(users);
+                        } else {
+                            alert('Error ' + users.status + ': ' + users.message)
+                        }
+                    })
+                }
+            })
+        } else {
+            alert('Nie można usunąć obecnego użytkownika!')
+        }
+
+    }
+
+    const usersList = users.map((user) => (
+        <tr key={user.id}>
             <td>{user.email}</td>
             <td>{user.login}</td>
             <td>{user.name}</td>
             <td>{user.surname}</td>
             <td>
                 <div className="btn btn-info  mx-5">Edytuj</div>
-                <div className="btn btn-danger">Usuń</div>
+                <div className="btn btn-danger" onClick={() => handleDeleteUser(user.id)}>Usuń</div>
             </td>
         </tr>
-    ));
+    ))
 
     return (
         <div className='actors-container'>

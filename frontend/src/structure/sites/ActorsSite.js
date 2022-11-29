@@ -7,7 +7,7 @@ import {ADMIN, base64flag, USER} from "../../utils/utils";
 import AdminDirectorsPanel from "../../components/AdminDirectorsPanel";
 import AdminActorsPanel from "../../components/AdminActorsPanel";
 
-const ActorsSite = ({searchbox, setSearchbox}) => {
+const ActorsSite = ({searchbox, setSearchbox, setActors}) => {
 
     const location = useLocation();
 
@@ -29,8 +29,8 @@ const ActorsSite = ({searchbox, setSearchbox}) => {
         else if (actor.surname.toLowerCase().includes(searchbox.toLowerCase())) {
             return actor
         }
-    }).map((actor, index) => (
-        <Link to={`${FILMS_PATH}?actid=${actor.id}`} className='actors-link col-4' key={index}>
+    }).map((actor) => (
+        <Link to={`${FILMS_PATH}?actid=${actor.id}`} className='actors-link col-4' key={actor.id}>
             <img src={base64flag + actor.actorImage[0].picByte} alt="" className='w-100 h-100'/>
             <h1 className='actor-title'>{actor.name} {actor.surname}</h1>
         </Link>
@@ -56,7 +56,7 @@ const ActorsSite = ({searchbox, setSearchbox}) => {
                 {!applicationContext.isLoading && (
                     <>
                         {
-                            user && user.role === ADMIN && <AdminActorsPanel actors={applicationContext.actors}/>
+                            user && user.role === ADMIN && <AdminActorsPanel actors={applicationContext.actors || []} setActors={setActors}/>
                         }
                         {(!user || user.role === USER) && actors}
                     </>

@@ -9,7 +9,7 @@ import {
     DIRECTORS_PATH,
     FILM_PATH,
     FILMS_PATH,
-    MAIN_PATH,
+    MAIN_PATH, ORDERS_PATH,
     PROFILE_PATH, RESERVATIONS_PATH
 } from "./utils/paths";
 import FilmsListSite from "./structure/sites/FilmsListSite";
@@ -24,6 +24,7 @@ import FilmSite from "./structure/sites/FilmSite";
 import ProfileSite from "./structure/sites/ProfileSite";
 import ReservationsSite from "./structure/sites/ReservationsSite";
 import AdminUsersPanel from "./components/AdminUsersPanel";
+import OrdersSite from "./structure/sites/OrdersSite";
 
 const App = () => {
 
@@ -107,14 +108,15 @@ const App = () => {
                   <Header user={user} setUser={setUser} searchbox={searchbox} onSearchBoxChange={onSearchboxChange} showLogin={showLogin} setLoginShow={setLoginShow}/>
 
                       <Switch>
-                          <Route path={MAIN_PATH} element={<FilmsListSite searchbox={searchbox} setSearchbox={setSearchbox}/>}/>
-                          <Route path={FILMS_PATH} element={<FilmsListSite searchbox={searchbox} setSearchbox={setSearchbox}/>}/>
+                          <Route path={MAIN_PATH} element={<FilmsListSite searchbox={searchbox} setSearchbox={setSearchbox} setFilms={setFilms}/>}/>
+                          <Route path={FILMS_PATH} element={<FilmsListSite searchbox={searchbox} setSearchbox={setSearchbox} setFilms={setFilms}/>}/>
                           <Route path={FILM_PATH} element={<FilmSite setLoginShow={setLoginShow}/>}/>
-                          <Route path={CATEGORIES_PATH} element={<CategoriesSite searchbox={searchbox} setSearchbox={setSearchbox}/>}/>
-                          <Route path={ACTORS_PATH} element={<ActorsSite searchbox={searchbox} setSearchbox={setSearchbox}/>}/>
-                          <Route path={DIRECTORS_PATH} element={<DirectorsSite searchbox={searchbox} setSearchbox={setSearchbox}/>}/>
+                          <Route path={CATEGORIES_PATH} element={<CategoriesSite searchbox={searchbox} setSearchbox={setSearchbox} setCategories={setCategories}/>}/>
+                          <Route path={ACTORS_PATH} element={<ActorsSite searchbox={searchbox} setSearchbox={setSearchbox} setActors={setActors}/>}/>
+                          <Route path={DIRECTORS_PATH} element={<DirectorsSite searchbox={searchbox} setSearchbox={setSearchbox} setDirectors={setDirectors}/>}/>
                           <Route path={PROFILE_PATH} element={<ProfileSite setUser={setUser}/>}/>
                           <Route path={RESERVATIONS_PATH} element={<ReservationsSite/>}/>
+                          <Route path={ORDERS_PATH} element={<OrdersSite/>}/>
                           <Route path={ADMIN_USERS_PATH} element={<AdminUsersPanel/>}/>
                       </Switch>
 

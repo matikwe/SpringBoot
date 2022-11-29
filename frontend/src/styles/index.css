@@ -396,6 +396,21 @@ h1  {
   border: none;
 }
 
+.reservation-date-picker {
+  width: 45%;
+  margin-top: 50px;
+
+}
+
+.reservation-date-picker .react-date-picker__inputGroup {
+  width: 100%;
+  padding: 10px;
+}
+
+.reservation-date-picker input {
+  padding:  0 10px;
+}
+
 thead {
   background-color: #E5CC48;
 }
@@ -407,4 +422,12 @@ thead {
 
 .admin-users-table .actions {
   width: 20%;
+}
+
+.admin-modal-container form {
+  padding: 0 20px;
+}
+
+.login-modal .admin-file-input input {
+  text-align: start;
 }

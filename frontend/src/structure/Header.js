@@ -8,7 +8,7 @@ import {
     ADMIN_USERS_PATH,
     CATEGORIES_PATH,
     DIRECTORS_PATH,
-    MAIN_PATH,
+    MAIN_PATH, ORDERS_PATH,
     PROFILE_PATH,
     RESERVATIONS_PATH
 } from "../utils/paths";
@@ -21,6 +21,7 @@ const Header = ({setUser, searchbox, onSearchBoxChange, showLogin, setLoginShow}
 
     const user = JSON.parse(window.localStorage.getItem(USER))
     const reservations = JSON.parse(window.localStorage.getItem('RESERVATIONS_STATE'))
+    const orders = JSON.parse(window.localStorage.getItem('ORDERS_STATE'))
     const navigate = useNavigate();
 
     return (
@@ -51,11 +52,14 @@ const Header = ({setUser, searchbox, onSearchBoxChange, showLogin, setLoginShow}
                                 <>
                                     <Link to={RESERVATIONS_PATH} className='w-100 dropdown-item'>Rezerwacje ({reservations ? reservations.length : '0'})</Link>
                                     <hr/>
+                                    <Link to={ORDERS_PATH} className='w-100 dropdown-item'>Zamówienia ({orders ? orders.length : '0'})</Link>
+                                    <hr/>
                                 </>
 
                             )}
                             <button className='w-100 dropdown-item' onClick={() => {
                                 window.localStorage.removeItem(USER)
+                                window.localStorage.removeItem('RESERVATIONS_STATE')
                                 navigate(MAIN_PATH)
                                 setUser({})
                             }}>Wyloguj</button>

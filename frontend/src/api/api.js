@@ -89,3 +89,25 @@ export const postReservation = (film, user, date) => {
 export const getUserReservations = (user) => {
     return fetch(baseUrl + `/reservation/getReservationsForUserId?userId=${user.id}`).then(response => response.json())
 }
+
+export const deleteReservation = (id) => {
+    return fetch(baseUrl + `/reservation/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => response.json())
+}
+
+export const postOrder = (id) => {
+    return fetch(baseUrl + `/order/addOrder?reservationId=${id}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => response.json())
+}
+
+export const getOrders = () => {
+
+}
