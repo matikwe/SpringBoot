@@ -146,6 +146,10 @@ const FilmsListSite = ({searchbox, setSearchbox, setFilms}) => {
         }
     }
 
+    const handleModalClose = () => {
+        setShow(false)
+    }
+
     return (
         <div className='films-container'>
             {(user === null || user.role === USER) && <h1>Filmy</h1>}
@@ -159,7 +163,7 @@ const FilmsListSite = ({searchbox, setSearchbox, setFilms}) => {
                             <button className='btn btn-success w-100 mt-2 py-2 px-3' onClick={() => setShow(true)}>Dodaj</button>
                         </div>
                     </div>
-                    <Modal show={show} className='login-modal'>
+                    <Modal show={show} onHide={handleModalClose} className='login-modal'>
                         <Container className='modal-container'>
                             <h1>Dodawanie Filmu</h1>
                             <form onSubmit={handleAddSubmit}>

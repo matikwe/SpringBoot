@@ -15,10 +15,9 @@ const AdminUsersPanel = () => {
 
     const handleDeleteUser = (id) => {
         if (userLogged.id !== id) {
-            deleteUser(id).then(response => {
-                if (response.status === 500) {
-                    alert('Nie można usunąć użytkownika!')
-                } else {
+            deleteUser(id, userLogged.id).then(response => {
+                if (response.isString()) {
+                    alert(response)
                     getUsers().then((users) => {
                         if (users.length > 0) {
                             setUsers(users);
@@ -26,6 +25,8 @@ const AdminUsersPanel = () => {
                             alert('Error ' + users.status + ': ' + users.message)
                         }
                     })
+                } else {
+                    alert('Nie można usunąć tego użytkownika!')
                 }
             })
         } else {

@@ -36,13 +36,13 @@ export const deleteDirector = (id) => {
     }).then(response => response.json())
 }
 
-export const deleteUser = (id) => {
-    return fetch(baseUrl + `/user/${id}`, {
+export const deleteUser = (id, adminID) => {
+    return fetch(baseUrl + `/user/deleteUserFromAdminPanel/${id}?currentUser=${adminID}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
         }
-    }).then(response => response.json())
+    }).then(response => response)
 }
 
 export const addFilm = (formData) => {
@@ -52,5 +52,5 @@ export const addFilm = (formData) => {
         headers: {
             'Content-Type': 'multipart/form-data'
         }
-    })
+    }).then(response => response.json())
 }
