@@ -23,8 +23,8 @@ public class OrderController {
     }
 
     @PostMapping("addOrder")
-    public void addReservation(
+    public Order addReservation(
             @RequestParam("reservationId") Long reservationId) {
-        orderService.addOrder(reservationId);
+        return orderService.addOrder(reservationId);
     }
 }

@@ -29,7 +29,7 @@ public class OrderService {
 
 
     @Transactional
-    public void addOrder(Long reservationId) {
+    public Order addOrder(Long reservationId) {
         removeExpiredBooking();
         Reservation reservation = getReservation(reservationId);
         List<Reservation> reservationList = reservationRepository.findAll();
@@ -38,7 +38,7 @@ public class OrderService {
 
         if (listWithCandidatesToOrder.get(0).getUser().get(0).getId().equals(reservation.getUser().get(0).getId())) {
             if (reservation.getMovie().get(0).getQuantity() > listWithBookingMovies.size()) {
-                orderMovie(reservation);
+                return orderMovie(reservation);
             } else {
                 throw new IllegalStateException("On day " + reservation.getBookingDate() + " there was no film. Try another day.");
             }
@@ -47,12 +47,13 @@ public class OrderService {
         }
     }
 
-    private void orderMovie(Reservation reservation) {
+    private Order orderMovie(Reservation reservation) {
         Order order = new Order(reservation.getBookingDate());
         reservation.setReserved(true);
         reservationRepository.save(reservation);
         order.setReservation(reservation);
         orderRepository.save(order);
+        return order;
     }
 
     private void removeExpiredBooking() {
