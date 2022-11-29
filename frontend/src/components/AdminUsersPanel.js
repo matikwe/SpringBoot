@@ -55,9 +55,6 @@ const AdminUsersPanel = () => {
                 <div className="col-10">
                     <h1>Użytkownicy</h1>
                 </div>
-                <div className="col-2  justify-content-end align-content-end">
-                    <button className='btn btn-success w-100 mt-2 py-2 px-3'>Dodaj</button>
-                </div>
             </div>
 
             <div className='admin-users-table w-100'>
