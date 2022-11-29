@@ -6,5 +6,6 @@ export const ACTORS_PATH = '/actors'
 export const DIRECTORS_PATH = '/directors'
 export const PROFILE_PATH = '/profile'
 export const RESERVATIONS_PATH = '/reservations'
+export const ORDERS_PATH = '/orders'
 
 export const ADMIN_USERS_PATH = '/users'
