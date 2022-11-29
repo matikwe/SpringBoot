@@ -1,6 +1,8 @@
 package com.example.SpringBoot.director;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,12 +31,13 @@ public class DirectorService {
         directorRepository.save(director);
     }
 
-    public void deleteDirector(Long directorId) {
+    public ResponseEntity deleteDirector(Long directorId) {
         boolean exist = directorRepository.existsById(directorId);
         if (!exist) {
             throw new IllegalStateException("Director with id: " + directorId + " does not exist !");
         }
         directorRepository.deleteById(directorId);
+        return new ResponseEntity("Director deleted successfully.", HttpStatus.OK);
     }
 
     @Transactional

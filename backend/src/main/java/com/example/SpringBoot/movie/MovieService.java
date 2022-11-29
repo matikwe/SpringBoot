@@ -7,6 +7,8 @@ import com.example.SpringBoot.category.CategoryRepository;
 import com.example.SpringBoot.director.Director;
 import com.example.SpringBoot.director.DirectorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,13 +44,14 @@ public class MovieService {
         movieRepository.save(movie);
     }
 
-    public void deleteMovie(Long movieId) {
+    public ResponseEntity deleteMovie(Long movieId) {
         boolean exist = movieRepository.existsById(movieId);
 
         if (!exist) {
             throw new IllegalStateException("Movie with id: " + movieId + " does not exist !");
         }
         movieRepository.deleteById(movieId);
+        return new ResponseEntity("Movie deleted successfully.", HttpStatus.OK);
     }
 
     @Transactional

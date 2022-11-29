@@ -3,6 +3,7 @@ package com.example.SpringBoot.category;
 import com.example.SpringBoot.utils.ImageModel;
 import com.example.SpringBoot.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,9 +40,9 @@ public class CategoryController {
     }
 
     @DeleteMapping(path = "{categoryId}")
-    public void deleteCategory(
+    public ResponseEntity deleteCategory(
             @PathVariable("categoryId") Long categoryId) {
-        categoryService.deleteCategory(categoryId);
+        return categoryService.deleteCategory(categoryId);
     }
 
     @PutMapping(path = "{categoryId}")

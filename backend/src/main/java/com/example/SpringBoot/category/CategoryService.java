@@ -1,6 +1,8 @@
 package com.example.SpringBoot.category;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,12 +31,13 @@ public class CategoryService {
         categoryRepository.save(category);
     }
 
-    public void deleteCategory(Long categoryId) {
+    public ResponseEntity deleteCategory(Long categoryId) {
         boolean exist = categoryRepository.existsById(categoryId);
         if (!exist) {
             throw new IllegalStateException("Category with id: " + categoryId + " does not exist !");
         }
         categoryRepository.deleteById(categoryId);
+        return new ResponseEntity("Category deleted successfully.", HttpStatus.OK);
     }
 
     @Transactional

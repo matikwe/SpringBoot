@@ -6,6 +6,8 @@ import com.example.SpringBoot.user.User;
 import com.example.SpringBoot.user.UserRepository;
 import com.example.SpringBoot.utils.DateValidatorUsingDateFormat;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,7 +54,7 @@ public class ReservationService {
     }
 
     @Transactional
-    public void deleteReservation(Long reservationId) {
+    public ResponseEntity deleteReservation(Long reservationId) {
         Optional<Reservation> reservation = reservationRepository.findById(reservationId);
 
         if (reservation.isPresent()) {
@@ -60,6 +62,7 @@ public class ReservationService {
         } else {
             throw new IllegalStateException("Reservation with id: " + reservationId + " does not exist !");
         }
+        return new ResponseEntity("Reservation deleted successfully.", HttpStatus.OK);
     }
 
     public List<Reservation> getReservationsForUserId(Long userId) {
