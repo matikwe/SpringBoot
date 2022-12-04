@@ -50,10 +50,8 @@ export const postFilm = (formData) => {
         method: 'POST',
         body: formData,
         headers: {
-            'Content-Type': 'multipart/form-data',
-            'Access-Control-Allow-Origin': '*'
+            'Content-Type': 'multipart/form-data'
         },
-        mode: 'cors'
     }).then(response => response.json())
 }
 
@@ -62,10 +60,9 @@ export const postCategory = (formData) => {
         method: 'POST',
         body: formData,
         headers: {
-            'Content-Type': 'multipart/form-data',
-            'Access-Control-Allow-Origin': '*'
+            'Content-Type': 'multipart/form-data'
         },
-        mode: 'cors'
+        mode: "no-cors"
     }).then(response => response.json())
 }
 
@@ -74,10 +71,8 @@ export const postActor = (formData) => {
         method: 'POST',
         body: formData,
         headers: {
-            'Content-Type': 'multipart/form-data',
-            'Access-Control-Allow-Origin': '*'
+            'Content-Type': 'multipart/form-data'
         },
-        mode: 'cors'
     }).then(response => response.json())
 }
 
@@ -86,10 +81,8 @@ export const postDirector = (formData) => {
         method: 'POST',
         body: formData,
         headers: {
-            'Content-Type': 'multipart/form-data',
-            'Access-Control-Allow-Origin': '*'
+            'Content-Type': 'multipart/form-data'
         },
-        mode: 'cors'
     }).then(response => response.json())
 }
 

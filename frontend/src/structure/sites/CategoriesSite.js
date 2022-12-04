@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Link, useLocation} from "react-router-dom";
+import {json, Link, useLocation} from "react-router-dom";
 import {ApplicationContext} from "../../context/ApplicationContext";
 import {FILMS_PATH} from "../../utils/paths";
 import LoadingSpinner from "../../utils/spinner";
@@ -42,7 +42,7 @@ const CategoriesSite = ({searchbox, setSearchbox, setCategories}) => {
     ))
 
     const onImageChange = (e) => {
-        const [file] = e.target.files;
+        const file = e.target.files[0];
         setImageFile(file)
         setImage(URL.createObjectURL(file));
     };
@@ -56,11 +56,8 @@ const CategoriesSite = ({searchbox, setSearchbox, setCategories}) => {
             }
 
             const formData = new FormData();
-            formData.append('category', category)
-            formData.append(
-                'imageFile',
-                imageFile,
-            );
+            formData.append('category', JSON.stringify(category))
+            formData.append('imageFile', imageFile);
 
             postCategory(formData).then(res => {
                 alert(res)
