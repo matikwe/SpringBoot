@@ -54,7 +54,6 @@ const ProfileSite = ({setUser}) => {
                 if (user.status === 500) {
                     alert('Proszę wprowadzić obecne hasło!')
                 } else {
-                    console.log(user)
                     window.localStorage.removeItem(USER)
                     navigate(MAIN_PATH)
                     setUser({})

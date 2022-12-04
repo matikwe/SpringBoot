@@ -1,14 +1,15 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import BrandStar from '.././assets/utils/Star 1.svg'
 import SearchIcon from '.././assets/utils/search.svg'
 import {Container, Dropdown, Form, Navbar} from "react-bootstrap";
-import {Link, useLocation, useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {
     ACTORS_PATH,
     ADMIN_USERS_PATH,
     CATEGORIES_PATH,
     DIRECTORS_PATH,
-    MAIN_PATH, ORDERS_PATH,
+    MAIN_PATH,
+    ORDERS_PATH,
     PROFILE_PATH,
     RESERVATIONS_PATH
 } from "../utils/paths";
@@ -17,11 +18,11 @@ import AccountImg from "../assets/utils/account.svg"
 import {ADMIN, USER} from "../utils/utils";
 
 
-const Header = ({setUser, searchbox, onSearchBoxChange, showLogin, setLoginShow}) => {
+const Header = ({setUser, searchbox, onSearchBoxChange, showLogin, setLoginShow, setReservations}) => {
 
     const user = JSON.parse(window.localStorage.getItem(USER))
     const reservations = JSON.parse(window.localStorage.getItem('RESERVATIONS_STATE'))
-    const orders = JSON.parse(window.localStorage.getItem('ORDERS_STATE'))
+    const orders = JSON.parse(window.localStorage.getItem('SORTED_ORDERS_STATE'))
     const navigate = useNavigate();
 
     return (
@@ -37,7 +38,7 @@ const Header = ({setUser, searchbox, onSearchBoxChange, showLogin, setLoginShow}
                 <Link to={ACTORS_PATH} className='link-light text-decoration-none'>Aktorzy</Link>
                 <Link to={DIRECTORS_PATH} className='link-light text-decoration-none'>Reżyserzy</Link>
                 {user && user.role === ADMIN && <Link to={ADMIN_USERS_PATH} className='link-light text-decoration-none'>Użytkownicy</Link>}
-                {!user ? <LoginRegisterModal setUser={setUser} showLogin={showLogin} setLoginShow={setLoginShow}/> : (
+                {!user ? <LoginRegisterModal setUser={setUser} showLogin={showLogin} setLoginShow={setLoginShow} setReservations={setReservations}/> : (
                     <Dropdown className='logged-dropdown'>
                         <div className="toggle-button">
                             <Dropdown.Toggle>

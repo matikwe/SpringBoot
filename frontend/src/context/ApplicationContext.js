@@ -6,6 +6,8 @@ const defaultValue = {
   actors: [],
   directors: [],
   user: {},
+  reservations: [],
+  orders: [],
   isLoading: false,
 };
 

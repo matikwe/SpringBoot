@@ -70,7 +70,7 @@ export const deleteAccount = (oldPassword, user) => {
         headers: {
             'Content-Type': 'application/json'
         }
-    }).then(response => response.json())
+    }).then(response => response)
 }
 
 export const getUsers = () => {
@@ -96,7 +96,7 @@ export const deleteReservation = (id) => {
         headers: {
             'Content-Type': 'application/json'
         }
-    }).then(response => response.json())
+    }).then(response => response)
 }
 
 export const postOrder = (id) => {
@@ -109,5 +109,5 @@ export const postOrder = (id) => {
 }
 
 export const getOrders = () => {
-
+    return fetch(baseUrl + `/order`).then(response => response.json())
 }

@@ -19,12 +19,13 @@ import ActorsSite from "./structure/sites/ActorsSite";
 import DirectorsSite from "./structure/sites/DirectorsSite";
 import {ApplicationContext} from "./context/ApplicationContext";
 import {useEffect, useState} from "react";
-import {getActors, getCategories, getDirectors, getFilms} from "./api/api";
+import {getActors, getCategories, getDirectors, getFilms, getOrders, getUserReservations} from "./api/api";
 import FilmSite from "./structure/sites/FilmSite";
 import ProfileSite from "./structure/sites/ProfileSite";
 import ReservationsSite from "./structure/sites/ReservationsSite";
 import AdminUsersPanel from "./components/AdminUsersPanel";
 import OrdersSite from "./structure/sites/OrdersSite";
+import {USER} from "./utils/utils";
 
 const App = () => {
 
@@ -36,6 +37,8 @@ const App = () => {
     const [isLoading, setLoading] = useState(true);
     const [searchbox, setSearchbox] = useState('')
     const [showLogin, setLoginShow] = useState(false);
+    const [reservations, setReservations] = useState([])
+    const [orders, setOrders] = useState([])
 
     useEffect(
         () => {
@@ -77,6 +80,27 @@ const App = () => {
                         setDirectors([])
                     }
                 });
+            if (JSON.parse(window.localStorage.getItem(USER))) {
+                getUserReservations(JSON.parse(window.localStorage.getItem(USER))).then(reservations => {
+                    if (reservations.status === 500 || reservations.status === 400) {
+                        alert('Nie można znaleźć rezerwacji dla obecnego użytkownika!')
+                        setReservations([])
+                    } else {
+                        setReservations(reservations)
+                        window.localStorage.setItem('RESERVATIONS_STATE', JSON.stringify(reservations))
+                    }
+                })
+                getOrders().then(orders => {
+                    if (orders.status === 500 || orders.status === 400) {
+                        alert('Nie można znaleźć zamówień dla obecnego użytkownika!')
+                        setOrders([])
+                    } else {
+                        const sortedOrdersByUser = orders.filter(order => order.reservation.user[0].id + ' === ' + JSON.parse(window.localStorage.getItem(USER)).id)
+                        setReservations(sortedOrdersByUser)
+                        window.localStorage.setItem('SORTED_ORDERS_STATE', JSON.stringify(sortedOrdersByUser))
+                    }
+                })
+            }
         },
         [],
     );
@@ -91,6 +115,7 @@ const App = () => {
         actors,
         directors,
         user,
+        reservations,
         isLoading,
     };
 
@@ -101,7 +126,7 @@ const App = () => {
         <ApplicationContext.Provider value={applicationInfo}>
           <Router>
               <div>
-                  <Header user={user} setUser={setUser} searchbox={searchbox} onSearchBoxChange={onSearchboxChange} showLogin={showLogin} setLoginShow={setLoginShow}/>
+                  <Header user={user} setUser={setUser} searchbox={searchbox} onSearchBoxChange={onSearchboxChange} showLogin={showLogin} setLoginShow={setLoginShow} setReservations={setReservations}/>
 
                       <Switch>
                           <Route path={MAIN_PATH} element={<FilmsListSite searchbox={searchbox} setSearchbox={setSearchbox} setFilms={setFilms}/>}/>
@@ -111,7 +136,7 @@ const App = () => {
                           <Route path={ACTORS_PATH} element={<ActorsSite searchbox={searchbox} setSearchbox={setSearchbox} setActors={setActors}/>}/>
                           <Route path={DIRECTORS_PATH} element={<DirectorsSite searchbox={searchbox} setSearchbox={setSearchbox} setDirectors={setDirectors}/>}/>
                           <Route path={PROFILE_PATH} element={<ProfileSite setUser={setUser}/>}/>
-                          <Route path={RESERVATIONS_PATH} element={<ReservationsSite/>}/>
+                          <Route path={RESERVATIONS_PATH} element={<ReservationsSite setReservations={setReservations}/>}/>
                           <Route path={ORDERS_PATH} element={<OrdersSite/>}/>
                           <Route path={ADMIN_USERS_PATH} element={<AdminUsersPanel/>}/>
                       </Switch>

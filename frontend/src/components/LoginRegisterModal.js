@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {Container, Modal} from "react-bootstrap";
-import {postLogin, postRegister} from "../api/api";
+import {getUserReservations, postLogin, postRegister} from "../api/api";
 import {USER} from "../utils/utils";
 
 
-const LoginRegisterModal = ({setUser, showLogin, setLoginShow}) => {
+const LoginRegisterModal = ({setUser, showLogin, setLoginShow, setReservations}) => {
 
 
     const [showRegister, setRegisterShow] = useState(false);
@@ -41,9 +41,18 @@ const LoginRegisterModal = ({setUser, showLogin, setLoginShow}) => {
         e.preventDefault()
         postLogin(loginLogin, loginPassword).then(user => {
             if (user.id ) {
-                window.localStorage.setItem(USER, JSON.stringify(user))
-                setUser(user)
-                handleLoginClose()
+                getUserReservations(user).then(reservations => {
+                    if (reservations.status === 500 || reservations.status === 400) {
+                        alert('Nie można znaleźć rezerwacji dla obecnego użytkownika!')
+                        setReservations([])
+                    } else {
+                        window.localStorage.setItem(USER, JSON.stringify(user))
+                        setUser(user)
+                        setReservations(reservations)
+                        window.localStorage.setItem('RESERVATIONS_STATE', JSON.stringify(reservations))
+                        handleLoginClose()
+                    }
+                })
             } else {
                 alert('Error ' + user.status + ': ' + user.message)
                 setUser([])
