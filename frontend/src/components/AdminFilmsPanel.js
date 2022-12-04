@@ -30,21 +30,18 @@ const AdminFilmsPanel = ({films, setFilms}) => {
                 getFilms().then((films) => {
                     if (films.length > 0) {
                         setFilms(films);
-                        try {
-                            window.localStorage.setItem('FILMS_STATE', JSON.stringify(films))
-                        } catch (e) {
-                            console.log(e)
-                        }
+                        window.localStorage.setItem('FILMS_STATE', JSON.stringify(films))
                     } else {
-                        alert('Error ' + films.status + ': ' + films.message)
+                        setFilms([])
                     }
                 })
             }
         })
     }
 
-    const filmsList = films.map((film) => (
+    const filmsList = films.sort(({ id: previousID }, { id: currentID }) => previousID - currentID).map((film) => (
         <tr key={film.id}>
+            <td>{film.id}</td>
             <td><img src={base64flag + film.movieImage[0].picByte} alt=""/></td>
             <td>{film.title}</td>
             <td>{getList(film.category)}</td>
@@ -66,6 +63,7 @@ const AdminFilmsPanel = ({films, setFilms}) => {
             <Table striped bordered hover>
                 <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Thumbnail</th>
                     <th>Film</th>
                     <th>Kategoria</th>

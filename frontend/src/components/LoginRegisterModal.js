@@ -46,6 +46,7 @@ const LoginRegisterModal = ({setUser, showLogin, setLoginShow}) => {
                 handleLoginClose()
             } else {
                 alert('Error ' + user.status + ': ' + user.message)
+                setUser([])
             }
         })
     }
@@ -59,7 +60,7 @@ const LoginRegisterModal = ({setUser, showLogin, setLoginShow}) => {
                     setUser(user)
                     handleRegisterClose()
                 } else {
-                    alert('Error ' + user.status + ': ' + user.message)
+                    alert('Nie udało się zarejestrować!')
                 }
             })
         } else {

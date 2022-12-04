@@ -8,22 +8,24 @@ const AdminCategoriesPanel = ({categories, setCategories}) => {
 
     const handleDeleteCategory = (id) => {
         deleteCategory(id).then(response => {
+            console.log(response)
             if (response.status === 500) {
-                alert(response.message)
+                alert('Nie można usunąć kategorii, gdyż jest ona przypisana do filmu!')
             } else {
                 getCategories().then((categories) => {
                     if (categories.length > 0) {
                         setCategories(categories);
                     } else {
-                        alert('Error ' + categories.status + ': ' + categories.message)
+                        setCategories([])
                     }
                 })
             }
         })
     }
 
-    const categoriesList = categories.map((category, index) => (
+    const categoriesList = categories.sort(({ id: previousID }, { id: currentID }) => previousID - currentID).map((category, index) => (
         <tr key={category.id}>
+            <td>{category.id}</td>
             <td><img src={base64flag + category.categoryImage[0].picByte} alt="" className='w-100'/></td>
             <td>{category.category}</td>
             <td>
@@ -37,6 +39,7 @@ const AdminCategoriesPanel = ({categories, setCategories}) => {
             <Table striped bordered hover className='w-25'>
                 <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Thumbnail</th>
                     <th>Kategoria</th>
                     <th className='text-center'>Akcje</th>

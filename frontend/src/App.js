@@ -43,14 +43,10 @@ const App = () => {
                 .then((films) => {
                     if (films.length > 0) {
                         setFilms(films);
-                        try {
-                            window.localStorage.setItem('FILMS_STATE', JSON.stringify(films))
-                        } catch (e) {
-                            console.log(e)
-                        }
+                        window.localStorage.setItem('FILMS_STATE', JSON.stringify(films))
                     } else {
                         setLoading(false)
-                        alert('Error ' + films.status + ': ' + films.message)
+                        setFilms([])
                     }
                 });
             getCategories()
@@ -59,7 +55,7 @@ const App = () => {
                         setCategories(categories);
                     } else {
                         setLoading(false)
-                        alert('Error ' + categories.status + ': ' + categories.message)
+                        setCategories([])
                     }
                 });
             getActors()
@@ -68,7 +64,7 @@ const App = () => {
                         setActors(actors);
                     } else {
                         setLoading(false)
-                        alert('Error ' + actors.status + ': ' + actors.message)
+                        setActors([])
                     }
                 });
             getDirectors()
@@ -78,7 +74,7 @@ const App = () => {
                         setLoading(false)
                     } else {
                         setLoading(false)
-                        alert('Error ' + directors.status + ': ' + directors.message)
+                        setDirectors([])
                     }
                 });
         },

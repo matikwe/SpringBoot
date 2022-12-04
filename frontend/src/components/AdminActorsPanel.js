@@ -2,28 +2,29 @@ import React from 'react';
 import {Table} from "react-bootstrap";
 import {base64flag} from "../utils/utils";
 import {deleteActor} from "../api/apiAdmin";
-import {getCategories} from "../api/api";
+import {getActors} from "../api/api";
 
 const AdminActorsPanel = ({actors, setActors}) => {
 
     const handleDeleteActor = (id) => {
         deleteActor(id).then(response => {
             if (response.status === 500) {
-                alert('Nie można usunąć zarezerwowanego/zamówionego filmu!')
+                alert('Nie można usunąć aktora przypisanego do filmu!')
             } else {
-                getCategories().then((actors) => {
+                getActors().then((actors) => {
                     if (actors.length > 0) {
                         setActors(actors);
                     } else {
-                        alert('Error ' + actors.status + ': ' + actors.message)
+                        setActors([])
                     }
                 })
             }
         })
     }
 
-    const actorsList = actors.map((actor, index) => (
+    const actorsList = actors.sort(({ id: previousID }, { id: currentID }) => previousID - currentID).map((actor, index) => (
         <tr key={actor.id}>
+            <td>{actor.id}</td>
             <td><img src={base64flag + actor.actorImage[0].picByte} alt="" className='w-100'/></td>
             <td>{actor.name}</td>
             <td>{actor.surname}</td>
@@ -38,6 +39,7 @@ const AdminActorsPanel = ({actors, setActors}) => {
             <Table striped bordered hover>
                 <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Thumbnail</th>
                     <th>Imię</th>
                     <th>Nazwisko</th>

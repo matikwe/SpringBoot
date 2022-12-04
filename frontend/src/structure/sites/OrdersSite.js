@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {USER} from "../../utils/utils";
-import {deleteReservation, getUserReservations, postOrder} from "../../api/api";
 import {Table} from "react-bootstrap";
 
 const OrdersSite = () => {

@@ -4,27 +4,28 @@ import {base64flag} from "../utils/utils";
 import {deleteDirector} from "../api/apiAdmin";
 import {getDirectors} from "../api/api";
 
-const AdminDirectorsPanel = ({directors, setCategories}) => {
+const AdminDirectorsPanel = ({directors, setDirectors}) => {
 
 
     const handleDeleteDirector = (id) => {
         deleteDirector(id).then(response => {
             if (response.status === 500) {
-                alert('Nie można usunąć zarezerwowanego/zamówionego filmu!')
+                alert('Nie można usunąć reżysera przypisanego do filmu!')
             } else {
                 getDirectors().then((directors) => {
                     if (directors.length > 0) {
-                        setCategories(directors);
+                        setDirectors(directors);
                     } else {
-                        alert('Error ' + directors.status + ': ' + directors.message)
+                        setDirectors([])
                     }
                 })
             }
         })
     }
 
-    const directorsList = directors.map((director, index) => (
+    const directorsList = directors.sort(({ id: previousID }, { id: currentID }) => previousID - currentID).map((director, index) => (
         <tr key={director.id}>
+            <td>{director.id}</td>
             <td><img src={base64flag + director.directorImage[0].picByte} alt="" className='w-100'/></td>
             <td>{director.name}</td>
             <td>{director.surname}</td>
@@ -39,6 +40,7 @@ const AdminDirectorsPanel = ({directors, setCategories}) => {
             <Table striped bordered hover>
                 <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Thumbnail</th>
                     <th>Imię</th>
                     <th>Nazwisko</th>

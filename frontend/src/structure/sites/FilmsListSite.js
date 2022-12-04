@@ -7,7 +7,7 @@ import AdminFilmsPanel from "../../components/AdminFilmsPanel";
 import {Container, Modal} from "react-bootstrap";
 import { MultiSelect } from "react-multi-select-component";
 import FileBase64 from 'react-file-base64';
-import {addFilm} from "../../api/apiAdmin";
+import {postFilm} from "../../api/apiAdmin";
 
 const FilmsListSite = ({searchbox, setSearchbox, setFilms}) => {
 
@@ -137,7 +137,7 @@ const FilmsListSite = ({searchbox, setSearchbox, setFilms}) => {
                 new File([b64toBlob(image.base64.split(',')[1], image.base64.split(',')[0].split(':')[1].split(';')[0])], name + '-' + Date.now() + 'png'),
             );
 
-            addFilm(formData).then(res => {
+            postFilm(formData).then(res => {
                 alert(res)
             })
 
@@ -203,17 +203,16 @@ const FilmsListSite = ({searchbox, setSearchbox, setFilms}) => {
                 {applicationContext.isLoading && (
                     <LoadingSpinner />
                 )}
-
                 {
                     user && user.role === ADMIN && <AdminFilmsPanel films={applicationContext.films || []} setFilms={setFilms}/>
                 }
-
                 {(user === null || user.role === USER) && !applicationContext.isLoading && !categoryURLParam && !actorURLParam && !directorURLParam && films}
                 {(user === null || user.role === USER) && !applicationContext.isLoading && !categoryURLParam && !directorURLParam && actorFilteredFilms && actorFilms}
                 {(user === null || user.role === USER) && !applicationContext.isLoading && !categoryURLParam && !actorURLParam && directorFilteredFilms && directorFilms}
                 {(user === null || user.role === USER) && !applicationContext.isLoading && !actorURLParam && !directorURLParam && categoryFilteredFilms && categoryFilms}
 
             </div>
+
         </div>
     );
 };

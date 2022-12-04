@@ -6,7 +6,7 @@ export const deleteFilm = (id) => {
         headers: {
             'Content-Type': 'application/json'
         }
-    }).then(response => response.json())
+    }).then(response => response)
 }
 
 export const deleteCategory = (id) => {
@@ -15,7 +15,7 @@ export const deleteCategory = (id) => {
         headers: {
             'Content-Type': 'application/json'
         }
-    }).then(response => response.json())
+    }).then(response => response)
 }
 
 export const deleteActor = (id) => {
@@ -24,7 +24,7 @@ export const deleteActor = (id) => {
         headers: {
             'Content-Type': 'application/json'
         }
-    }).then(response => response.json())
+    }).then(response => response)
 }
 
 export const deleteDirector = (id) => {
@@ -33,7 +33,7 @@ export const deleteDirector = (id) => {
         headers: {
             'Content-Type': 'application/json'
         }
-    }).then(response => response.json())
+    }).then(response => response)
 }
 
 export const deleteUser = (id, adminID) => {
@@ -45,12 +45,57 @@ export const deleteUser = (id, adminID) => {
     }).then(response => response)
 }
 
-export const addFilm = (formData) => {
+export const postFilm = (formData) => {
     return fetch(baseUrl + '/movie/addMovie',{
         method: 'POST',
         body: formData,
         headers: {
-            'Content-Type': 'multipart/form-data'
-        }
+            'Content-Type': 'multipart/form-data',
+            'Access-Control-Allow-Origin': '*'
+        },
+        mode: 'cors'
     }).then(response => response.json())
 }
+
+export const postCategory = (formData) => {
+    return fetch(baseUrl + '/category/addCategory',{
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            'Access-Control-Allow-Origin': '*'
+        },
+        mode: 'cors'
+    }).then(response => response.json())
+}
+
+export const postActor = (formData) => {
+    return fetch(baseUrl + '/actor/addActor',{
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            'Access-Control-Allow-Origin': '*'
+        },
+        mode: 'cors'
+    }).then(response => response.json())
+}
+
+export const postDirector = (formData) => {
+    return fetch(baseUrl + '/actor/addActor',{
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            'Access-Control-Allow-Origin': '*'
+        },
+        mode: 'cors'
+    }).then(response => response.json())
+}
+
+export const putChangeRole = (id, currentUserID, role) => {
+    return fetch(baseUrl + `/user/changeRole/${id}?currentUserId=${currentUserID}&role=${role}`,{
+        method: 'PUT',
+    }).then(response => response.json())
+}
+
