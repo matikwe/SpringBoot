@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {Container, Modal} from "react-bootstrap";
-import {getUserReservations, postLogin, postRegister} from "../api/api";
+import {getOrders, getUserReservations, postLogin, postRegister} from "../api/api";
 import {USER} from "../utils/utils";
 
 
-const LoginRegisterModal = ({setUser, showLogin, setLoginShow, setReservations}) => {
+const LoginRegisterModal = ({setUser, showLogin, setLoginShow, setReservations, setOrders}) => {
 
 
     const [showRegister, setRegisterShow] = useState(false);
@@ -51,6 +51,16 @@ const LoginRegisterModal = ({setUser, showLogin, setLoginShow, setReservations})
                         setReservations(reservations)
                         window.localStorage.setItem('RESERVATIONS_STATE', JSON.stringify(reservations))
                         handleLoginClose()
+                    }
+                })
+                getOrders().then(orders => {
+                    if (orders.status === 500 || orders.status === 400) {
+                        alert('Nie można znaleźć zamówień dla obecnego użytkownika!')
+                        setOrders([])
+                    } else {
+                        const sortedOrdersByUser = orders.filter(order => order.reservation.user[0].id === JSON.parse(window.localStorage.getItem(USER)).id)
+                        setOrders(sortedOrdersByUser)
+                        window.localStorage.setItem('SORTED_ORDERS_STATE', JSON.stringify(sortedOrdersByUser))
                     }
                 })
             } else {

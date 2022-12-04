@@ -1,12 +1,10 @@
 import React from 'react';
-import {USER} from "../../utils/utils";
 import {Table} from "react-bootstrap";
 
 const OrdersSite = () => {
 
 
     const orders = JSON.parse(window.localStorage.getItem('SORTED_ORDERS_STATE'))
-    console.log(orders)
 
     const ordersList = orders.sort(({ id: previousID }, { id: currentID }) => previousID - currentID).map((order, index) => (
         <tr key={order.id}>

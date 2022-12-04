@@ -18,7 +18,7 @@ import AccountImg from "../assets/utils/account.svg"
 import {ADMIN, USER} from "../utils/utils";
 
 
-const Header = ({setUser, searchbox, onSearchBoxChange, showLogin, setLoginShow, setReservations}) => {
+const Header = ({setUser, searchbox, onSearchBoxChange, showLogin, setLoginShow, setReservations, setOrders}) => {
 
     const user = JSON.parse(window.localStorage.getItem(USER))
     const reservations = JSON.parse(window.localStorage.getItem('RESERVATIONS_STATE'))
@@ -38,7 +38,7 @@ const Header = ({setUser, searchbox, onSearchBoxChange, showLogin, setLoginShow,
                 <Link to={ACTORS_PATH} className='link-light text-decoration-none'>Aktorzy</Link>
                 <Link to={DIRECTORS_PATH} className='link-light text-decoration-none'>Reżyserzy</Link>
                 {user && user.role === ADMIN && <Link to={ADMIN_USERS_PATH} className='link-light text-decoration-none'>Użytkownicy</Link>}
-                {!user ? <LoginRegisterModal setUser={setUser} showLogin={showLogin} setLoginShow={setLoginShow} setReservations={setReservations}/> : (
+                {!user ? <LoginRegisterModal setUser={setUser} showLogin={showLogin} setLoginShow={setLoginShow} setReservations={setReservations} setOrders={setOrders}/> : (
                     <Dropdown className='logged-dropdown'>
                         <div className="toggle-button">
                             <Dropdown.Toggle>
@@ -61,6 +61,7 @@ const Header = ({setUser, searchbox, onSearchBoxChange, showLogin, setLoginShow,
                             <button className='w-100 dropdown-item' onClick={() => {
                                 window.localStorage.removeItem(USER)
                                 window.localStorage.removeItem('RESERVATIONS_STATE')
+                                window.localStorage.removeItem('SORTED_ORDERS_STATE')
                                 navigate(MAIN_PATH)
                                 setUser({})
                             }}>Wyloguj</button>

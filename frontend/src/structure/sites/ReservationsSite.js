@@ -1,7 +1,7 @@
 import React from 'react';
 import {USER} from "../../utils/utils";
 import {Table} from "react-bootstrap";
-import {deleteReservation, getUserReservations, postOrder} from "../../api/api";
+import {deleteReservation, getOrders, getUserReservations, postOrder} from "../../api/api";
 import {useNavigate} from "react-router-dom";
 import {ORDERS_PATH} from "../../utils/paths";
 
@@ -24,7 +24,11 @@ const ReservationsSite = ({setReservations}) => {
                         alert('Zamówiono film zgodnie z rezerwacją.')
                         setReservations(reservations)
                         window.localStorage.setItem('RESERVATIONS_STATE', JSON.stringify(reservations))
-                        navigate(ORDERS_PATH)
+                        getOrders().then(orders => {
+                            const sortedOrdersByUser = orders.filter(order => order.reservation.user[0].id === JSON.parse(window.localStorage.getItem(USER)).id)
+                            window.localStorage.setItem('SORTED_ORDERS_STATE', JSON.stringify(sortedOrdersByUser))
+                            navigate(ORDERS_PATH)
+                        })
                     }
                 })
             }

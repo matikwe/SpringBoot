@@ -95,8 +95,8 @@ const App = () => {
                         alert('Nie można znaleźć zamówień dla obecnego użytkownika!')
                         setOrders([])
                     } else {
-                        const sortedOrdersByUser = orders.filter(order => order.reservation.user[0].id + ' === ' + JSON.parse(window.localStorage.getItem(USER)).id)
-                        setReservations(sortedOrdersByUser)
+                        const sortedOrdersByUser = orders.filter(order => order.reservation.user[0].id === JSON.parse(window.localStorage.getItem(USER)).id)
+                        setOrders(sortedOrdersByUser)
                         window.localStorage.setItem('SORTED_ORDERS_STATE', JSON.stringify(sortedOrdersByUser))
                     }
                 })
@@ -126,7 +126,7 @@ const App = () => {
         <ApplicationContext.Provider value={applicationInfo}>
           <Router>
               <div>
-                  <Header user={user} setUser={setUser} searchbox={searchbox} onSearchBoxChange={onSearchboxChange} showLogin={showLogin} setLoginShow={setLoginShow} setReservations={setReservations}/>
+                  <Header user={user} setUser={setUser} searchbox={searchbox} onSearchBoxChange={onSearchboxChange} showLogin={showLogin} setLoginShow={setLoginShow} setReservations={setReservations} setOrders={setOrders}/>
 
                       <Switch>
                           <Route path={MAIN_PATH} element={<FilmsListSite searchbox={searchbox} setSearchbox={setSearchbox} setFilms={setFilms}/>}/>
