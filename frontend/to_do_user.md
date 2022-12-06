@@ -31,13 +31,13 @@ Strona szczegółów filmu:
 - ~~dodać zdj~~
 - ~~dodać opis~~ 
 - ~~dodać aktorów i reżyserów~~
-- dodać przycisk rezerwuj
+- ~~dodać przycisk rezerwuj~~
 
 Strona szczegółów profilu użytkownika:
 - ~~dodać panel prawy ze szczegółami użytkownika~~
 - ~~dodać panele lewe z formularzami zmiany hasła oraz usuwania konta~~
 
 Strona rezerwacji użytkownika:
-- stworzyć design tabeli z rezerwacjami
-- dynamiczne wyświetlanie szczegółów rezerwacji
-- realizacja mechanizmu rezerwacji
+- ~~stworzyć design tabeli z rezerwacjami~~
+- ~~dynamiczne wyświetlanie szczegółów rezerwacji~~
+- ~~realizacja mechanizmu rezerwacji~~
