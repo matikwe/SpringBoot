@@ -15,7 +15,7 @@ const FilmsListSite = ({searchbox, setSearchbox, setFilms}) => {
 
     useEffect(() => {
         setSearchbox('')
-    }, [location])
+    }, [location, setSearchbox])
 
     const applicationContext = useContext(ApplicationContext)
     const base64flag = 'data:image/png;base64,'
@@ -26,6 +26,7 @@ const FilmsListSite = ({searchbox, setSearchbox, setFilms}) => {
 
     const [show, setShow] = useState(false)
     const [image, setImage] = useState(null)
+    const [imageFile, setImageFile] = useState(null)
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const [categories, setCategories] = useState([])
@@ -117,6 +118,13 @@ const FilmsListSite = ({searchbox, setSearchbox, setFilms}) => {
     })
 
 
+    const onImageChange = (e) => {
+        const file = e.target.files[0];
+        setImageFile(file)
+        setImage(URL.createObjectURL(file));
+    };
+
+
     const handleAddSubmit = (e) => {
         e.preventDefault()
         if (image && name && categories && actors && directors && quantity) {
@@ -131,11 +139,8 @@ const FilmsListSite = ({searchbox, setSearchbox, setFilms}) => {
             }
 
             const formData = new FormData();
-            formData.append('movie', movie)
-            formData.append(
-                'imageFile',
-                new File([b64toBlob(image.base64.split(',')[1], image.base64.split(',')[0].split(':')[1].split(';')[0])], name + '-' + Date.now() + 'png'),
-            );
+            formData.append('movie', JSON.stringify(movie))
+            formData.append('imageFile', imageFile);
 
             postFilm(formData).then(res => {
                 alert(res)
@@ -168,7 +173,10 @@ const FilmsListSite = ({searchbox, setSearchbox, setFilms}) => {
                             <h1>Dodawanie Filmu</h1>
                             <form onSubmit={handleAddSubmit}>
                                 <div className="row pt-4 px-4 admin-file-input">
-                                    <FileBase64 onDone={setImage}/>
+                                    <input type="file" onChange={onImageChange} accept='image/*'/>
+                                </div>
+                                <div className="row pt-4 px-4 admin-file-input">
+                                    <img src={image} alt="" />
                                 </div>
                                 <div className="row pt-4 px-4">
                                     <input placeholder='Nazwa filmu' type="text" value={name} onChange={e => setName(e.target.value)} className='p-2 w-auto ms-2'/>

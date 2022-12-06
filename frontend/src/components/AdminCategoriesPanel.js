@@ -8,7 +8,6 @@ const AdminCategoriesPanel = ({categories, setCategories}) => {
 
     const handleDeleteCategory = (id) => {
         deleteCategory(id).then(response => {
-            console.log(response)
             if (response.status === 500) {
                 alert('Nie można usunąć kategorii, gdyż jest ona przypisana do filmu!')
             } else {

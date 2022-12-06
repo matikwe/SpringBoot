@@ -49,40 +49,28 @@ export const postFilm = (formData) => {
     return fetch(baseUrl + '/movie/addMovie',{
         method: 'POST',
         body: formData,
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        },
+        mode: "no-cors"
     }).then(response => response.json())
 }
 
 export const postCategory = (formData) => {
     return fetch(baseUrl + '/category/addCategory',{
         method: 'POST',
-        body: formData,
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        },
-        mode: "no-cors"
+        body: formData
     }).then(response => response.json())
 }
 
 export const postActor = (formData) => {
     return fetch(baseUrl + '/actor/addActor',{
         method: 'POST',
-        body: formData,
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        },
+        body: formData
     }).then(response => response.json())
 }
 
 export const postDirector = (formData) => {
     return fetch(baseUrl + '/actor/addActor',{
         method: 'POST',
-        body: formData,
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        },
+        body: formData
     }).then(response => response.json())
 }
 
