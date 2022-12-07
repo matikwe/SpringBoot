@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @CrossOrigin
@@ -51,9 +52,16 @@ public class ActorController {
     @PutMapping(path = "{actorId}")
     public Actor updateActor(
             @PathVariable("actorId") Long actorId,
-            @RequestParam String name,
-            @RequestParam String surname) {
-        return actorService.updateActor(actorId, name, surname);
+            @RequestPart("actor") String actor,
+            @RequestPart("imageFile") MultipartFile[] imageFile) {
+        Actor actorJson = Utils.getActorJson(actor);
+        List<ImageModel> images = null;
+        try {
+            images = Utils.uploadImage(imageFile);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return actorService.updateActor(actorId, actorJson, images);
     }
 
     @GetMapping(path = "getImage/{actorId}")

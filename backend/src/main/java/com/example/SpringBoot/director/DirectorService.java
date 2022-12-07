@@ -1,11 +1,13 @@
 package com.example.SpringBoot.director;
 
+import com.example.SpringBoot.utils.ImageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -42,17 +44,21 @@ public class DirectorService {
     }
 
     @Transactional
-    public Director updateDirector(Long directorId, String name, String surname) {
+    public Director updateDirector(Long directorId, Director directorJson, List<ImageModel> images) {
         Director director = getDirector(directorId);
-        if (name != null && name.length() > 0 &&
-                !Objects.equals(director.getName(), name)) {
-            director.setName(name);
+        if (directorJson.getName() != null && directorJson.getName().length() > 0 &&
+                !Objects.equals(director.getName(), directorJson.getName())) {
+            director.setName(directorJson.getName());
         }
 
-        if (surname != null && surname.length() > 0 &&
-                !Objects.equals(director.getSurname(), surname)) {
-            director.setSurname(surname);
+        if (directorJson.getSurname() != null && directorJson.getSurname().length() > 0 &&
+                !Objects.equals(director.getSurname(), directorJson.getSurname())) {
+            director.setSurname(directorJson.getSurname());
         }
+        if (!Arrays.equals(director.getDirectorImage().get(0).getPicByte(), images.get(0).getPicByte())) {
+            director.setDirectorImage(images);
+        }
+
         return director;
     }
 

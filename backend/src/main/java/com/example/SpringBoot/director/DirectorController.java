@@ -50,9 +50,17 @@ public class DirectorController {
     @PutMapping(path = "{directorId}")
     public Director updateDirector(
             @PathVariable("directorId") Long directorId,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String surname) {
-        return directorService.updateDirector(directorId, name, surname);
+            @RequestPart("director") String director,
+            @RequestPart("imageFile") MultipartFile[] imageFile) {
+        Director directorJson = Utils.getDirectorJson(director);
+        List<ImageModel> images= null;
+        try {
+            images = Utils.uploadImage(imageFile);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return directorService.updateDirector(directorId, directorJson, images);
     }
 
     @GetMapping(path = "getImage/{directorId}")

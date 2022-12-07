@@ -50,8 +50,17 @@ public class MovieController {
     @PutMapping(path = "{movieId}")
     public Movie updateMovie(
             @PathVariable("movieId") Long movieId,
-            @RequestBody Movie movie) {
-        return movieService.updateMovie(movieId, movie);
+            @RequestPart("movie") String movie,
+            @RequestPart("imageFile") MultipartFile[] imageFile) {
+        Movie movieJson = Utils.getMovieJson(movie);
+        List<ImageModel> images = null;
+        try {
+            images = Utils.uploadImage(imageFile);
+            movieJson.setMovieImage(images);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return movieService.updateMovie(movieId, movieJson, images);
     }
 
     @GetMapping(path = "{movieId}/addDirector")

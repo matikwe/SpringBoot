@@ -6,12 +6,14 @@ import com.example.SpringBoot.category.Category;
 import com.example.SpringBoot.category.CategoryRepository;
 import com.example.SpringBoot.director.Director;
 import com.example.SpringBoot.director.DirectorRepository;
+import com.example.SpringBoot.utils.ImageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -56,7 +58,7 @@ public class MovieService {
     }
 
     @Transactional
-    public Movie updateMovie(Long movieId, Movie movie) {
+    public Movie updateMovie(Long movieId, Movie movie, List<ImageModel> images) {
         Movie movieExist = findMovieById(movieId);
 
         if (movie.getTitle() != null && movie.getTitle().length() > 0 &&
@@ -84,6 +86,11 @@ public class MovieService {
         if (movie.getDirector() != null) {
             movieExist.setDirector(movie.getDirector());
         }
+
+        if (!Arrays.equals(movieExist.getMovieImage().get(0).getPicByte(), images.get(0).getPicByte())) {
+            movieExist.setMovieImage(images);
+        }
+
         return movieExist;
     }
 

@@ -49,7 +49,15 @@ public class CategoryController {
     @PutMapping(path = "{categoryId}")
     public Category updateCategory(
             @PathVariable("categoryId") Long categoryId,
-            @RequestParam String category) {
-        return categoryService.updateCategory(categoryId, category);
+            @RequestPart String category,
+            @RequestPart("imageFile") MultipartFile[] imageFile) {
+        Category categoryJson = Utils.getCategoryJson(category);
+        List<ImageModel> images = null;
+        try {
+            images = Utils.uploadImage(imageFile);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return categoryService.updateCategory(categoryId, categoryJson, images);
     }
 }

@@ -1,11 +1,13 @@
 package com.example.SpringBoot.actor;
 
+import com.example.SpringBoot.utils.ImageModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -42,18 +44,21 @@ public class ActorService {
     }
 
     @Transactional
-    public Actor updateActor(Long actorId, String name, String surname) {
+    public Actor updateActor(Long actorId, Actor a, List<ImageModel> images) {
         Actor actor = getActor(actorId);
 
-        if (name != null && name.length() > 0 &&
-                !Objects.equals(actor.getName(), name)) {
-            actor.setName(name);
+        if (a.getName() != null && a.getName().length() > 0 &&
+                !Objects.equals(actor.getName(), a.getName())) {
+            actor.setName(a.getName());
+        }
+        if (a.getSurname() != null && a.getSurname().length() > 0 &&
+                !Objects.equals(actor.getSurname(), a.getSurname())) {
+            actor.setSurname(a.getSurname());
+        }
+        if (!Arrays.equals(actor.getActorImage().get(0).getPicByte(), images.get(0).getPicByte())) {
+            actor.setActorImage(images);
         }
 
-        if (surname != null && surname.length() > 0 &&
-                !Objects.equals(actor.getSurname(), surname)) {
-            actor.setSurname(surname);
-        }
         return actor;
     }
 
