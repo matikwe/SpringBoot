@@ -2,12 +2,12 @@ import React, {useContext, useEffect, useState} from 'react';
 import {ApplicationContext} from "../../context/ApplicationContext";
 import LoadingSpinner from "../../utils/spinner";
 import {Link, useLocation} from "react-router-dom";
-import {ADMIN, b64toBlob, USER} from "../../utils/utils";
+import {ADMIN, USER} from "../../utils/utils";
 import AdminFilmsPanel from "../../components/AdminFilmsPanel";
 import {Container, Modal} from "react-bootstrap";
-import { MultiSelect } from "react-multi-select-component";
-import FileBase64 from 'react-file-base64';
+import {MultiSelect} from "react-multi-select-component";
 import {postFilm} from "../../api/apiAdmin";
+import {getFilms} from "../../api/api";
 
 const FilmsListSite = ({searchbox, setSearchbox, setFilms}) => {
 
@@ -142,8 +142,20 @@ const FilmsListSite = ({searchbox, setSearchbox, setFilms}) => {
             formData.append('movie', JSON.stringify(movie))
             formData.append('imageFile', imageFile);
 
-            postFilm(formData).then(res => {
-                alert(res)
+            postFilm(formData).then(response => {
+                if (response.status === 500) {
+                    alert('Film już istnieje!')
+                } else {
+                    getFilms().then((films) => {
+                        if (films.length > 0) {
+                            setFilms(films);
+                            handleModalClose()
+                            alert('Film został pomyślnie dodany.')
+                        } else {
+                            setFilms([])
+                        }
+                    })
+                }
             })
 
         } else {
@@ -153,6 +165,14 @@ const FilmsListSite = ({searchbox, setSearchbox, setFilms}) => {
 
     const handleModalClose = () => {
         setShow(false)
+        setImage(null)
+        setImageFile(null)
+        setName('')
+        setDescription('')
+        setCategories([])
+        setActors([])
+        setDirectors([])
+        setQuantity(1)
     }
 
     return (

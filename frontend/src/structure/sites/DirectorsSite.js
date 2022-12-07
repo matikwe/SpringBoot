@@ -8,6 +8,7 @@ import AdminFilmsPanel from "../../components/AdminFilmsPanel";
 import AdminDirectorsPanel from "../../components/AdminDirectorsPanel";
 import {Container, Modal} from "react-bootstrap";
 import {postDirector} from "../../api/apiAdmin";
+import {getActors, getDirectors} from "../../api/api";
 
 const DirectorsSite = ({searchbox, setSearchbox, setDirectors}) => {
 
@@ -61,14 +62,23 @@ const DirectorsSite = ({searchbox, setSearchbox, setDirectors}) => {
             }
 
             const formData = new FormData();
-            formData.append('director', director)
-            formData.append(
-                'imageFile',
-                imageFile,
-            );
+            formData.append('director', JSON.stringify(director))
+            formData.append('imageFile', imageFile);
 
-            postDirector(formData).then(res => {
-                alert(res)
+            postDirector(formData).then(response => {
+                if (response.status === 500) {
+                    alert('Reżyser już istnieje!')
+                } else {
+                    getDirectors().then((directors) => {
+                        if (directors.length > 0) {
+                            setDirectors(directors);
+                            handleModalClose()
+                            alert('Reżyser został pomyślnie dodany.')
+                        } else {
+                            setDirectors([])
+                        }
+                    })
+                }
             })
 
         } else {

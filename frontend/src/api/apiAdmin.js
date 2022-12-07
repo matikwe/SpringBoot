@@ -50,33 +50,33 @@ export const postFilm = (formData) => {
         method: 'POST',
         body: formData,
         mode: "no-cors"
-    }).then(response => response.json())
+    }).then(response => response)
 }
 
 export const postCategory = (formData) => {
     return fetch(baseUrl + '/category/addCategory',{
         method: 'POST',
         body: formData
-    }).then(response => response.json())
+    }).then(response => response)
 }
 
 export const postActor = (formData) => {
     return fetch(baseUrl + '/actor/addActor',{
         method: 'POST',
         body: formData
-    }).then(response => response.json())
+    }).then(response => response)
 }
 
 export const postDirector = (formData) => {
-    return fetch(baseUrl + '/actor/addActor',{
+    return fetch(baseUrl + '/director/addDirector',{
         method: 'POST',
         body: formData
-    }).then(response => response.json())
+    }).then(response => response)
 }
 
 export const putChangeRole = (id, currentUserID, role) => {
     return fetch(baseUrl + `/user/changeRole/${id}?currentUserId=${currentUserID}&role=${role}`,{
         method: 'PUT',
-    }).then(response => response.json())
+    }).then(response => response)
 }
 

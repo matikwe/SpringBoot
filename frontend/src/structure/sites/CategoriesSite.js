@@ -7,6 +7,7 @@ import {ADMIN, base64flag, USER} from "../../utils/utils";
 import AdminCategoriesPanel from "../../components/AdminCategoriesPanel";
 import {Container, Modal} from "react-bootstrap";
 import {postCategory} from "../../api/apiAdmin";
+import {getCategories, getFilms} from "../../api/api";
 
 const CategoriesSite = ({searchbox, setSearchbox, setCategories}) => {
 
@@ -59,8 +60,20 @@ const CategoriesSite = ({searchbox, setSearchbox, setCategories}) => {
             formData.append('category', JSON.stringify(category))
             formData.append('imageFile', imageFile);
 
-            postCategory(formData).then(res => {
-                alert(res)
+            postCategory(formData).then(response => {
+                if (response.status === 500) {
+                    alert('Kategoria już istnieje!')
+                } else {
+                    getCategories().then((categories) => {
+                        if (categories.length > 0) {
+                            setCategories(categories);
+                            handleModalClose()
+                            alert('Kategoria została pomyślnie dodana.')
+                        } else {
+                            setCategories([])
+                        }
+                    })
+                }
             })
 
         } else {

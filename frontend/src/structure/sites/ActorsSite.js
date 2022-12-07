@@ -7,6 +7,7 @@ import {ADMIN, base64flag, USER} from "../../utils/utils";
 import AdminActorsPanel from "../../components/AdminActorsPanel";
 import {Container, Modal} from "react-bootstrap";
 import {postActor} from "../../api/apiAdmin";
+import {getActors, getCategories} from "../../api/api";
 
 const ActorsSite = ({searchbox, setSearchbox, setActors}) => {
 
@@ -59,14 +60,23 @@ const ActorsSite = ({searchbox, setSearchbox, setActors}) => {
             }
 
             const formData = new FormData();
-            formData.append('actor', actor)
-            formData.append(
-                'imageFile',
-                imageFile,
-            );
+            formData.append('actor', JSON.stringify(actor))
+            formData.append('imageFile', imageFile);
 
-            postActor(formData).then(res => {
-                alert(res)
+            postActor(formData).then(response => {
+                if (response.status === 500) {
+                    alert('Aktor już istnieje!')
+                } else {
+                    getActors().then((actors) => {
+                        if (actors.length > 0) {
+                            setActors(actors);
+                            handleModalClose()
+                            alert('Aktor został pomyślnie dodany.')
+                        } else {
+                            setActors([])
+                        }
+                    })
+                }
             })
 
         } else {
