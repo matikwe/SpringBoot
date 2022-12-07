@@ -232,7 +232,7 @@ const FilmsListSite = ({searchbox, setSearchbox, setFilms}) => {
                     <LoadingSpinner />
                 )}
                 {
-                    user && user.role === ADMIN && <AdminFilmsPanel films={applicationContext.films || []} setFilms={setFilms}/>
+                    user && user.role === ADMIN && <AdminFilmsPanel films={applicationContext.films || []} setFilms={setFilms} categoriesOptions={categoriesOptions} actorsOptions={actorsOptions} directorsOptions={directorsOptions}/>
                 }
                 {(user === null || user.role === USER) && !applicationContext.isLoading && !categoryURLParam && !actorURLParam && !directorURLParam && films}
                 {(user === null || user.role === USER) && !applicationContext.isLoading && !categoryURLParam && !directorURLParam && actorFilteredFilms && actorFilms}

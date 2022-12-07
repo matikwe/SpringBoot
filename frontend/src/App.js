@@ -126,7 +126,7 @@ const App = () => {
         <ApplicationContext.Provider value={applicationInfo}>
           <Router>
               <div>
-                  <Header user={user} setUser={setUser} searchbox={searchbox} onSearchBoxChange={onSearchboxChange} showLogin={showLogin} setLoginShow={setLoginShow} setReservations={setReservations} setOrders={setOrders}/>
+                  <Header user={user} setUser={setUser} searchbox={searchbox} onSearchBoxChange={onSearchboxChange} showLogin={showLogin} setLoginShow={setLoginShow} setReservations={setReservations} setOrders={setOrders} setFilms={setFilms}/>
 
                       <Switch>
                           <Route path={MAIN_PATH} element={<FilmsListSite searchbox={searchbox} setSearchbox={setSearchbox} setFilms={setFilms}/>}/>

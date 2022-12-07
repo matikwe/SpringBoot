@@ -16,9 +16,10 @@ import {
 import LoginRegisterModal from "../components/LoginRegisterModal";
 import AccountImg from "../assets/utils/account.svg"
 import {ADMIN, USER} from "../utils/utils";
+import {getFilms} from "../api/api";
 
 
-const Header = ({setUser, searchbox, onSearchBoxChange, showLogin, setLoginShow, setReservations, setOrders}) => {
+const Header = ({setUser, setFilms, searchbox, onSearchBoxChange, showLogin, setLoginShow, setReservations, setOrders}) => {
 
     const user = JSON.parse(window.localStorage.getItem(USER))
     const reservations = JSON.parse(window.localStorage.getItem('RESERVATIONS_STATE'))
@@ -64,6 +65,14 @@ const Header = ({setUser, searchbox, onSearchBoxChange, showLogin, setLoginShow,
                                 window.localStorage.removeItem('SORTED_ORDERS_STATE')
                                 navigate(MAIN_PATH)
                                 setUser({})
+                                getFilms().then((films) => {
+                                    if (films.length > 0) {
+                                        setFilms(films);
+                                        window.localStorage.setItem('FILMS_STATE', JSON.stringify(films))
+                                    } else {
+                                        setFilms([])
+                                    }
+                                })
                             }}>Wyloguj</button>
                         </Dropdown.Menu>
                     </Dropdown>
