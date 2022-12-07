@@ -80,3 +80,9 @@ export const putChangeRole = (id, currentUserID, role) => {
     }).then(response => response)
 }
 
+export const putFilm = (formData, id) => {
+    return fetch(baseUrl + `/movie/${id}`,{
+        method: 'PUT',
+        body: formData
+    }).then(response => response)
+}

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Container, Modal, Table} from "react-bootstrap";
 import {base64flag} from "../utils/utils";
-import {deleteFilm} from "../api/apiAdmin";
+import {deleteFilm, putFilm} from "../api/apiAdmin";
 import {getFilms} from "../api/api";
 import {MultiSelect} from "react-multi-select-component";
 
@@ -16,6 +16,7 @@ const AdminFilmsPanel = ({films, setFilms, categoriesOptions, actorsOptions, dir
     const [actors, setActors] = useState([])
     const [directors, setDirectors] = useState([])
     const [quantity, setQuantity] = useState(1)
+    const [filmID, setFilmID] = useState(null)
 
 
 
@@ -36,10 +37,6 @@ const AdminFilmsPanel = ({films, setFilms, categoriesOptions, actorsOptions, dir
     }
 
 
-    const handleEditFilm = () => {
-
-    }
-
     const onImageChange = (e) => {
         const file = e.target.files[0];
         setImageFile(file)
@@ -51,12 +48,11 @@ const AdminFilmsPanel = ({films, setFilms, categoriesOptions, actorsOptions, dir
         const film = films.find(film => {
             return film.id === Number(id)
         })
-        console.log(film.category)
-        console.log(categories)
         setName(film.title)
         setDescription(film.description)
         setImage(base64flag + film.movieImage[0].picByte)
         setQuantity(film.quantity)
+        setFilmID(film.id)
     }
 
     const handleCloseEditFilm = () => {
@@ -70,6 +66,43 @@ const AdminFilmsPanel = ({films, setFilms, categoriesOptions, actorsOptions, dir
         setDirectors([])
         setQuantity(1)
     }
+
+    const handleEditFilm = (e) => {
+        e.preventDefault()
+        if (imageFile && name && categories.length > 0 && actors.length > 0 && directors.length > 0 && quantity) {
+            const movie = {
+                title: name,
+                quantity: Number(quantity),
+                description: description,
+                director: directors.map(director => director.value),
+                category: categories.map(category => category.value),
+                actor: actors.map(actor => actor.value)
+            }
+
+            const formData = new FormData();
+            formData.append('movie', JSON.stringify(movie))
+            formData.append('imageFile', imageFile);
+
+            putFilm(formData, filmID).then(response => {
+                if (response.status === 500) {
+                    alert('Nie można zaktualizować filmu!')
+                } else {
+                    getFilms().then((films) => {
+                        if (films.length > 0) {
+                            setFilms(films);
+                            handleCloseEditFilm()
+                            alert('Film został pomyślnie zaktualizowany.')
+                        } else {
+                            setFilms([])
+                        }
+                    })
+                }
+            })
+        } else {
+            alert('Proszę uzupełnić formularz')
+        }
+    }
+
 
     const handleDeleteFilm = (id) => {
         deleteFilm(id).then(response => {
@@ -96,6 +129,7 @@ const AdminFilmsPanel = ({films, setFilms, categoriesOptions, actorsOptions, dir
             <td>{film.id}</td>
             <td><img src={base64flag + film.movieImage[0].picByte} alt=""/></td>
             <td>{film.title}</td>
+            <td>{film.description}</td>
             <td>{getList(film.category)}</td>
             <td>{getList(film.actor)}</td>
             <td>{getList(film.director)}</td>
@@ -117,6 +151,7 @@ const AdminFilmsPanel = ({films, setFilms, categoriesOptions, actorsOptions, dir
                         <th>ID</th>
                         <th>Thumbnail</th>
                         <th>Film</th>
+                        <th>Opis</th>
                         <th>Kategoria</th>
                         <th>Aktorzy</th>
                         <th>Reżyserzy</th>
