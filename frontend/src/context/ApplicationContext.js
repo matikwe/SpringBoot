@@ -1,13 +1,10 @@
 import React from 'react';
 
 const defaultValue = {
-  films: [],
+  movies: [],
   categories: [],
   actors: [],
   directors: [],
-  user: {},
-  reservations: [],
-  orders: [],
   isLoading: false,
 };
 
