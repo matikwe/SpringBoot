@@ -1,10 +1,10 @@
 package com.example.SpringBoot.director;
 
 import com.example.SpringBoot.movie.Movie;
+import com.example.SpringBoot.utils.ImageModel;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity(name = "Director")
 @Table(
@@ -22,9 +22,17 @@ public class Director {
     private Long id;
     private String name;
     private String surname;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "director_images",
+            joinColumns = {
+                    @JoinColumn(name = "id")
+            }, inverseJoinColumns = {
+            @JoinColumn(name = "image_id")
+    }
+    )
+    private List<ImageModel> directorImage;
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Movie> movie;
-
 
     public Director() {
     }
@@ -34,10 +42,12 @@ public class Director {
         this.surname = surname;
     }
 
-    public Director(Long id, String name, String surname) {
-        this.id = id;
-        this.name = name;
-        this.surname = surname;
+    public List<ImageModel> getDirectorImage() {
+        return directorImage;
+    }
+
+    public void setDirectorImage(List<ImageModel> directorImage) {
+        this.directorImage = directorImage;
     }
 
     public String getName() {

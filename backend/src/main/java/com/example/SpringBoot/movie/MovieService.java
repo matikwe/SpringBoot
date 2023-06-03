@@ -6,10 +6,14 @@ import com.example.SpringBoot.category.Category;
 import com.example.SpringBoot.category.CategoryRepository;
 import com.example.SpringBoot.director.Director;
 import com.example.SpringBoot.director.DirectorRepository;
+import com.example.SpringBoot.utils.ImageModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -33,26 +37,28 @@ public class MovieService {
         return movieRepository.findAll();
     }
 
-    public void addMovie(Movie movie) {
+    public Movie addMovie(Movie movie) {
         Optional<Movie> movieExist = movieRepository.checkExistMovie(movie.getTitle());
 
         if (movieExist.isPresent()) {
             throw new IllegalStateException("Movie :" + movie.getTitle() + " exist!");
         }
         movieRepository.save(movie);
+        return movie;
     }
 
-    public void deleteMovie(Long movieId) {
+    public ResponseEntity deleteMovie(Long movieId) {
         boolean exist = movieRepository.existsById(movieId);
 
         if (!exist) {
             throw new IllegalStateException("Movie with id: " + movieId + " does not exist !");
         }
         movieRepository.deleteById(movieId);
+        return new ResponseEntity("Movie deleted successfully.", HttpStatus.OK);
     }
 
     @Transactional
-    public void updateMovie(Long movieId, Movie movie) {
+    public Movie updateMovie(Long movieId, Movie movie, List<ImageModel> images) {
         Movie movieExist = findMovieById(movieId);
 
         if (movie.getTitle() != null && movie.getTitle().length() > 0 &&
@@ -62,6 +68,11 @@ public class MovieService {
 
         if (movie.getQuantity() >= 0 && movie.getQuantity() != movieExist.getQuantity()) {
             movieExist.setQuantity(movie.getQuantity());
+        }
+
+        if (movie.getDescription() != null && movie.getDescription().length() > 0 &&
+                !Objects.equals(movie.getDescription(), movieExist.getDescription())) {
+            movieExist.setDescription(movie.getDescription());
         }
 
         if (movie.getCategory() != null) {
@@ -75,6 +86,12 @@ public class MovieService {
         if (movie.getDirector() != null) {
             movieExist.setDirector(movie.getDirector());
         }
+
+        if (!Arrays.equals(movieExist.getMovieImage().get(0).getPicByte(), images.get(0).getPicByte())) {
+            movieExist.setMovieImage(images);
+        }
+
+        return movieExist;
     }
 
     @Transactional
@@ -172,6 +189,11 @@ public class MovieService {
         } else {
             throw new IllegalStateException("Actor with id " + actor.getId() + " cannot be removed.");
         }
+    }
+
+    public byte[] getImage(Long movieId) {
+        Movie movieExist = findMovieById(movieId);
+        return movieExist.getMovieImage().get(0).getPicByte();
     }
 
     private Movie findMovieById(Long movieId) {

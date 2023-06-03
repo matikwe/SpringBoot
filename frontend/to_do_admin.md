@@ -1,0 +1,4 @@
+- ~~dodawanie filmów, kategorii, aktorów, reżyserów~~
+- edytowanie filmów, kategorii, aktorów, reżyserów
+- ~~zmiana roli użytkownika~~
+- ~~usuwanie filmów, kategorii, aktorów, reżyserów, użytkowników~~

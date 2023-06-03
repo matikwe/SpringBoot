@@ -1,6 +1,7 @@
 package com.example.SpringBoot.category;
 
 import com.example.SpringBoot.movie.Movie;
+import com.example.SpringBoot.utils.ImageModel;
 
 import javax.persistence.*;
 import java.util.List;
@@ -20,6 +21,15 @@ public class Category {
     )
     private Long id;
     private String category;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "category_images",
+            joinColumns = {
+                    @JoinColumn(name = "id")
+            }, inverseJoinColumns = {
+            @JoinColumn(name = "image_id")
+    }
+    )
+    private List<ImageModel> categoryImage;
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Movie> movie;
 
@@ -28,6 +38,14 @@ public class Category {
 
     public Category(String category) {
         this.category = category;
+    }
+
+    public List<ImageModel> getCategoryImage() {
+        return categoryImage;
+    }
+
+    public void setCategoryImage(List<ImageModel> categoryImage) {
+        this.categoryImage = categoryImage;
     }
 
     public Long getId() {

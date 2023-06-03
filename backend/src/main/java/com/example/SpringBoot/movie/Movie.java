@@ -4,6 +4,7 @@ import com.example.SpringBoot.actor.Actor;
 import com.example.SpringBoot.category.Category;
 import com.example.SpringBoot.director.Director;
 import com.example.SpringBoot.reservation.Reservation;
+import com.example.SpringBoot.utils.ImageModel;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ public class Movie {
     )
     private Long id;
     private String title;
+
+    private String description;
     private int quantity;
     @ManyToMany
     @JoinColumn(name = "director_id")
@@ -37,18 +40,45 @@ public class Movie {
     @JoinColumn(name = "actor_id")
     private List<Actor> actor;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "movie_images",
+            joinColumns = {
+                    @JoinColumn(name = "id")
+            }, inverseJoinColumns = {
+            @JoinColumn(name = "image_id")
+    }
+    )
+    private List<ImageModel> movieImage;
+
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Reservation> reservation;
 
     public Movie() {
     }
 
-    public Movie(String title, int quantity) {
+    public Movie(String title, int quantity, String description) {
         this.title = title;
         this.quantity = quantity;
+        this.description = description;
         director = new ArrayList<>();
         category = new ArrayList<>();
         actor = new ArrayList<>();
+    }
+
+    public List<ImageModel> getMovieImage() {
+        return movieImage;
+    }
+
+    public void setMovieImage(List<ImageModel> movieImage) {
+        this.movieImage = movieImage;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getQuantity() {

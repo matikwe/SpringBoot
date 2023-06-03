@@ -1,12 +1,14 @@
 package com.example.SpringBoot.user;
 
+import com.example.SpringBoot.utils.OldPassword;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping(path = "api/v1/user")
 public class UserController {
     private final UserService userService;
@@ -22,38 +24,42 @@ public class UserController {
     }
 
     @PostMapping(path = "register")
-    public void registerNewUser(
+    public User registerNewUser(
             @RequestBody User user) {
         user.setRole(Role.USER.name());
-        userService.addNewUser(user);
+        return userService.addNewUser(user);
     }
 
     @DeleteMapping(path = "{userId}")
-    public void deleteUser(
-            @PathVariable("userId") Long id) {
-        userService.deleteUser(id);
+    public ResponseEntity deleteUser(
+            @PathVariable("userId") Long id,
+            @RequestBody OldPassword oldPassword) {
+        return userService.deleteUser(id, oldPassword);
     }
 
     @PutMapping(path = "{userId}")
-    public void updateUser(
+    public User updateUser(
             @PathVariable("userId") Long id,
-            @RequestParam(required = false) String login,
-            @RequestParam(required = false) String password,
-            @RequestParam(required = false) String email,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String surname) {
-        userService.updateUser(id, login, password, email, name, surname);
+            @RequestBody User user,
+            @RequestParam String oldPassword) {
+        return userService.updateUser(id, user, oldPassword);
     }
 
-    @GetMapping(path = "login")
-    public void verifyLoginDetails(
-            @RequestParam String login,
-            @RequestParam String password) {
-        userService.verifyLoginDetails(login, password);
+    @PostMapping(path = "login")
+    public User verifyLoginDetails(
+            @RequestBody User user) {
+        return userService.verifyLoginDetails(user.getLogin(), user.getPassword());
     }
 
     @PutMapping(path = "changeRole/{userIdToChange}")
-    public void changeRole(@PathVariable("userIdToChange") Long userIdToChange, @RequestParam Long currentUserId, @RequestParam String role) {
-        userService.changeRole(userIdToChange, currentUserId, role);
+    public User changeRole(@PathVariable("userIdToChange") Long userIdToChange, @RequestParam Long currentUserId, @RequestParam String role) {
+        return userService.changeRole(userIdToChange, currentUserId, role);
+    }
+
+    @DeleteMapping(path = "deleteUserFromAdminPanel/{userIdToDelete}")
+    public ResponseEntity deleteUserFromAdminPanel(
+            @RequestParam Long currentUser,
+            @PathVariable("userIdToDelete") Long userIdToDelete){
+        return userService.deleteUserFromAdminPanel(currentUser, userIdToDelete);
     }
 }

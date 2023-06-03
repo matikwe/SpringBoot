@@ -1,11 +1,18 @@
 package com.example.SpringBoot.director;
 
+import com.example.SpringBoot.utils.ImageModel;
+import com.example.SpringBoot.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping(path = "api/v1/director")
 public class DirectorController {
     private final DirectorService directorService;
@@ -21,22 +28,46 @@ public class DirectorController {
     }
 
     @PostMapping(path = "addDirector")
-    public void addDirector(
-            @RequestBody Director director) {
-        directorService.addDirector(director);
+    public Director addDirector(
+            @RequestPart("director") String director,
+            @RequestPart("imageFile") MultipartFile[] imageFile) {
+        Director directorJson = Utils.getDirectorJson(director);
+        try {
+            List<ImageModel> images = Utils.uploadImage(imageFile);
+            directorJson.setDirectorImage(images);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return directorService.addDirector(directorJson);
     }
 
     @DeleteMapping(path = "{directorId}")
-    public void deleteDirector(
+    public ResponseEntity deleteDirector(
             @PathVariable("directorId") Long directorId) {
-        directorService.deleteDirector(directorId);
+        return directorService.deleteDirector(directorId);
     }
 
     @PutMapping(path = "{directorId}")
-    public void updateDirector(
+    public Director updateDirector(
             @PathVariable("directorId") Long directorId,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String surname) {
-        directorService.updateDirector(directorId, name, surname);
+            @RequestPart("director") String director,
+            @RequestPart("imageFile") MultipartFile[] imageFile) {
+        Director directorJson = Utils.getDirectorJson(director);
+        List<ImageModel> images= null;
+        try {
+            images = Utils.uploadImage(imageFile);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return directorService.updateDirector(directorId, directorJson, images);
+    }
+
+    @GetMapping(path = "getImage/{directorId}")
+    public ResponseEntity<?> getImage(@PathVariable("directorId") Long directorId) {
+        byte[] image = directorService.getImage(directorId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.valueOf("image/png"))
+                .body(image);
     }
 }

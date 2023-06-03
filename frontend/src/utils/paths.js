@@ -1,5 +1,11 @@
 export const MAIN_PATH = '/'
 export const FILMS_PATH = '/films'
+export const FILM_PATH = '/films/:id'
 export const CATEGORIES_PATH = '/categories'
 export const ACTORS_PATH = '/actors'
 export const DIRECTORS_PATH = '/directors'
+export const PROFILE_PATH = '/profile'
+export const RESERVATIONS_PATH = '/reservations'
+export const ORDERS_PATH = '/orders'
+
+export const ADMIN_USERS_PATH = '/users'

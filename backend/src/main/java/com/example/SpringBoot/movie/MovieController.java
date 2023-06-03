@@ -1,11 +1,18 @@
 package com.example.SpringBoot.movie;
 
+import com.example.SpringBoot.utils.ImageModel;
+import com.example.SpringBoot.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping(path = "api/v1/movie")
 public class MovieController {
     private final MovieService movieService;
@@ -21,22 +28,39 @@ public class MovieController {
     }
 
     @PostMapping(path = "addMovie")
-    public void addMovie(
-            @RequestBody Movie movie) {
-        movieService.addMovie(movie);
+    public Movie addMovie(
+            @RequestPart("movie") String movie,
+            @RequestPart("imageFile") MultipartFile[] imageFile) {
+        Movie movieJson = Utils.getMovieJson(movie);
+        try {
+            List<ImageModel> images = Utils.uploadImage(imageFile);
+            movieJson.setMovieImage(images);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return movieService.addMovie(movieJson);
     }
 
     @DeleteMapping(path = "{movieId}")
-    public void deleteMovie(
+    public ResponseEntity deleteMovie(
             @PathVariable("movieId") Long movieId) {
-        movieService.deleteMovie(movieId);
+        return movieService.deleteMovie(movieId);
     }
 
     @PutMapping(path = "{movieId}")
-    public void updateMovie(
+    public Movie updateMovie(
             @PathVariable("movieId") Long movieId,
-            @RequestBody Movie movie) {
-        movieService.updateMovie(movieId, movie);
+            @RequestPart("movie") String movie,
+            @RequestPart("imageFile") MultipartFile[] imageFile) {
+        Movie movieJson = Utils.getMovieJson(movie);
+        List<ImageModel> images = null;
+        try {
+            images = Utils.uploadImage(imageFile);
+            movieJson.setMovieImage(images);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return movieService.updateMovie(movieId, movieJson, images);
     }
 
     @GetMapping(path = "{movieId}/addDirector")
@@ -79,5 +103,13 @@ public class MovieController {
             @PathVariable("movieId") Long movieId,
             @RequestParam Long actorId) {
         movieService.removeActorFromMovie(movieId, actorId);
+    }
+
+    @GetMapping(path = "getImage/{movieId}")
+    public ResponseEntity<?> getImage(@PathVariable("movieId") Long movieId) {
+        byte[] image = movieService.getImage(movieId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.valueOf("image/png"))
+                .body(image);
     }
 }

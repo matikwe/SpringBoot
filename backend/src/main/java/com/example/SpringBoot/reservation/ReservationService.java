@@ -4,13 +4,16 @@ import com.example.SpringBoot.movie.Movie;
 import com.example.SpringBoot.movie.MovieRepository;
 import com.example.SpringBoot.user.User;
 import com.example.SpringBoot.user.UserRepository;
+import com.example.SpringBoot.utils.DateValidatorUsingDateFormat;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ReservationService {
@@ -29,42 +32,66 @@ public class ReservationService {
         return reservationRepository.findAll();
     }
 
-    public void addReservation(Long movieId, Long userId) {
-        Movie movie = movieRepository.findById(movieId)
-                .orElseThrow(() -> new IllegalStateException(
-                        "Movie with id: " + movieId + " doesn't exist!"
-                ));
+    public Reservation addReservation(Long movieId, Long userId, String bookingDate) {
+        Movie movie = findMovieById(movieId);
+        User user = findUserById(userId);
+        List<Reservation> reservation = reservationRepository.findAll();
+        List<Reservation> listWithDuplicatedReservation = getListWithDuplicatedReservation(reservation, movieId, userId, bookingDate);
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalStateException(
-                        "User with id: " + userId + " doesn't exist!"
-                ));
-
-        LocalDateTime now = LocalDateTime.now();
-
-        //if (movie.getQuantity() >= 1) {
-          //  movie.setQuantity(movie.getQuantity() - 1);
-            Reservation reservation = new Reservation(now);
-            reservation.setUser(List.of(user));
-            reservation.setMovie(List.of(movie));
-            //movieRepository.save(movie);
-            reservationRepository.save(reservation);
-        //} else {
-          //  throw new IllegalStateException("No video on time: " + now);
-    //    }
+        DateValidatorUsingDateFormat validator = new DateValidatorUsingDateFormat("dd/MM/yyyy");
+        if (validator.isValid(bookingDate)) {
+            if (listWithDuplicatedReservation.size() > 0) {
+                throw new IllegalStateException("The user has already booked this video on this date !");
+            } else {
+                Reservation currentReservation = new Reservation(bookingDate);
+                currentReservation.setUser(List.of(user));
+                currentReservation.setMovie(List.of(movie));
+                reservationRepository.save(currentReservation);
+                return currentReservation;
+            }
+        } else {
+            throw new IllegalStateException("Please enter a valid date format (dd/MM/yyyy) !");
+        }
     }
 
     @Transactional
-    public void deleteReservation(Long reservationId) {
+    public ResponseEntity deleteReservation(Long reservationId) {
         Optional<Reservation> reservation = reservationRepository.findById(reservationId);
 
         if (reservation.isPresent()) {
-            //Long movieId = reservation.get().getMovie().get(0).getId();
-            //Optional<Movie> movie = movieRepository.findById(movieId);
-            //movie.ifPresent(value -> value.setQuantity(value.getQuantity() + 1));
             reservationRepository.deleteById(reservationId);
         } else {
             throw new IllegalStateException("Reservation with id: " + reservationId + " does not exist !");
         }
+        return new ResponseEntity("Reservation deleted successfully.", HttpStatus.OK);
+    }
+
+    public List<Reservation> getReservationsForUserId(Long userId) {
+        List<Reservation> reservation = reservationRepository.findAll();
+        return reservation.stream()
+                .filter(it -> it.getUser().get(0).getId().equals(userId) && !it.isReserved())
+                .collect(Collectors.toList());
+    }
+
+    private List<Reservation> getListWithDuplicatedReservation(List<Reservation> reservation, Long movieId, Long userId, String bookingDate) {
+        return reservation.stream()
+                .filter(it -> it.getBookingDate().equals(bookingDate) &&
+                        it.getMovie().get(0).getId().equals(movieId) &&
+                        it.getUser().get(0).getId().equals(userId))
+                .collect(Collectors.toList());
+    }
+
+    private Movie findMovieById(Long movieId) {
+        return movieRepository.findById(movieId)
+                .orElseThrow(() -> new IllegalStateException(
+                        "Movie with id: " + movieId + " doesn't exist!"
+                ));
+    }
+
+    private User findUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalStateException(
+                        "User with id: " + userId + " doesn't exist!"
+                ));
     }
 }
