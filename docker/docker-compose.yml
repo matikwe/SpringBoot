@@ -1,0 +1,19 @@
+version: "3"
+services:
+  frontend:
+    image: frontend:latest
+    container_name: frontend
+    build:
+      context: .
+      dockerfile: ./Dockerfile-frontend
+    ports:
+      - "80:80"
+
+  backend:
+    image: backend:latest
+    container_name: backend
+    build:
+      context: .
+      dockerfile: ./Dockerfile-backend
+    expose:
+      - 8080

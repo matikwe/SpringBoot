@@ -1,4 +1,4 @@
-const baseurl = 'http://localhost:8080/api/v1'
+const baseurl = 'http://backend:8080/api/v1'
 
 export const getMovies = () => {
   return fetch(baseurl + '/movie', {
