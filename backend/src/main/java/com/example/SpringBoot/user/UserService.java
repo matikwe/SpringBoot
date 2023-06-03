@@ -10,12 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 public class UserService {
@@ -42,10 +39,6 @@ public class UserService {
         Optional<User> userByLogin = userRepository.findUserByLogin(user.getLogin());
         if (userByLogin.isPresent()) {
             throw new IllegalStateException("login: " + user.getLogin() + " exists!");
-        }
-
-        if (isValidPassword(user.getPassword()).length() > 0) {
-            throw new IllegalStateException(isValidPassword(user.getPassword()));
         }
 
         user.setSalt(generateSalt(user));
@@ -184,45 +177,5 @@ public class UserService {
         return newSalt;
     }
 
-    private String isValidPassword(String password) {
-        List<String> regex = getRegex();
-        List<String> messageList = getMessage();
-        StringBuilder message = new StringBuilder();
-        if (password == null || password.isEmpty()) {
-            return "Enter your password.";
-        }
-        for (String mess : messageList) {
-            if (!checkRegex(password, regex.get(messageList.indexOf(mess)))) {
-                message.append(mess);
-            }
-        }
-        return message.toString();
-    }
 
-    private boolean checkRegex(String password, String regex) {
-        Pattern p = Pattern.compile(regex);
-        Matcher m = p.matcher(password);
-
-        return m.matches();
-    }
-
-    private List<String> getRegex() {
-        List<String> regex = new ArrayList<>();
-        regex.add(".*[0-9]{1,}.*");
-        regex.add(".*[a-z]{1,}.*");
-        regex.add(".*[A-Z]{1,}.*");
-        regex.add(".*[@#$%^&+=]{1,}.*");
-        regex.add("^(?=\\S+$).{8,20}$");
-        return regex;
-    }
-
-    private List<String> getMessage() {
-        List<String> messageList = new ArrayList<>();
-        messageList.add("The password must contain a number. ");
-        messageList.add("The password must contain a lowercase character. ");
-        messageList.add("The password must contain a capital character. ");
-        messageList.add("The password must contain a special character. ");
-        messageList.add("The password must contain between 8 and 20 characters. ");
-        return messageList;
-    }
 }
