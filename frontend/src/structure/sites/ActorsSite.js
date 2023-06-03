@@ -1,76 +1,41 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Link} from "react-router-dom";
 import Actor1 from "../../assets/ActorsSite/actor1.png";
+import {ApplicationContext} from "../../context/ApplicationContext";
+import LoadingSpinner from "../../utils/spinner";
+import {FILMS_PATH} from "../../utils/paths";
 
 const ActorsSite = () => {
+
+    const applicationContext = useContext(ApplicationContext)
+
+    const actors = applicationContext.actors.map((actor, index) => (
+        <div className="col-4" style={{
+            backgroundImage: `url(${Actor1})`,
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            backgroundSize: 'contain'
+        }}>
+            <Link to={`${FILMS_PATH}?actid=${actor.id}`} className='actors-link'>
+                <h1>{actor.name} {actor.surname}</h1>
+            </Link>
+        </div>
+    ))
+
     return (
         <div className='actors-container'>
             <h1>
                 Aktorzy
             </h1>
             <div className="row">
-                <div className="col-4" style={{
-                    backgroundImage: `url(${Actor1})`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center',
-                    backgroundSize: 'contain'
-                }}>
-                    <Link to='/films?actid=1' className='actors-link'>
-                        <h1>Daniel Craig</h1>
-                    </Link>
-                </div>
-                <div className="col-4" style={{
-                    backgroundImage: `url(${Actor1})`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center',
-                    backgroundSize: 'contain'
-                }}>
-                    <Link to='/films?actid=1' className='actors-link'>
-                        <h1>Daniel Craig</h1>
-                    </Link>
-                </div>
-                <div className="col-4" style={{
-                    backgroundImage: `url(${Actor1})`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center',
-                    backgroundSize: 'contain'
-                }}>
-                    <Link to='/films?actid=1' className='actors-link'>
-                        <h1>Daniel Craig</h1>
-                    </Link>
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-4" style={{
-                    backgroundImage: `url(${Actor1})`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center',
-                    backgroundSize: 'contain'
-                }}>
-                    <Link to='/films?actid=1' className='actors-link'>
-                        <h1>Daniel Craig</h1>
-                    </Link>
-                </div>
-                <div className="col-4" style={{
-                    backgroundImage: `url(${Actor1})`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center',
-                    backgroundSize: 'contain'
-                }}>
-                    <Link to='/films?actid=1' className='actors-link'>
-                        <h1>Daniel Craig</h1>
-                    </Link>
-                </div>
-                <div className="col-4" style={{
-                    backgroundImage: `url(${Actor1})`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center',
-                    backgroundSize: 'contain'
-                }}>
-                    <Link to='/films?actid=1' className='actors-link'>
-                        <h1>Daniel Craig</h1>
-                    </Link>
-                </div>
+                {applicationContext.isLoading && (
+                    <LoadingSpinner />
+                )}
+                {!applicationContext.isLoading && (
+                    <>
+                        {actors}
+                    </>
+                )}
             </div>
         </div>
     );
