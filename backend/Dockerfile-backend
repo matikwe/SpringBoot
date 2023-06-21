@@ -1,9 +1,10 @@
-FROM maven:3.6.3-openjdk-8-slim AS build
+FROM maven AS build
 WORKDIR /app
 COPY . .
-RUN mvn clean package
+RUN mvn clean install -DSkipTests
 
-FROM openjdk:8-jre-slim
-COPY --from=build /app/target/SpringBoot-0.0.1-SNAPSHOT.jar /app.jar
+FROM openjdk
+COPY --from=build /app/target/SpringBoot-1.0.0-SNAPSHOT.jar /app.jar
+COPY --from=build /app/tmp/ /tmp
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","/app.jar"]
