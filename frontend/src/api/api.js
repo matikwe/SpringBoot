@@ -1,4 +1,4 @@
-const baseUrl = 'http://192.168.1.105:8080/api/v1'; //IP hosta (do zmiany na host lokalny z ipconfig)
+const baseUrl = '/api';
 
 export const getFilms = () => {
     return fetch(baseUrl + '/movie').then(response => response.json());

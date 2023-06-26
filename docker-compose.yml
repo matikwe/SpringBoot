@@ -1,4 +1,6 @@
 version: "3.4"
+networks:
+  web:
 services:
   frontend:
     image: frontend:latest
@@ -7,7 +9,9 @@ services:
       context: ./frontend
       dockerfile: Dockerfile-frontend
     ports:
-      - "192.168.1.105:81:80"  #IP hosta (do zmiany na host lokalny z ipconfig)
+      - "81:80"
+    networks:
+      - web
 
   backend:
     image: backend:latest
@@ -15,5 +19,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile-backend
-    ports:
-      - "192.168.1.105:8080:8080" #IP hosta (do zmiany na host lokalny z ipconfig)
+    expose:
+      - 8080
+    networks:
+      - web
