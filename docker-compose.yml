@@ -7,7 +7,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile-frontend
     ports:
-      - "81:80"
+      - "192.168.1.105:81:80"  #IP hosta (do zmiany na host lokalny z ipconfig)
 
   backend:
     image: backend:latest
@@ -16,4 +16,4 @@ services:
       context: ./backend
       dockerfile: Dockerfile-backend
     ports:
-      - "192.168.1.105:8081:8080" #IP hosta (do zmiany na host lokalny z ipconfig)
+      - "192.168.1.105:8080:8080" #IP hosta (do zmiany na host lokalny z ipconfig)

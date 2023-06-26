@@ -1,4 +1,4 @@
-const baseUrl = 'http://127.0.0.1:8080/api/v1';
+const baseUrl = 'http://192.168.1.105:8080/api/v1';
 
 export const deleteFilm = (id) => {
     return fetch(baseUrl + `/movie/${id}`, {
